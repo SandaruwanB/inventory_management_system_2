@@ -1,8 +1,9 @@
-import React from 'react'
+import React from 'react';
+import Routing from './prefix/routing';
 
 function App() {
   return (
-    <div className=' text-center text-red-500'>App</div>
+    <Routing />
   )
 }
 
