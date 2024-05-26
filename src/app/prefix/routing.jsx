@@ -7,6 +7,7 @@ function Routing() {
   return (
     <BrowserRouter>
         <Routes>
+            {/* Default roues */}
             <Route path="/" element={<Home />} />
             <Route path='/login' element={<Login />} />
         </Routes>
