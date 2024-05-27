@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import Loader from '../components/loader';
+import HomeHeader from '../layouts/homeHeader';
+import Input from '../components/input';
 
 function Home() {
-    const [state, setState] = useState(true);
+    const [loadingState, setLoadingState] = useState(true);
 
     useEffect(()=>{
-        const timeout = setTimeout(()=>{
-            setState(false);
-        },2000);
+        setTimeout(()=>{
+            setLoadingState(false);
+        },3000);
     })
 
   return (
     <>
         {
-            state ?
+            loadingState ?
                 <Loader/>
             :
-                <div>Home Page</div>
+                <>
+                    <HomeHeader />
+                    <div>Home Page</div>
+                    <Input type={'password'} placeholder={"hello"}/>
+                </>
         }
     </>
     
