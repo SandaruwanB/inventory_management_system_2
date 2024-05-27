@@ -16,12 +16,14 @@ function Home() {
     <>
         {
             loadingState ?
-                <Loader/>
+                <Loader color={"rgb(23,37,84)"}/>
             :
                 <>
                     <HomeHeader />
-                    <div>Home Page</div>
-                    <Input type={'password'} placeholder={"hello"}/>
+                    <div className=' grid grid-cols-3 container mx-40'>
+                        <div className=' text-blue-950'>Home Page</div>
+                        <Input type={'password'} placeholder={"hello"}/>
+                    </div>
                 </>
         }
     </>
