@@ -20,9 +20,15 @@ function Home() {
             :
                 <>
                     <HomeHeader />
-                    <div className=' grid grid-cols-3 container mx-40'>
-                        <div className=' text-blue-950'>Home Page</div>
-                        <Input type={'password'} placeholder={"hello"}/>
+                    <div className='flex md:flex-row flex-col h-screen'>
+                        <div className='basis-7/12 h-full'>
+                            <div className='h-full flex text-center justify-center items-center'>
+                                <span>hello world</span>
+                            </div>
+                        </div>
+                        <div className=' basis-5/12 h-full bg-cyan-700'>
+                            
+                        </div>
                     </div>
                 </>
         }
