@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 function Login() {
+
+  useEffect(()=>{
+    document.title = "Stockify | Sign in";
+  });
+
   return (
-    <div className=' text-center text-red-900 text-2xl'>Login page</div>
+    <div className=' h-screen w-full flex justify-center items-center '>
+      <div className='text-center'>
+        <h1>Sign In</h1>
+      </div>
+    </div>
   )
 }
 
