@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hover-animated-text{
+    display: inline-block;
+    text-decoration: none;
+}
+
+.hover-animated-text::after{
+    display: block;
+    content: '';
+    width: inherit;
+    border-bottom: solid 3px rgb(186,230,253);
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+}
+
+.hover-animated-text:hover::after{
+    transform: scaleX(1);
+}
