@@ -27,7 +27,7 @@ function Home() {
                             <div className='h-full flex xl:flex-row flex-col'>
                                 <div className='basis-1 xl:basis-7/12 xl:order-1 order-2 h-full'>
                                     <div className='h-full flex flex-col justify-center'>
-                                        <h1 className=' text-gray-100 font-extrabold tracking-wide text-[3.5rem] ft-lato'>Better Solution For Your Business</h1>
+                                        <h1 className='text-gray-100 font-extrabold tracking-wide text-[1.5rem] lg:text-[3.5rem] ft-lato'>Better Solution For Your Business</h1>
                                         <h3>Stockify gives you to manage your sales and inventory efficiently</h3>
                                     </div>
                                 </div>
