@@ -18,8 +18,8 @@ function Login() {
   }
 
   return (
-    <div className='p-3 h-screen w-full flex justify-center items-center '>
-      <div className='p-5 border-2 border-sky-200 rounded-xl'>
+    <div className='p-3 h-screen w-full flex justify-center items-center bg-gradient-to-br from-green-950 to-blue-950'>
+      <div className='p-5 border-2 bg-cyan-50 border-sky-200 rounded-xl'>
         <div className='text-center mt-10'>
           <a href="/" className='uppercase text-4xl font-bold text-sky-950 hover-animated-text'>Stockify</a>
         </div>
@@ -32,7 +32,7 @@ function Login() {
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
               <Icon icon={'solar:user-bold'} width={24} height={24} className='text-cyan-950' />
             </div>
-            <input type="text" className="block w-full p-3 ps-10 text-sm text-cyan-950 border-2 border-cyan-950 rounded-lg bg-gray-50 outline-none" placeholder="Email Address" onChange={(e)=>setEmail(e.target.value)} />
+            <input type="text" className="block w-full p-3 ps-10 text-sm text-cyan-950 border-2 border-cyan-950 rounded-lg bg-transparent outline-none" placeholder="Email Address" onChange={(e)=>setEmail(e.target.value)} />
           </div>
         </div>
         <div className='mt-7'>
@@ -40,7 +40,7 @@ function Login() {
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
               <Icon icon={'material-symbols:lock'} width={24} height={24} className='text-cyan-950' />
             </div>
-            <input type={isPassword ? 'password' : 'text'} className="block w-full p-3 ps-10 text-sm text-cyan-950 border-2 border-cyan-950 rounded-lg bg-gray-50 outline-none" placeholder="Password"  onChange={(e)=>setPasword(e.target.value)} />
+            <input type={isPassword ? 'password' : 'text'} className="block w-full p-3 ps-10 text-sm text-cyan-950 border-2 border-cyan-950 rounded-lg bg-transparent outline-none" placeholder="Password"  onChange={(e)=>setPasword(e.target.value)} />
             
             {
               isPassword ?
