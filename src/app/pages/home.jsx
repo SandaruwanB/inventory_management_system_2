@@ -21,8 +21,23 @@ function Home() {
                 <Loader color={"rgb(23,37,84)"}/>
             :
                 <>
+                    <main className='w-full h-screen bg-blue-950'>
+                        <div className='max-w-screen-xl mx-auto p-3'>
+                            <HomeHeader />
+                            <div className='h-full w-full flex-col xl:flex-col'>
+                                <div className='basis-1 xl:basis-7/12 xl:order-1 order-2 h-full'>
+                                    sdfads
+                                </div>
+                                <div className='basis-1 xl:basis-5/12 xl:order-2 order-1'>
+                                    skjldkj
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                    
+
+                    {/*<section className='w-full bg-blue-950'>  
                     <HomeHeader />
-                    <section className='w-full bg-blue-950'>  
                         <div className='min-h-[800px] max-w-screen-xl mx-auto p-3'>
                             <div className='h-full flex xl:flex-row flex-col'>
                                 <div className='basis-1 xl:basis-7/12 xl:order-1 order-2 h-full'>
@@ -36,7 +51,7 @@ function Home() {
                                 </div>
                             </div>
                         </div>             
-                    </section>
+                    </section>*/}
                 </>
         }
     </>

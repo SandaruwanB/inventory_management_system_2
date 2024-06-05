@@ -1,15 +1,69 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Icon } from '@iconify/react/dist/iconify.js';
+
 
 function Login() {
+  const [isPassword, setIsPassword] = useState(true);
+  const [email,setEmail] = useState("");
+  const [password,setPasword] = useState("");
 
   useEffect(()=>{
     document.title = "Stockify | Sign in";
   });
 
+  const forgetPassword = ()=>{
+    console.log("forget password");
+  }
+
+  const handleLogin = ()=>{
+    console.log(email + " " + password)
+  }
+
   return (
-    <div className=' h-screen w-full flex justify-center items-center '>
-      <div className='text-center'>
-        <h1>Sign In</h1>
+    <div className='p-3 h-screen w-full flex justify-center items-center '>
+      <div className='p-5 border-2 border-sky-200 rounded-xl'>
+        <div className='text-center mt-10'>
+          <a href="/" className='uppercase text-4xl font-bold text-sky-950 hover-animated-text'>Stockify</a>
+        </div>
+        <div className='text-center mt-10'>
+          <h1 className='font-semibold text-sky-800 md:text-3xl text-xl'>Sign In</h1>
+          <p className='text-sky-900 font-normal'>Hello welcome back. please login to use the system.</p>
+        </div>
+        <div className=' mt-14'>
+          <div className="relative">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <Icon icon={'solar:user-bold'} width={24} height={24} className='text-cyan-950' />
+            </div>
+            <input type="text" className="block w-full p-3 ps-10 text-sm text-cyan-950 border-2 border-cyan-950 rounded-lg bg-gray-50 outline-none" placeholder="Email Address" onChange={(e)=>setEmail(e.target.value)} />
+          </div>
+        </div>
+        <div className='mt-7'>
+          <div className="relative">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <Icon icon={'material-symbols:lock'} width={24} height={24} className='text-cyan-950' />
+            </div>
+            <input type={isPassword ? 'password' : 'text'} className="block w-full p-3 ps-10 text-sm text-cyan-950 border-2 border-cyan-950 rounded-lg bg-gray-50 outline-none" placeholder="Password"  onChange={(e)=>setPasword(e.target.value)} />
+            
+            {
+              isPassword ?
+              <div className="absolute inset-y-0 end-2 flex items-center ps-3 cursor-pointer">
+                <Icon icon={'tabler:eye-filled'} width={24} height={24} className='text-cyan-950' onClick={()=>setIsPassword(!isPassword)} />
+              </div>
+              :
+              <div className="absolute inset-y-0 end-2 flex items-center ps-3 cursor-pointer">
+                <Icon icon={'eva:eye-off-fill'} width={24} height={24} className='text-cyan-950' onClick={()=>setIsPassword(!isPassword)} />
+              </div>
+            }
+          </div>
+        </div>
+        <div className='text-right mt-1'>
+            <span className=' text-cyan-950 mr-3 hover:underline cursor-pointer' onClick={()=>forgetPassword()}>Forgot Password?</span>
+        </div>
+        <div className='mt-10 flex justify-center pb-10'>
+            <button type='button' onClick={()=>handleLogin()} className='rounded-lg bg-cyan-950 text-white py-2 px-7 border-2 text-lg font-semibold border-cyan-950 hover:bg-transparent hover:text-cyan-900 transition delay-150'>
+              Sign In
+            </button>
+        </div>
       </div>
     </div>
   )
