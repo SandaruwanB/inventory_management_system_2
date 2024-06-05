@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Icon } from '@iconify/react/dist/iconify.js';
 
 
@@ -7,9 +7,7 @@ function Login() {
   const [email,setEmail] = useState("");
   const [password,setPasword] = useState("");
 
-  useEffect(()=>{
-    document.title = "Stockify | Sign in";
-  });
+  document.title = "Stockify | Sign in";
 
   const forgetPassword = ()=>{
     console.log("forget password");

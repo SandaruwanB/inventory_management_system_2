@@ -5,8 +5,9 @@ import HomeHeader from '../layouts/homeHeader';
 function Home() {
     const [loadingState, setLoadingState] = useState(true);
 
-    useEffect(()=>{
-        document.title = "Stockify | Home";
+    document.title = "Stockify | Home";
+
+    useEffect(()=>{        
         setTimeout(()=>{
             setLoadingState(false);
         },2000);

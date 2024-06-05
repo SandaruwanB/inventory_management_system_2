@@ -2,6 +2,8 @@ import React from 'react';
 import { Icon } from '@iconify/react';
 
 const NotFound = () => {
+  document.title = "Stockify | Page Not Found";
+
   return (
     <div className='h-screen w-full bg-gradient-to-br from-green-950 to-blue-950'>
         <div className='flex h-full flex-col items-center justify-center'>
