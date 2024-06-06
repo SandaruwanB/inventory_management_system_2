@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from '../pages/login'
 import Home from '../pages/home'
 import NotFound from '../pages/notFound'
+import Dashboard from '../pages/admin/dashboard'
 
 function Routing() {
   return (
@@ -12,6 +13,9 @@ function Routing() {
             <Route path="/" element={<Home />} />
             <Route path='/login' element={<Login />} />
             <Route path='*' element={<NotFound />} />
+
+            {/* auth routes */}
+            <Route path='/user/dashboard' element={<Dashboard />} />
         </Routes>
     </BrowserRouter>
   )
