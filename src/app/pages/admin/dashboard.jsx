@@ -2,6 +2,8 @@ import React from 'react'
 import DashboadrdSideBar from '../../layouts/dashboadrdSideBar'
 
 const Dashboard = () => {
+    document.title = "Stockify | Dashboard";
+
   return (
     <div className='flex'>
         <DashboadrdSideBar />
