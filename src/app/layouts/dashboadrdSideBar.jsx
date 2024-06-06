@@ -35,6 +35,10 @@ const DashboadrdSideBar = () => {
     {
       title : "Users",
       icon : "raphael:users"
+    },
+    {
+      title : "Settings",
+      icon : "ic:round-settings"
     }
   ]
 
