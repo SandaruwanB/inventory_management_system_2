@@ -48,14 +48,12 @@ const DashboadrdSideBar = () => {
 
       <ul className=' pt-20'>
         {navLinks.map((value, index)=>(
-          <>
             <li key={index} className=' text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:backdrop-brightness-200 mt-2 rounded-md'>
               <span className='text-2xl block float-left'>
                 <Icon icon={value.icon} />
               </span>
               <span className={`text-base font-medium flex-1 ${!sidebarActive && 'hidden'} `}>{value.title}</span>
             </li>
-          </>
         ))}
       </ul>
     </div>
