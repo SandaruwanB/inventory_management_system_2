@@ -5,8 +5,9 @@ import HomeHeader from '../layouts/homeHeader';
 function Home() {
     const [loadingState, setLoadingState] = useState(true);
 
-    useEffect(()=>{
-        document.title = "Stockify | Home";
+    document.title = "Stockify | Home";
+
+    useEffect(()=>{        
         setTimeout(()=>{
             setLoadingState(false);
         },2000);
@@ -22,21 +23,28 @@ function Home() {
             :
                 <>
                     <HomeHeader />
-                    <section className='w-full bg-blue-950'>  
-                        <div className='min-h-[800px] max-w-screen-xl mx-auto p-3'>
-                            <div className='h-full flex xl:flex-row flex-col'>
-                                <div className='basis-1 xl:basis-7/12 xl:order-1 order-2 h-full'>
-                                    <div className='h-full flex flex-col justify-center'>
-                                        <h1 className='text-gray-100 font-extrabold tracking-wide text-[1.5rem] lg:text-[3.5rem] ft-lato'>Better Solution For Your Business</h1>
-                                        <h3>Stockify gives you to manage your sales and inventory efficiently</h3>
-                                    </div>
+                    <main className='w-full min-h-screen md:h-screen bg-gradient-to-br from-green-950 to-blue-950'>
+                        <div className=' max-w-screen-2xl h-full mx-auto p-3'>
+                            <div className='flex lg:flex-row flex-col lg:justify-center h-full'>
+                                <div className='lg:order-2 order-1 lg:basis-5/12 basis-12'>
+                                    <div className='flex items-center h-full justify-center lg:mt-0 mt-12'>
+                                        <img src="assets/images/landingImg.png" alt="test" />
+                                    </div>                                        
                                 </div>
-                                <div className='basis-1 xl:basis-5/12 xl:order-2 order-1'>
-                                        <img src="assets/background.jpg" alt="test" />
+                                <div className='lg:order-1 order-2 lg:basis-7/12 basis-12 lg:mt-0 mt-12'>
+                                    <div className='flex flex-col h-full justify-center'>
+                                        <h1 className='text-gray-100 font-extrabold lg:leading-[62px] lg:text-left text-center tracking-wide text-[1.5rem] lg:text-[3.8rem] ft-lato'>Better Solution For Your Business</h1>
+                                        <h3 className=' text-sky-200 font-normal lg:text-left text-center tracking-wide text-[.8rem lg:text-[1rem] mt-5'>Stockify streamlines sales and inventory management, ensuring efficiency and accuracy. Optimize your business with powerful tools to track, analyze, and grow your operations effortlessly.</h3>
+                                        <div className='text-center lg:text-left lg:mt-16 mt-10'>
+                                            <button className='bg-cyan-400 px-6 py-2 border-4 border-cyan-400 hover:bg-transparent hover:text-white text-blue-950 font-semibold rounded-[2px] animate-bounce transition-all ease-in-out delay-200'>
+                                                GET STARTED
+                                            </button>
+                                        </div>
+                                    </div>                                    
                                 </div>
                             </div>
-                        </div>             
-                    </section>
+                        </div>
+                    </main>
                 </>
         }
     </>
