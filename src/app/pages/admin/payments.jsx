@@ -81,7 +81,7 @@ const Payments = () => {
                                         <td className='p-3 text-sm text-gray-700'>{value.name}</td>
                                         <td className='p-3 text-sm text-gray-700'>{value.suplier}</td>
                                         <td className='p-3 text-sm text-gray-700'>Rs. {value.amount}</td>
-                                        <td className='p-3 text-sm text-gray-700'>
+                                        <td className='p-3 text-sm text-white'>
                                             <span className={`${value.status === "posted" ? "bg-green-500" : value.status === "canceled" ? "bg-red-500" : "bg-yellow-500"} px-2 py-[3px] rounded-md`}>
                                                 {value.status}
                                             </span>
