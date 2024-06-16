@@ -85,7 +85,7 @@ const Supliers = () => {
                         :
                         <tr className='bg-white'>
                             <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={6}>
-                                <p>No emplooyes found. <span className='text-sm hover:underline ml-2'>Add Employee</span></p>
+                                <p>No supliers found.</p>
                             </td>
                         </tr>
                         }

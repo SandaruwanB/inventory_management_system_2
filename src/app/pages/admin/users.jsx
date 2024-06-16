@@ -19,29 +19,8 @@ const Users = () => {
             "email": "johndoe@example.com",
             "contact": "123-456-7890",
             "image": "/assets/images/defaultUser.png"
-        },
-        {
-            "name": "Jane Smith",
-            "address": "456 Elm St, Anycity",
-            "email": "janesmith@example.com",
-            "contact": "987-654-3210",
-            "image": "/assets/images/defaultUser.png"
-        },
-        {
-            "name": "Emily Brown",
-            "address": "321 Pine Rd, Anotherplace",
-            "email": "emilybrown@example.com",
-            "contact": "234-567-8901",
-            "image": "/assets/images/defaultUser.png"
-        },
-        {
-            "name": "Sarah Taylor",
-            "address": "888 Maple Ave, Somewhereville",
-            "email": "sarahtaylor@example.com",
-            "contact": "345-678-9012",
-            "image": "/assets/images/defaultUser.png"
         }
-    ]
+    ];
 
     const editEmployee = (id)=>{
         console.log("Edit clicked" + id);
