@@ -2,35 +2,35 @@ import React from 'react';
 import { Icon } from '@iconify/react';
 import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
 
-const Invoicing = () => {
+const Payments = () => {
     document.title = "Stockify | Employees";
 
-    const invoices = [
+    const payments = [
         {
-            "name" : "INV123456",
-            "customer" : "Nimal Shantha",
+            "name" : "CSH123456",
+            "suplier" : "Nimal Shantha",
             "amount" : "12700.00",
             "contact" : "07611562233",
             "status" : "draft",
             "image" : "/assets/images/defaultUser.png"
         },
         {
-            "name": "INV123457",
-            "customer": "Kasun Nishantha",
+            "name": "BNK123457",
+            "suplier": "Kasun Nishantha",
             "amount": "22500.00",
             "contact": "123-456-7890",
             "status" : "posted",
             "image": "/assets/images/defaultUser.png"
         },
         {
-            "name": "INV123457",
-            "customer": "Nimal Susantha",
+            "name": "CSH123458",
+            "suplier": "Nimal Susantha",
             "amount": "23450.00",
             "contact": "987-654-3210",
             "status" : "canceled",
             "image": "/assets/images/defaultUser.png"
         }
-    ]
+    ];
 
     const editEmployee = (id)=>{
         console.log("Edit clicked" + id);
@@ -44,7 +44,7 @@ const Invoicing = () => {
     <div className='flex w-screen'>
         <DashboadrdSideBar />
         <div className='p-7 w-full'>
-            <h1 className=' mb-4 text-3xl text-gray-800 font-semibold ml-10'>Invoicing</h1>
+            <h1 className=' mb-4 text-3xl text-gray-800 font-semibold ml-10'>Payments</h1>
             <div className='w-full mt-10'>
                 <div className='w-full flex justify-between'>
                     <div>
@@ -52,7 +52,7 @@ const Invoicing = () => {
                     </div>
                     <div className='flex'>
                         <div className=' text-gray-800 '>
-                            showing results <span className='text-blue-950 font-bold'>{invoices.length}</span>
+                            showing results <span className='text-blue-950 font-bold'>{payments.length}</span>
                         </div>                       
                     </div>
                 </div>
@@ -60,8 +60,8 @@ const Invoicing = () => {
                     <thead className='bg-gray-200 border-b-2 border-gray-400'>
                         <tr>
                             <th className='p-3 text-sm font-semibold tracking-wide text-left w-10'>No.</th>
-                            <th className='p-3 text-sm font-semibold tracking-wide text-left'>Invoice Number</th>
-                            <th className='p-3 text-sm font-semibold tracking-wide text-left'>Customer</th>
+                            <th className='p-3 text-sm font-semibold tracking-wide text-left'>Payment Voucher</th>
+                            <th className='p-3 text-sm font-semibold tracking-wide text-left'>Suplier</th>
                             <th className='p-3 text-sm font-semibold tracking-wide text-left'>Amount</th>
                             <th className='p-3 text-sm font-semibold tracking-wide text-left'>Status</th>
                             <th className='p-3 text-sm font-semibold tracking-wide text-left'>Actions</th>
@@ -69,15 +69,15 @@ const Invoicing = () => {
                     </thead>
                     <tbody className=' divide-y divide-gray-200'>
                         {
-                            invoices.length > 0 ?
-                            invoices.map((value, index)=>{
+                            payments.length > 0 ?
+                            payments.map((value, index)=>{
                                 return (
                                     <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                         <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                         <td className='p-3 text-sm text-gray-700'>{value.name}</td>
-                                        <td className='p-3 text-sm text-gray-700'>{value.customer}</td>
+                                        <td className='p-3 text-sm text-gray-700'>{value.suplier}</td>
                                         <td className='p-3 text-sm text-gray-700'>Rs. {value.amount}</td>
-                                        <td className={`p-3 text-sm text-white`}>
+                                        <td className='p-3 text-sm text-gray-700'>
                                             <span className={`${value.status === "posted" ? "bg-green-500" : value.status === "canceled" ? "bg-red-500" : "bg-yellow-500"} px-2 py-[3px] rounded-md`}>
                                                 {value.status}
                                             </span>
@@ -92,7 +92,7 @@ const Invoicing = () => {
                         :
                         <tr className='bg-white'>
                             <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={6}>
-                                <p>No invoices found.</p>
+                                <p>No payments found.</p>
                             </td>
                         </tr>
                         }
@@ -104,4 +104,4 @@ const Invoicing = () => {
   )
 }
 
-export default Invoicing
+export default Payments
