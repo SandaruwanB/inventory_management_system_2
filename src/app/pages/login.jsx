@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
   const [isPassword, setIsPassword] = useState(true);
   const [email,setEmail] = useState("");
   const [password,setPasword] = useState("");
+  const navigate = useNavigate();
 
   document.title = "Stockify | Sign in";
 
@@ -15,6 +17,7 @@ function Login() {
 
   const handleLogin = ()=>{
     console.log(email + " " + password)
+    navigate('/user/dashboard');
   }
 
   return (

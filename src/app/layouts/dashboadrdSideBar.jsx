@@ -1,44 +1,56 @@
 import React, { useState } from 'react'
 import { Icon } from '@iconify/react'
+import { useNavigate } from 'react-router-dom';
 
 const DashboadrdSideBar = () => {
   const [sidebarActive, setSidebarActive] = useState(true);
+  const navigate = useNavigate();
+
   const navLinks = [
     {
       title : "Dashboard",
-      icon : "ic:baseline-dashboard"
+      icon : "ic:baseline-dashboard",
+      path : "/user/dashboard"
     },
     {
       title : "Employees",
-      icon : "clarity:employee-group-solid"
+      icon : "clarity:employee-group-solid",
+      path : "/user/employees",
     },
     {
       title : "Customers",
-      icon : "streamline:information-desk-customer-solid"
+      icon : "streamline:information-desk-customer-solid",
+      path : "/user/customers",
     },
     {
       title : "Supliers",
-      icon : "mdi:users-switch"
+      icon : "mdi:users-switch",
+      path : "/user/supliers",
     },
     {
       title : "Inventory",
-      icon : "ic:baseline-inventory-2"
+      icon : "ic:baseline-inventory-2",
+      path : "/user/inventory",
     },
     {
       title : "Invoicing",
-      icon : "mdi:invoice-check"
+      icon : "mdi:invoice-check",
+      path : "/user/invoicing",
     },
     {
       title : "Payments",
-      icon : "streamline:payment-10-solid"
+      icon : "streamline:payment-10-solid",
+      path : "/user/payments",
     },
     {
       title : "Users",
-      icon : "raphael:users"
+      icon : "raphael:users",
+      path : "/user/users",
     },
     {
       title : "Settings",
-      icon : "ic:round-settings"
+      icon : "ic:round-settings",
+      path : "/user/settings",
     }
   ]
 
@@ -52,7 +64,7 @@ const DashboadrdSideBar = () => {
 
       <ul className=' pt-20'>
         {navLinks.map((value, index)=>(
-            <li key={index} className=' text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:backdrop-brightness-200 mt-2 rounded-md'>
+            <li key={index} className=' text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:backdrop-brightness-200 mt-2 rounded-md' onClick={()=>navigate(value.path)}>
               <span className='text-2xl block float-left'>
                 <Icon icon={value.icon} />
               </span>
