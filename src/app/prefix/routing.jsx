@@ -8,6 +8,7 @@ import Employees from '../pages/admin/employees'
 import Customers from '../pages/admin/customers'
 import Supliers from '../pages/admin/supliers'
 import Inventory from '../pages/admin/inventory'
+import Invoicing from '../pages/admin/invoicing'
 
 function Routing() {
   return (
@@ -24,6 +25,7 @@ function Routing() {
             <Route path='/user/customers' element={<Customers />} />
             <Route path='/user/supliers' element={<Supliers />} />
             <Route path='/user/inventory' element={<Inventory />} />
+            <Route path='/user/invoicing' element={<Invoicing />} />
         </Routes>
     </BrowserRouter>
   )
