@@ -14,7 +14,7 @@ const Card = ({image, name, contact, address, index, qty, price}) => {
     return (
         <div className='bg-gray-200 w-full p-4 cursor-pointer rounded hover:bg-gray-300'>
             <div className='text-center w-full flex justify-center items-center text-gray-600'>
-                <img src={image} alt="image" className='rounded-md' />
+                <img src={image} alt="pro_image" className='rounded-md' />
             </div>
             <div className='flex justify-between font-semibold mt-4 text-gray-800'>
                 <div>{name}</div>

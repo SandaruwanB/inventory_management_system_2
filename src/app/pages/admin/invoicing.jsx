@@ -12,6 +12,7 @@ const Invoicing = () => {
             "amount" : "12700.00",
             "contact" : "07611562233",
             "status" : "draft",
+            "date" : "2024-06-23",
             "image" : "/assets/images/defaultUser.png"
         },
         {
@@ -20,6 +21,7 @@ const Invoicing = () => {
             "amount": "22500.00",
             "contact": "123-456-7890",
             "status" : "posted",
+            "date" : "2024-06-23",
             "image": "/assets/images/defaultUser.png"
         },
         {
@@ -28,6 +30,7 @@ const Invoicing = () => {
             "amount": "23450.00",
             "contact": "987-654-3210",
             "status" : "canceled",
+            "date" : "2024-06-23",
             "image": "/assets/images/defaultUser.png"
         }
     ]
@@ -64,6 +67,7 @@ const Invoicing = () => {
                             <th className='p-3 text-sm font-semibold tracking-wide text-left'>Customer</th>
                             <th className='p-3 text-sm font-semibold tracking-wide text-left'>Amount</th>
                             <th className='p-3 text-sm font-semibold tracking-wide text-left'>Status</th>
+                            <th className='p-3 text-sm font-semibold tracking-wide text-left'>Date</th>
                             <th className='p-3 text-sm font-semibold tracking-wide text-left'>Actions</th>
                         </tr>
                     </thead>
@@ -77,11 +81,12 @@ const Invoicing = () => {
                                         <td className='p-3 text-sm text-gray-700'>{value.name}</td>
                                         <td className='p-3 text-sm text-gray-700'>{value.customer}</td>
                                         <td className='p-3 text-sm text-gray-700'>Rs. {value.amount}</td>
-                                        <td className={`p-3 text-sm text-white`}>
+                                        <td className={`p-3 text-sm text-white`}> 
                                             <span className={`${value.status === "posted" ? "bg-green-500" : value.status === "canceled" ? "bg-red-500" : "bg-yellow-500"} px-2 py-[3px] rounded-md`}>
                                                 {value.status}
                                             </span>
                                         </td>
+                                        <td className='p-3 text-sm text-gray-700'>{value.date}</td>
                                         <td className='p-3 text-sm text-gray-700'>
                                             <button className='hover:text-green-500' onClick={()=>editEmployee(index)}><Icon icon="basil:edit-solid" width={26} /></button>
                                             <button className='ml-4 hover:text-red-500' onClick={()=>removeEmployee(index)}><Icon icon="material-symbols-light:delete"  width={28}/></button>

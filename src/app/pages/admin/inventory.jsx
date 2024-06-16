@@ -23,14 +23,6 @@ const Inventory = () => {
         console.log("Add new clicked");
     }
 
-    const editEmployee = (id)=>{
-        console.log("Edit clicked" + id);
-    }
-
-    const removeEmployee = (id)=>{
-        console.log("Delete clicked" + id);
-    }
-
     return (
     <div className='flex w-screen'>
         <DashboadrdSideBar />
