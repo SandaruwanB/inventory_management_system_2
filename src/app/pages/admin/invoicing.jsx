@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
 
 const Invoicing = () => {
-    document.title = "Stockify | Employees";
+    document.title = "Stockify | Invoicing";
 
     const invoices = [
         {

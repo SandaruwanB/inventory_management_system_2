@@ -11,6 +11,7 @@ import Inventory from '../pages/admin/inventory'
 import Invoicing from '../pages/admin/invoicing'
 import Payments from '../pages/admin/payments'
 import Users from '../pages/admin/users'
+import Settings from '../pages/admin/settings'
 
 function Routing() {
   return (
@@ -30,6 +31,7 @@ function Routing() {
             <Route path='/user/invoicing' element={<Invoicing />} />
             <Route path='/user/payments' element={<Payments />} />
             <Route path='/user/users' element={<Users />} />
+            <Route path='/user/settings' element={<Settings />} />
         </Routes>
     </BrowserRouter>
   )
