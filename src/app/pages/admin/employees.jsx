@@ -9,6 +9,7 @@ const Employees = () => {
     const employees = [
         {
             "name" : "kasun Kumara",
+            "job" : "manager",
             "address" : "Galewela",
             "email" : "test@gmail.com",
             "contact" : "07611562233",
@@ -16,6 +17,7 @@ const Employees = () => {
         },
         {
             "name": "John Doe",
+            "job" : "salesman",
             "address": "123 Main St, Anytown",
             "email": "johndoe@example.com",
             "contact": "123-456-7890",
@@ -23,6 +25,7 @@ const Employees = () => {
         },
         {
             "name": "Jane Smith",
+            "job" : "worker",
             "address": "456 Elm St, Anycity",
             "email": "janesmith@example.com",
             "contact": "987-654-3210",
@@ -30,6 +33,7 @@ const Employees = () => {
         },
         {
             "name": "Emily Brown",
+            "job" : "salesman",
             "address": "321 Pine Rd, Anotherplace",
             "email": "emilybrown@example.com",
             "contact": "234-567-8901",
@@ -37,6 +41,7 @@ const Employees = () => {
         },
         {
             "name": "Sarah Taylor",
+            "job" : "manager",
             "address": "888 Maple Ave, Somewhereville",
             "email": "sarahtaylor@example.com",
             "contact": "345-678-9012",
@@ -73,6 +78,7 @@ const Employees = () => {
                         <tr>
                             <th className='p-3 text-sm font-semibold tracking-wide text-left w-10'>No.</th>
                             <th className='p-3 text-sm font-semibold tracking-wide text-left'>Name</th>
+                            <th className='p-3 text-sm font-semibold tracking-wide text-left'>Job Position</th>
                             <th className='p-3 text-sm font-semibold tracking-wide text-left'>Email Address</th>
                             <th className='p-3 text-sm font-semibold tracking-wide text-left'>Contact</th>
                             <th className='p-3 text-sm font-semibold tracking-wide text-left'>Address</th>
@@ -87,6 +93,7 @@ const Employees = () => {
                                     <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                         <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                         <td className='p-3 text-sm text-gray-700'>{value.name}</td>
+                                        <td className='p-3 text-sm text-gray-700'>{value.job}</td>
                                         <td className='p-3 text-sm text-gray-700'>{value.email}</td>
                                         <td className='p-3 text-sm text-gray-700'>{value.contact}</td>
                                         <td className='p-3 text-sm text-gray-700'>{value.address}</td>
@@ -100,7 +107,7 @@ const Employees = () => {
                         :
                         <tr className='bg-white'>
                             <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={6}>
-                                <p>No emplooyes found. <span className='text-sm hover:underline ml-2'>Add Employee</span></p>
+                                <p>No emplooyes found.</p>
                             </td>
                         </tr>
                         }

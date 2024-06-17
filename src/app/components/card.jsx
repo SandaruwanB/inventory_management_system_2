@@ -21,8 +21,8 @@ const Card = ({image, name, contact, address, index, qty, price}) => {
                 <div className={`${qty > 0 ? 'text-green-700' : 'text-red-700'}`}>{qty}</div>
             </div>
             <div className='flex justify-between mt-3 text-white'>
-                <button className='bg-gray-800 p-1 rounded-md' onClick={()=>editProduct(index)}><Icon icon="basil:edit-solid" width={24} /></button>
-                <button className='bg-red-800 p-1 rounded-md' onClick={()=>removeProduct(index)}><Icon icon="material-symbols-light:delete" width={26}/></button>
+                <button className='bg-gray-600 p-1 rounded-md hover:bg-gray-800' onClick={()=>editProduct(index)}><Icon icon="basil:edit-solid" width={24} /></button>
+                <button className='bg-red-600 p-1 rounded-md hover:bg-red-800' onClick={()=>removeProduct(index)}><Icon icon="material-symbols-light:delete" width={26}/></button>
             </div>
         </div>
     )
