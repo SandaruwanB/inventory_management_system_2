@@ -62,34 +62,35 @@ const DashboadrdSideBar = () => {
       </button>
 
       <aside id="separator-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-              <div className="h-full px-3 py-4 overflow-y-auto bg-gradient-to-br from-green-950 to-blue-950">
-                  <ul className="space-y-2 font-medium">
-                      <li className='mb-28'>
-                          <button onClick={()=>navigate('/')} className="flex w-full items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                          <div className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">
-                              
-                          </div>
-                            <span className="ms-3">Dashboard</span>
-                          </button>
-                      </li>
-                      {
-                        navLinks.map((item, index)=>{
-                          return (
-                            <li key={index}>
-                                <button onClick={()=>navigate(item.path)} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full">
-                                  <div className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75" >
-                                      <Icon icon={item.icon} width={22}/>
-                                  </div>
-                                  <div className='text-left ml-4'>
-                                    <span className="flex-1 ms-3 whitespace-nowrap">{item.title}</span>
-                                  </div>
-                                </button>
-                            </li>
-                          )
-                        })
-                      }
-                  </ul>
-              </div>
+        <div className="h-full px-3 py-4 overflow-y-auto bg-gradient-to-br from-green-950 to-blue-950">
+          <ul className="space-y-2 font-medium">
+            <li className='mb-28'>
+              <button onClick={()=>navigate('/')} className="flex w-full items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                <div className="w-5 h-5 text-gray-500 transition duration-75">
+                  <Icon icon="icon-park-outline:dashboard" width={25} />
+                </div>
+                <span className="ms-3 ml-8 mt-2 font-semibold">STOCKIFY</span>
+              </button>                      
+            </li>
+
+            {
+              navLinks.map((item, index)=>{
+                return (
+                  <li key={index}>
+                    <button onClick={()=>navigate(item.path)} className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-700 hover:backdrop-brightness-125 group w-full">
+                      <div className="flex-shrink-0 w-5 h-5 text-gray-300 transition duration-75" >
+                        <Icon icon={item.icon} width={22}/>
+                      </div>
+                      <div className='text-left ml-4'>
+                        <span className="flex-1 text-gray-300 ms-3 whitespace-nowrap">{item.title}</span>
+                      </div>
+                    </button>
+                  </li>
+                )
+              })
+            }
+          </ul>
+        </div>
       </aside>
     </>
   )
