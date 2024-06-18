@@ -36,7 +36,7 @@ const Customers = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className=' mb-4 text-3xl text-gray-800 font-semibold ml-10'>Customers</h1>
+                    <h1 className=' mb-4 text-3xl text-gray-800 font-semibold'>Customers</h1>
                     <div className='w-full mt-10'>
                         <div className='w-full flex justify-between'>
                             <div>
