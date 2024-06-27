@@ -40,7 +40,7 @@ const Inventory = () => {
                                 </div>                       
                             </div>
                         </div>
-                        <div className='grid lg:grid-cols-7 gap-5 mt-5 w-full md:grid-cols-3 sm:grid-cols-2 grid-cols-1'>
+                        <div className='grid lg:grid-cols-8 gap-5 mt-5 w-full md:grid-cols-3 sm:grid-cols-2 grid-cols-1'>
                             <div className='bg-gray-200 w-full p-4 cursor-pointer rounded hover:bg-gray-300' onClick={()=>addNew()}>
                                 <div className='text-center w-full flex justify-center items-center text-gray-600'>
                                     <Icon icon="icon-park-solid:add" width={150} />
