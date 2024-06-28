@@ -13,6 +13,7 @@ import Payments from '../pages/admin/payments'
 import Users from '../pages/admin/users'
 import Settings from '../pages/admin/settings'
 import EmployeeForm from '../pages/forms/employee/employeeForm'
+import EmployeeEdit from '../pages/forms/employee/employeeEdit'
 
 function Routing() {
   return (
@@ -34,7 +35,7 @@ function Routing() {
             <Route path='/user/users' element={<Users />} />
             <Route path='/user/settings' element={<Settings />} />
 
-            <Route path='/user/employees/edit/:id' element={<EmployeeForm />} />
+            <Route path='/user/employees/edit/:id' element={<EmployeeEdit/>} />
             <Route path='/user/employees/add' element={<EmployeeForm />} />
 
         </Routes>
