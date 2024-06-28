@@ -1,16 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboadrdSideBar from '../../layouts/dashboadrdSideBar'
 import DashItem from '../../components/dashItem';
+import axios from 'axios';
+import { apiConfig } from '../../../apiConfig';
 
 const Dashboard = () => {
     document.title = "Stockify | Dashboard";
 
-    const items = [
-        {name : "Total Customers", count : 20},
-        {name : "Total Supliers", count : 12},
-        {name : "Toatl Items", count : 200},
-        {name : "Total Employees", count : 120}
-    ];
+    const [customers, setCustomers] = useState([]);
+    const [supliers, setSupliers] = useState([]);
+    const [items, setItems] = useState([]);
+    const [employees, setEmployees] = useState([]);
+
+    useEffect(()=>{
+        const getData = async ()=>{
+            await axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
+                setCustomers(result.data);
+            });
+            await axios.get(`${apiConfig.url}/api/supliers/all`).then(result=>{
+                setSupliers(result.data);
+            });
+            await axios.get(`${apiConfig.url}/api/inventory/all`).then(result=>{
+                setItems(result.data);
+            });
+            await axios.get(`${apiConfig.url}/api/employees/all`).then(result=>{
+                setEmployees(result.data);
+            })
+        }
+        getData();
+    },[setCustomers,setEmployees,setItems,setSupliers]);
+
 
   return (
     <>
@@ -20,9 +39,10 @@ const Dashboard = () => {
                 <div className='w-full'>
                     <h1 className='mb-8 text-3xl text-gray-800 font-semibold'>Dashboard</h1>
                     <div className='w-full grid lg:grid-cols-4 grid-cols-1 gap-5'>
-                        {items.map((value, index)=>(
-                            <DashItem key={index} name={value.name} count={value.count}/>
-                        ))}
+                        <DashItem name={"Customers"} count={customers.length}/>
+                        <DashItem name={"Supliers"} count={supliers.length}/>
+                        <DashItem name={"Products"} count={items.length}/>
+                        <DashItem name={"Employees"} count={employees.length}/>                        
                     </div>
                     <div className='w-full mt-10'>
                         <h1>Recent Invoices</h1>
