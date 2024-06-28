@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
+import validator from 'validator';
+import axios from 'axios';
+import { apiConfig } from '../../../../apiConfig';
 
 
 const CustomerForm = () => {
@@ -20,8 +23,60 @@ const CustomerForm = () => {
   const navigate = useNavigate();
 
 
-  const addCustomer = ()=>{
-
+  const addCustomer = async ()=>{
+    if (firstname === "" || lastname === "" || email === "" || city === ""){
+        toast.error('You missed some required fields!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+    }
+    else if (!validator.isEmail(email)){
+        toast.error('Please check email address again!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+    }
+    else{
+      await axios.post(`${apiConfig.url}/api/customers/add`, {
+        firstname : firstname,
+        lastname : lastname,
+        email : email,
+        companyname : companyname,
+        contact : contact,
+        gender : gender,
+        addressline1 : addressline1,
+        addressline2 : addressline2,
+        city : city,
+        postalcode : postalcode
+      }).then(result=>{
+        if (result.status === 200){
+            toast.success('Successfully Created!', {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            setFirstname("");setLastname("");setEmail("");setCompanyname("");setContact("");setGender("");setAddressline1("");setAddressline2("");setCity("");
+            setPostalcode("");
+        }
+      })
+    }
   }
 
   return (
