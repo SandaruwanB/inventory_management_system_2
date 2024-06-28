@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 import { Button } from 'primereact/button';
+import { ToastContainer, toast } from 'react-toastify';
 import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
 import { apiConfig } from '../../../apiConfig';
 import { Icon } from '@iconify/react';
@@ -33,6 +34,16 @@ const Employees = () => {
                 await axios.delete(`${apiConfig.url}/api/employees/delete/${id}`).then(()=>{
                     const remainingEmployees = employees.filter((result)=>result.id !== id);
                     setEmployees(remainingEmployees);
+                    toast.info('Successfully Removed!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
                 });
             },
             reject : ()=>{},
@@ -104,6 +115,7 @@ const Employees = () => {
                 </div>
             </div>
         </div>
+        <ToastContainer />
     </>
   )
 }
