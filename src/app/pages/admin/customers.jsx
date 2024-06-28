@@ -1,35 +1,73 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
 import { Icon } from '@iconify/react';
+import axios from 'axios';
+import { apiConfig } from '../../../apiConfig';
+import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Customers = () => {
     document.title = "Stockify | Customers";
 
+    const [customers, setCustomers] = useState([]);
+    const [popupvisibility, setPoupvisibility] = useState(false);
 
-    const customers = [
-        {
-            "name": "Alexandra Johnson",
-            "address": "999 Willow Dr, Anywhere City",
-            "email": "alexandrajohnson@example.com",
-            "contact": "456-789-0123",
-            "image": "/assets/images/defaultUser.png"
-        },
-        {
-            "name": "Christopher Lee",
-            "address": "777 Birch Ln, Another Town",
-            "email": "christopherlee@example.com",
-            "contact": "789-012-3456",
-            "image": "/assets/images/defaultUser.png"
-        }
-    ]
+    useEffect(()=>{
+        axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
+            setCustomers(result.data); 
+        }); 
+    },[])
 
     const editCustomer = (id)=>{
         console.log("Edit clicked" + id);
     }
 
     const removeCustomer = (id)=>{
-        console.log("Delete clicked" + id);
+        setPoupvisibility(true);
+        confirmDialog({
+            message : 'Are you sure you want to remove this customer?',
+            header : 'Confirmation',
+            icon : 'pi pi-exclamation-triangle',
+            accept : ()=>deleteCustomer(id),
+            reject : ()=>{},
+            rejectClassName : 'mr-2 bg-transparent',
+            acceptClassName : 'bg-red-600 text-white px-3 py-1 hover:bg-red-700'
+        });
     }
+
+    const deleteCustomer = async (id)=>{
+        setPoupvisibility(false);
+
+        await axios.delete(`${apiConfig.url}/api/customers/delete/${id}`).then((result)=>{
+            if (result.status === 200){
+                toast.info('Successfully Removed!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                const remainingCustomers = customers.filter((result)=>result.id !== id);
+                setCustomers(remainingCustomers); 
+            }
+        }).catch(err=>{
+            toast.info('Cannot remove, This customer related to other transactions.!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        });
+    }
+
+
   return (
     <>
         <DashboadrdSideBar />
@@ -55,6 +93,7 @@ const Customers = () => {
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Name</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Email Address</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Contact</th>
+                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Company Name</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Location</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Actions</th>
                                 </tr>
@@ -66,13 +105,15 @@ const Customers = () => {
                                         return (
                                             <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                 <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.name}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.firstname + " " + value.lastname}</td>
                                                 <td className='p-3 text-sm text-gray-700'>{value.email}</td>
                                                 <td className='p-3 text-sm text-gray-700'>{value.contact}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.address}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.companyname}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.city}</td>
                                                 <td className='p-3 text-sm text-gray-700'>
-                                                    <button className='hover:text-green-500' onClick={()=>editCustomer(index)}><Icon icon="basil:edit-solid" width={26} /></button>
-                                                    <button className='ml-4 hover:text-red-500' onClick={()=>removeCustomer(index)}><Icon icon="material-symbols-light:delete"  width={28}/></button>
+                                                    <button className='hover:text-green-500' onClick={()=>editCustomer(value.id)}><Icon icon="basil:edit-solid" width={26} /></button>
+                                                    <button className='ml-4 hover:text-red-500' onClick={()=>removeCustomer(value.id)}><Icon icon="material-symbols-light:delete"  width={28}/></button>
+                                                    <ConfirmDialog visible={popupvisibility} />
                                                 </td>
                                             </tr>
                                         )
@@ -90,6 +131,7 @@ const Customers = () => {
                 </div>
             </div>
         </div>
+        <ToastContainer />
     </>
   )
 }
