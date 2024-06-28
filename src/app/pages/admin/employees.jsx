@@ -1,60 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
+import { Button } from 'primereact/button';
 import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
+import { apiConfig } from '../../../apiConfig';
 import { Icon } from '@iconify/react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Employees = () => {
 
     document.title = "Stockify | Employees";
+    const [employees, setEmployees] = useState([]);
 
-    const employees = [
-        {
-            "name" : "kasun Kumara",
-            "job" : "manager",
-            "address" : "Galewela",
-            "email" : "test@gmail.com",
-            "contact" : "07611562233",
-            "image" : "/assets/images/defaultUser.png"
-        },
-        {
-            "name": "John Doe",
-            "job" : "salesman",
-            "address": "123 Main St, Anytown",
-            "email": "johndoe@example.com",
-            "contact": "123-456-7890",
-            "image": "/assets/images/defaultUser.png"
-        },
-        {
-            "name": "Jane Smith",
-            "job" : "worker",
-            "address": "456 Elm St, Anycity",
-            "email": "janesmith@example.com",
-            "contact": "987-654-3210",
-            "image": "/assets/images/defaultUser.png"
-        },
-        {
-            "name": "Emily Brown",
-            "job" : "salesman",
-            "address": "321 Pine Rd, Anotherplace",
-            "email": "emilybrown@example.com",
-            "contact": "234-567-8901",
-            "image": "/assets/images/defaultUser.png"
-        },
-        {
-            "name": "Sarah Taylor",
-            "job" : "manager",
-            "address": "888 Maple Ave, Somewhereville",
-            "email": "sarahtaylor@example.com",
-            "contact": "345-678-9012",
-            "image": "/assets/images/defaultUser.png"
-        }
-    ]
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        axios.get(`${apiConfig.url}/api/employees/all`, {responseType : 'json'}).then(data=>{
+            setEmployees(data.data);
+        });
+    },[]);
 
     const editEmployee = (id)=>{
-        console.log("Edit clicked" + id);
+        navigate(`/user/employees/edit/${id}`, {state : {id : id}});
     }
 
     const removeEmployee = (id)=>{
-        console.log("Delete clicked" + id);
+        confirmDialog({
+            message : 'Are you sure you want to remove this employee?',
+            header : 'Confirmation',
+            icon : 'pi pi-exclamation-triangle',
+            accept : async ()=>{
+                await axios.delete(`${apiConfig.url}/api/employees/delete/${id}`).then(()=>{
+                    const remainingEmployees = employees.filter((result)=>result.id !== id);
+                    setEmployees(remainingEmployees);
+                });
+            },
+            reject : ()=>{},
+            rejectClassName : 'mr-2 bg-transparent',
+            acceptClassName : 'bg-red-600 text-white px-3 py-1 hover:bg-red-700'
+        });
     }
 
     return (
@@ -83,7 +67,7 @@ const Employees = () => {
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Job Position</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Email Address</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Contact</th>
-                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Address</th>
+                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Location</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Actions</th>
                                 </tr>
                             </thead>
@@ -94,21 +78,22 @@ const Employees = () => {
                                         return (
                                             <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                 <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.name}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.job}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.firstname + " " + value.lastname}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.jobtitle}</td>
                                                 <td className='p-3 text-sm text-gray-700'>{value.email}</td>
                                                 <td className='p-3 text-sm text-gray-700'>{value.contact}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.address}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.city}</td>
                                                 <td className='p-3 text-sm text-gray-700'>
-                                                    <button className='hover:text-green-500' onClick={()=>editEmployee(index)}><Icon icon="basil:edit-solid" width={26} /></button>
-                                                    <button className='ml-4 hover:text-red-500' onClick={()=>removeEmployee(index)}><Icon icon="material-symbols-light:delete"  width={28}/></button>
+                                                    <Button className='hover:text-green-500' onClick={()=>editEmployee(value.id)}><Icon icon="basil:edit-solid" width={26} /></Button>
+                                                    <Button className='ml-4 hover:text-red-500' onClick={()=>removeEmployee(value.id)}><Icon icon="material-symbols-light:delete"  width={28}/></Button>
+                                                    <ConfirmDialog />
                                                 </td>
                                             </tr>
                                         )
                                     })
                                 :
                                 <tr className='bg-white'>
-                                    <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={6}>
+                                    <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={7}>
                                         <p>No emplooyes found.</p>
                                     </td>
                                 </tr>
