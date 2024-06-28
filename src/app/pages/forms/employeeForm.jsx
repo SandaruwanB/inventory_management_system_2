@@ -34,7 +34,7 @@ const EmployeeForm = () => {
                 theme: "light",
             });
         }
-        else if(validator.isEmail(email)){
+        else if(!validator.isEmail(email)){
             toast.error('Please check email address again!', {
                 position: "top-right",
                 autoClose: 5000,
