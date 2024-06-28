@@ -12,7 +12,7 @@ import Invoicing from '../pages/admin/invoicing'
 import Payments from '../pages/admin/payments'
 import Users from '../pages/admin/users'
 import Settings from '../pages/admin/settings'
-import EmployeeForm from '../pages/forms/employeeForm'
+import EmployeeForm from '../pages/forms/employee/employeeForm'
 
 function Routing() {
   return (

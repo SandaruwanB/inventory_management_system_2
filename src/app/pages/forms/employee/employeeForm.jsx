@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
+import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { apiConfig } from '../../../apiConfig';
 import axios from 'axios';
 import validator from 'validator';
+import { apiConfig } from '../../../../apiConfig';
 
 
 const EmployeeForm = () => {
@@ -83,7 +83,7 @@ const EmployeeForm = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'>Employees / Add</h1>
+                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/employees")}>Employees</span> / Add</h1>
                     <h1 className='font-semibold text-gray-700 mt-10'>Add new employee</h1>
                     <div className='w-full bg-gray-400 h-[2px]'></div>
                     <div className='w-full mt-10'>
