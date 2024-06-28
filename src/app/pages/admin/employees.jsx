@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 import { Button } from 'primereact/button';
+import { ToastContainer, toast } from 'react-toastify';
 import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
 import { apiConfig } from '../../../apiConfig';
 import { Icon } from '@iconify/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+
 const Employees = () => {
 
     document.title = "Stockify | Employees";
     const [employees, setEmployees] = useState([]);
+    const [popupvisibility, setPopupvisibility] = useState(false);
 
     const navigate = useNavigate();
 
@@ -25,19 +28,33 @@ const Employees = () => {
     }
 
     const removeEmployee = (id)=>{
+        setPopupvisibility(true);
         confirmDialog({
             message : 'Are you sure you want to remove this employee?',
             header : 'Confirmation',
             icon : 'pi pi-exclamation-triangle',
-            accept : async ()=>{
-                await axios.delete(`${apiConfig.url}/api/employees/delete/${id}`).then(()=>{
-                    const remainingEmployees = employees.filter((result)=>result.id !== id);
-                    setEmployees(remainingEmployees);
-                });
-            },
+            accept : ()=>deleteEmployee(id),
             reject : ()=>{},
             rejectClassName : 'mr-2 bg-transparent',
             acceptClassName : 'bg-red-600 text-white px-3 py-1 hover:bg-red-700'
+        });
+    }
+
+    const deleteEmployee = async (id)=>{
+        setPopupvisibility(false);
+        await axios.delete(`${apiConfig.url}/api/employees/delete/${id}`).then(()=>{                    
+            toast.info('Successfully Removed!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            const remainingEmployees = employees.filter((result)=>result.id !== id);
+            setEmployees(remainingEmployees); 
         });
     }
 
@@ -51,7 +68,7 @@ const Employees = () => {
                     <div className='w-full mt-10'>
                         <div className='w-full flex justify-between'>
                             <div>
-                                <button className=' bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
+                                <button onClick={()=>navigate('/user/employees/add')} className=' bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
                             </div>
                             <div className='flex'>
                                 <div className=' text-gray-800 '>
@@ -86,7 +103,7 @@ const Employees = () => {
                                                 <td className='p-3 text-sm text-gray-700'>
                                                     <Button className='hover:text-green-500' onClick={()=>editEmployee(value.id)}><Icon icon="basil:edit-solid" width={26} /></Button>
                                                     <Button className='ml-4 hover:text-red-500' onClick={()=>removeEmployee(value.id)}><Icon icon="material-symbols-light:delete"  width={28}/></Button>
-                                                    <ConfirmDialog />
+                                                    <ConfirmDialog visible={popupvisibility} />
                                                 </td>
                                             </tr>
                                         )
@@ -104,6 +121,7 @@ const Employees = () => {
                 </div>
             </div>
         </div>
+        <ToastContainer />
     </>
   )
 }
