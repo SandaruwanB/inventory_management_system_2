@@ -35,6 +35,7 @@ function Routing() {
             <Route path='/user/settings' element={<Settings />} />
 
             <Route path='/user/employees/edit/:id' element={<EmployeeForm />} />
+            <Route path='/user/employees/add' element={<EmployeeForm />} />
 
         </Routes>
     </BrowserRouter>

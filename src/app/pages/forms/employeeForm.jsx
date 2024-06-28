@@ -1,11 +1,192 @@
-import React from 'react'
+import React, { useState } from 'react';
+import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { apiConfig } from '../../../apiConfig';
+import axios from 'axios';
+import validator from 'validator';
+
 
 const EmployeeForm = () => {
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [email, setEmail] = useState("");
+    const [jobtitle, setJobtitle] = useState("");
+    const [contact, setContact] = useState("");
+    const [addressline1, setAddressline1] = useState("");
+    const [addressline2, setAddressline2] = useState("");
+    const [city, setCity] = useState("");
+    const [postalcode, setPostalcode] = useState("");
+    const [gender, setGender] = useState("");
+    const navigate = useNavigate();
+
+    const addEmployee = ()=>{
+        console.log(lastname);
+        if (firstname === "" || lastname === "" || email === "" || jobtitle === "" || city === ""){
+            toast.error('You missed some required fields!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+        else if(validator.isEmail(email)){
+            toast.error('Please check email address again!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+        else{
+            axios.post(`${apiConfig.url}/api/employees/add`, {
+                email : email,
+                firstname : firstname,
+                lastname : lastname,
+                gender : gender,
+                jobtitle : jobtitle,
+                contact : contact,
+                addressline1 : addressline1,
+                addressline2 : addressline2,
+                city : city,
+                postalcode : postalcode
+            }).then(result=>{
+                if (result.status === 200 ){
+                    toast.success('Successfully Created!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                } 
+            })
+        }
+    }
 
   return (
-    <div>
-        <h1>{}</h1>
-    </div>
+    <>
+        <DashboadrdSideBar />
+        <div className="p-4 sm:ml-64">
+            <div className="p-4">
+                <div className='w-full'>
+                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'>Employees / Add</h1>
+                    <h1 className='font-semibold text-gray-700 mt-10'>Add new employee</h1>
+                    <div className='w-full bg-gray-400 h-[2px]'></div>
+                    <div className='w-full mt-10'>
+                        <div className="w-full">
+                            <div className='grid md:grid-cols-2 grid-cols-1 gap-2'>
+                                <div className='w-full max-w-lg'>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='firstname'>
+                                                First Name <span className='text-red-400 text-xs'>*</span>
+                                            </label>
+                                            <input onChange={(e)=>setFirstname(e.target.value)} name='firstname' id='firstname' className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"  type="text" placeholder="first name"/>
+                                            {/*<p class="text-red-500 text-xs italic">* Please fill out this field.</p>*/}
+                                        </div>
+                                        <div className="w-full md:w-1/2 px-3">
+                                            <label  htmlFor='lastname' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                                Last Name <span className='text-red-400 text-xs'>*</span>
+                                            </label>
+                                            <input onChange={(e)=>setLastname(e.target.value)} name='lastname' id='lastname' className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="last name"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='email' >
+                                                Email <span className='text-red-400 text-xs'>*</span>
+                                            </label>
+                                            <input name='email' id='email' onChange={(e)=>setEmail(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="email" placeholder="example@gmail.com" autoComplete='1'/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='job' >
+                                                Job title <span className='text-red-400 text-xs'>*</span>
+                                            </label>
+                                            <input name='job' id='job' onChange={(e)=>setJobtitle(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="manager"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='contact'>
+                                                Contact
+                                            </label>
+                                            <input name='contact' id='contact' onChange={(e)=>setContact(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="+947512314412"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='w-full max-w-lg'>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='gender'>
+                                                Gender
+                                            </label>
+                                            <select id='gender' name='gender' onChange={(e)=>setGender(e.target.value)} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                                                <option value="none">None</option>
+                                                <option value="male">Male</option>
+                                                <option value="female" >Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='al1'>
+                                                Address line 1
+                                            </label>
+                                            <input name='al1' id='al1' onChange={(e)=>setAddressline1(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="No.85/C"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='al2'>
+                                                Address Line 2
+                                            </label>
+                                            <input name='al2' id='al2' onChange={(e)=>setAddressline2(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="Colombo"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"  htmlFor='city'>
+                                                City <span className='text-red-400 text-xs'>*</span>
+                                            </label>
+                                            <input name='city' id='city' onChange={(e)=>setCity(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="colombo"/>
+                                            {/*<p class="text-red-500 text-xs italic">* Please fill out this field.</p>*/}
+                                        </div>
+                                        <div className="w-full md:w-1/2 px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='zip'>
+                                                Zip
+                                            </label>
+                                            <input onChange={(e)=>setPostalcode(e.target.value)} name='zip' id='zip' className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="21000"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                            <button className='bg-blue-800 px-4 py-2 text-white rounded' onClick={()=>addEmployee()}>Save</button>
+                                            <button className='bg-gray-800 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/employees')}>Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                       
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ToastContainer />
+    </>
   )
 }
 
