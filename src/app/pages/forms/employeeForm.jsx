@@ -70,6 +70,8 @@ const EmployeeForm = () => {
                         progress: undefined,
                         theme: "light",
                     });
+                    setEmail("");setFirstname("");setLastname("");setGender("");setJobtitle("");setContact("");setAddressline1("");setAddressline2("");setCity("");
+                    setPostalcode("");
                 } 
             })
         }
@@ -93,14 +95,14 @@ const EmployeeForm = () => {
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='firstname'>
                                                 First Name <span className='text-red-400 text-xs'>*</span>
                                             </label>
-                                            <input onChange={(e)=>setFirstname(e.target.value)} name='firstname' id='firstname' className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"  type="text" placeholder="first name"/>
+                                            <input onChange={(e)=>setFirstname(e.target.value)} value={firstname} name='firstname' id='firstname' className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"  type="text" placeholder="first name"/>
                                             {/*<p class="text-red-500 text-xs italic">* Please fill out this field.</p>*/}
                                         </div>
                                         <div className="w-full md:w-1/2 px-3">
                                             <label  htmlFor='lastname' className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                                                 Last Name <span className='text-red-400 text-xs'>*</span>
                                             </label>
-                                            <input onChange={(e)=>setLastname(e.target.value)} name='lastname' id='lastname' className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="last name"/>
+                                            <input onChange={(e)=>setLastname(e.target.value)} value={lastname} name='lastname' id='lastname' className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="last name"/>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
@@ -108,7 +110,7 @@ const EmployeeForm = () => {
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='email' >
                                                 Email <span className='text-red-400 text-xs'>*</span>
                                             </label>
-                                            <input name='email' id='email' onChange={(e)=>setEmail(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="email" placeholder="example@gmail.com" autoComplete='1'/>
+                                            <input name='email' id='email' onChange={(e)=>setEmail(e.target.value)} value={email} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="email" placeholder="example@gmail.com" autoComplete='1'/>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
@@ -116,7 +118,7 @@ const EmployeeForm = () => {
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='job' >
                                                 Job title <span className='text-red-400 text-xs'>*</span>
                                             </label>
-                                            <input name='job' id='job' onChange={(e)=>setJobtitle(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="manager"/>
+                                            <input name='job' id='job' onChange={(e)=>setJobtitle(e.target.value)} value={jobtitle} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="manager"/>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
@@ -124,7 +126,7 @@ const EmployeeForm = () => {
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='contact'>
                                                 Contact
                                             </label>
-                                            <input name='contact' id='contact' onChange={(e)=>setContact(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="+947512314412"/>
+                                            <input name='contact' id='contact' onChange={(e)=>setContact(e.target.value)} value={contact} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="+947512314412"/>
                                         </div>
                                     </div>
                                 </div>
@@ -134,7 +136,7 @@ const EmployeeForm = () => {
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='gender'>
                                                 Gender
                                             </label>
-                                            <select id='gender' name='gender' onChange={(e)=>setGender(e.target.value)} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                                            <select id='gender' name='gender' onChange={(e)=>setGender(e.target.value)} value={gender} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                                                 <option value="none">None</option>
                                                 <option value="male">Male</option>
                                                 <option value="female" >Female</option>
@@ -146,7 +148,7 @@ const EmployeeForm = () => {
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='al1'>
                                                 Address line 1
                                             </label>
-                                            <input name='al1' id='al1' onChange={(e)=>setAddressline1(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="No.85/C"/>
+                                            <input name='al1' id='al1' onChange={(e)=>setAddressline1(e.target.value)} value={addressline1} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="No.85/C"/>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
@@ -154,7 +156,7 @@ const EmployeeForm = () => {
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='al2'>
                                                 Address Line 2
                                             </label>
-                                            <input name='al2' id='al2' onChange={(e)=>setAddressline2(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="Colombo"/>
+                                            <input name='al2' id='al2' onChange={(e)=>setAddressline2(e.target.value)} value={addressline2} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="Colombo"/>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
@@ -162,14 +164,14 @@ const EmployeeForm = () => {
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"  htmlFor='city'>
                                                 City <span className='text-red-400 text-xs'>*</span>
                                             </label>
-                                            <input name='city' id='city' onChange={(e)=>setCity(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="colombo"/>
+                                            <input name='city' id='city' onChange={(e)=>setCity(e.target.value)} value={city} className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="colombo"/>
                                             {/*<p class="text-red-500 text-xs italic">* Please fill out this field.</p>*/}
                                         </div>
                                         <div className="w-full md:w-1/2 px-3">
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='zip'>
                                                 Zip
                                             </label>
-                                            <input onChange={(e)=>setPostalcode(e.target.value)} name='zip' id='zip' className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="21000"/>
+                                            <input onChange={(e)=>setPostalcode(e.target.value)} value={postalcode} name='zip' id='zip' className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="21000"/>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
