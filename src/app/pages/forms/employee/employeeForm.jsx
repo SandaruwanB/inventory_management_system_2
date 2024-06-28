@@ -18,11 +18,12 @@ const EmployeeForm = () => {
     const [city, setCity] = useState("");
     const [postalcode, setPostalcode] = useState("");
     const [gender, setGender] = useState("");
+    const [epf, setEpf] = useState("");
     const navigate = useNavigate();
 
     const addEmployee = ()=>{
         console.log(lastname);
-        if (firstname === "" || lastname === "" || email === "" || jobtitle === "" || city === ""){
+        if (firstname === "" || lastname === "" || email === "" || jobtitle === "" || city === "" || epf === ""){
             toast.error('You missed some required fields!', {
                 position: "top-right",
                 autoClose: 5000,
@@ -57,7 +58,8 @@ const EmployeeForm = () => {
                 addressline1 : addressline1,
                 addressline2 : addressline2,
                 city : city,
-                postalcode : postalcode
+                postalcode : postalcode,
+                epfnumber : epf
             }).then(result=>{
                 if (result.status === 200 ){
                     toast.success('Successfully Created!', {
@@ -71,7 +73,7 @@ const EmployeeForm = () => {
                         theme: "light",
                     });
                     setEmail("");setFirstname("");setLastname("");setGender("");setJobtitle("");setContact("");setAddressline1("");setAddressline2("");setCity("");
-                    setPostalcode("");
+                    setPostalcode("");setEpf("");
                 } 
             })
         }
@@ -133,6 +135,14 @@ const EmployeeForm = () => {
                                 <div className='w-full max-w-lg'>
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='epf'>
+                                                EPf number
+                                            </label>
+                                            <input name='epf' id='epf' onChange={(e)=>setEpf(e.target.value)} value={epf} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="GK123"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='gender'>
                                                 Gender
                                             </label>
@@ -174,10 +184,10 @@ const EmployeeForm = () => {
                                             <input onChange={(e)=>setPostalcode(e.target.value)} value={postalcode} name='zip' id='zip' className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="21000"/>
                                         </div>
                                     </div>
-                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                    <div className="flex flex-wrap w-full -mx-3 mb-6">
                                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                            <button className='bg-blue-800 px-4 py-2 text-white rounded' onClick={()=>addEmployee()}>Save</button>
-                                            <button className='bg-gray-800 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/employees')}>Cancel</button>
+                                            <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>addEmployee()}>Save</button>
+                                            <button className='bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/employees')}>Cancel</button>
                                         </div>
                                     </div>
                                 </div>
