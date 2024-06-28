@@ -12,6 +12,7 @@ import Invoicing from '../pages/admin/invoicing'
 import Payments from '../pages/admin/payments'
 import Users from '../pages/admin/users'
 import Settings from '../pages/admin/settings'
+import EmployeeForm from '../pages/forms/employeeForm'
 
 function Routing() {
   return (
@@ -32,6 +33,9 @@ function Routing() {
             <Route path='/user/payments' element={<Payments />} />
             <Route path='/user/users' element={<Users />} />
             <Route path='/user/settings' element={<Settings />} />
+
+            <Route path='/user/employees/edit/:id' element={<EmployeeForm />} />
+
         </Routes>
     </BrowserRouter>
   )
