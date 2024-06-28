@@ -1,33 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
 import { Icon } from '@iconify/react';
+import axios from 'axios';
+import { apiConfig } from '../../../apiConfig';
 
 const Supliers = () => {
     document.title = "Stockify | Supliers";
+    const [supliers, setSupliers] = useState([]);
 
-    const employees = [
-        {
-            "name": "Jessica Miller",
-            "address": "666 Oak St, Anyplace",
-            "email": "jessicamiller@example.com",
-            "contact": "012-345-6789",
-            "image": "/assets/images/defaultUser.png"
-        },
-        {
-            "name": "Ryan Davis",
-            "address": "333 Pine Ave, Somecity",
-            "email": "ryandavis@example.com",
-            "contact": "901-234-5678",
-            "image": "/assets/images/defaultUser.png"
-        },
-        {
-            "name": "Melissa Martinez",
-            "address": "222 Elm Rd, Elsewhere",
-            "email": "melissamartinez@example.com",
-            "contact": "678-901-2345",
-            "image": "/assets/images/defaultUser.png"
-        }
-    ]
+    useEffect(()=>{
+        axios.get(`${apiConfig.url}/api/supliers/all`).then(result=>{
+            setSupliers(result.data);
+        });
+    }, [])
 
     const editSuplier = (id)=>{
         console.log("Edit clicked" + id);
@@ -51,7 +36,7 @@ const Supliers = () => {
                             </div>
                             <div className='flex'>
                                 <div className=' text-gray-800 '>
-                                    showing results <span className='text-blue-950 font-bold'>{employees.length}</span>
+                                    showing results <span className='text-blue-950 font-bold'>{supliers.length}</span>
                                 </div>                       
                             </div>
                         </div>
@@ -62,21 +47,23 @@ const Supliers = () => {
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Name</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Email Address</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Contact Number</th>
-                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Address</th>
+                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Company Name</th>
+                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Location</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Actions</th>
                                 </tr>
                             </thead>
                             <tbody className=' divide-y divide-gray-200'>
                                 {
-                                    employees.length > 0 ?
-                                    employees.map((value, index)=>{
+                                    supliers.length > 0 ?
+                                    supliers.map((value, index)=>{
                                         return (
                                             <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                 <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.name}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.firstname + " " + value.lastname}</td>
                                                 <td className='p-3 text-sm text-gray-700'>{value.email}</td>
                                                 <td className='p-3 text-sm text-gray-700'>{value.contact}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.address}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.companyname}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.city}</td>
                                                 <td className='p-3 text-sm text-gray-700'>
                                                     <button className='hover:text-green-500' onClick={()=>editSuplier(index)}><Icon icon="basil:edit-solid" width={26} /></button>
                                                     <button className='ml-4 hover:text-red-500' onClick={()=>removeSupllier(index)}><Icon icon="material-symbols-light:delete"  width={28}/></button>
@@ -86,7 +73,7 @@ const Supliers = () => {
                                     })
                                 :
                                 <tr className='bg-white'>
-                                    <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={6}>
+                                    <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={7}>
                                         <p>No supliers found.</p>
                                     </td>
                                 </tr>
