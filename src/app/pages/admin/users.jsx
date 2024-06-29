@@ -1,34 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
+import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
+import { ToastContainer, toast } from 'react-toastify';
 import { Icon } from '@iconify/react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { apiConfig } from '../../../apiConfig';
 
 const Users = () => {
     document.title = "Stockify | Users";
 
-    const users = [
-        {
-            "name" : "kasun Kumara",
-            "address" : "Galewela",
-            "email" : "test@gmail.com",
-            "contact" : "07611562233",
-            "image" : "/assets/images/defaultUser.png"
-        },
-        {
-            "name": "John Doe",
-            "address": "123 Main St, Anytown",
-            "email": "johndoe@example.com",
-            "contact": "123-456-7890",
-            "image": "/assets/images/defaultUser.png"
-        }
-    ];
+    const [users, setUsers] = useState([]);
+    const [popupvisibility, setPopupvisibility] = useState(false);
+    const navigate = useNavigate();
 
-    const editEmployee = (id)=>{
+    useEffect(()=>{
+        axios.get(`${apiConfig.url}/api/users/all`).then(result=>{
+            setUsers(result.data);
+        })
+    },[])
+
+    const editUser = (id)=>{
         console.log("Edit clicked" + id);
     }
 
-    const removeEmployee = (id)=>{
-        console.log("Delete clicked" + id);
+    const removeUser = (id)=>{
+        setPopupvisibility(true);
+        confirmDialog({
+            message : 'Are you sure you want to remove this user?',
+            header : 'Confirmation',
+            icon : 'pi pi-exclamation-triangle',
+            accept : ()=>deleteUser(id),
+            reject : ()=>{},
+            rejectClassName : 'mr-2 bg-transparent',
+            acceptClassName : 'bg-red-600 text-white px-3 py-1 hover:bg-red-700'
+        });
     }
+
+    const deleteUser = async (id)=>{
+        setPopupvisibility(false); 
+        await axios.delete(`${apiConfig.url}/api/users/delete/${id}`).then(()=>{
+            toast.info('Successfully Removed!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            const remainingUsers = users.filter((result)=>result.id !== id);
+            setUsers(remainingUsers); 
+        })
+    }   
 
     return (
     <>
@@ -40,7 +65,7 @@ const Users = () => {
                     <div className='w-full mt-10'>
                         <div className='w-full flex justify-between'>
                             <div>
-                                <button className=' bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
+                                <button onClick={()=>navigate('/user/users/add')} className=' bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
                             </div>
                             <div className='flex'>
                                 <div className=' text-gray-800 '>
@@ -52,10 +77,12 @@ const Users = () => {
                             <thead className='bg-gray-200 border-b-2 border-gray-400'>
                                 <tr>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left w-10'>No.</th>
-                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Name</th>
+                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>User Name</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Email Address</th>
-                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Contact</th>
+                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Name</th>
+                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Phone</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Address</th>
+                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Role</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Actions</th>
                                 </tr>
                             </thead>
@@ -66,20 +93,23 @@ const Users = () => {
                                         return (
                                             <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                 <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.name}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.username}</td>
                                                 <td className='p-3 text-sm text-gray-700'>{value.email}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.contact}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.firstname + " " + value.lastname}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.phone}</td>
                                                 <td className='p-3 text-sm text-gray-700'>{value.address}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.role}</td>
                                                 <td className='p-3 text-sm text-gray-700'>
-                                                    <button className='hover:text-green-500' onClick={()=>editEmployee(index)}><Icon icon="basil:edit-solid" width={26} /></button>
-                                                    <button className='ml-4 hover:text-red-500' onClick={()=>removeEmployee(index)}><Icon icon="material-symbols-light:delete"  width={28}/></button>
+                                                    <button className='hover:text-green-500' onClick={()=>editUser(value.id)}><Icon icon="basil:edit-solid" width={26} /></button>
+                                                    <button className='ml-4 hover:text-red-500' onClick={()=>removeUser(value.id)}><Icon icon="material-symbols-light:delete"  width={28}/></button>
+                                                    <ConfirmDialog visible={popupvisibility} />
                                                 </td>
                                             </tr>
                                         )
                                     })
                                 :
                                 <tr className='bg-white'>
-                                    <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={6}>
+                                    <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={8}>
                                         <p>No users found.</p>
                                     </td>
                                 </tr>
@@ -90,6 +120,7 @@ const Users = () => {
                 </div>
             </div>
         </div>
+        <ToastContainer />
     </>
   )
 }

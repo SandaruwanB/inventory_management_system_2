@@ -1,27 +1,79 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
+import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 import { Icon } from '@iconify/react';
-import Card from '../../components/card';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import { apiConfig } from '../../../apiConfig';
+import { useNavigate } from 'react-router-dom';
 
 const Inventory = () => {
     document.title = "Stockify | Inventory";
+    const [inventory, setInventory] = useState([]);
+    const [popupvisibility, setPopupvisibility] = useState(false);
+    const navigate = useNavigate();
 
-    const inventory = [
-        {
-            "name" : "Paper Bundle 12",
-            "image" : "/assets/images/productSample.png",
-            "qty" : 10,
-        },
-        {
-            "name" : "A4 100 bundle",
-            "image" : "/assets/images/productSample.png",
-            "qty" : 0,
-        }
-    ];
+    useEffect(()=>{
+        axios.get(`${apiConfig.url}/api/inventory/all`).then(result=>{
+            setInventory(result.data);
+        });
+    },[])
+
 
     const addNew = ()=>{
-        console.log("Add new clicked");
+        navigate("/user/inventory/add");
     }
+
+    const editProduct = (id)=>{
+
+    }
+
+    const removeProduct = (id)=>{
+        setPopupvisibility(true);
+        confirmDialog({
+            message : 'Are you sure you want to remove this product?',
+            header : 'Confirmation',
+            icon : 'pi pi-exclamation-triangle',
+            accept : ()=>deleteProduct(id),
+            reject : ()=>{},
+            rejectClassName : 'mr-2 bg-transparent',
+            acceptClassName : 'bg-red-600 text-white px-3 py-1 hover:bg-red-700'
+        });
+    }
+
+    const deleteProduct = async (id)=>{
+        setPopupvisibility(false);
+        await axios.delete(`${apiConfig.url}/api/inventory/delete/${id}`).then((result)=>{
+            if (result.status === 200){
+                toast.info('Successfully Removed!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                const remainingProducts = inventory.filter((result)=>result.id !== id);
+                setInventory(remainingProducts);
+            }
+        }).catch(err=>{
+            toast.info('Cannot remove, This product related to other transactions.!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        });
+
+    }
+
+
 
     return (
     <>
@@ -52,7 +104,22 @@ const Inventory = () => {
                             {
                                 inventory.map((value, index)=>{
                                     return (
-                                        <Card image={value.image} name={value.name} qty={value.qty} key={index} index={index} />
+                                        <div className='bg-gray-200 w-full p-4 cursor-pointer rounded hover:bg-gray-300'>
+                                            <div className='text-center w-full flex justify-center items-center text-gray-600'>
+                                                <img src={value.image ? value.image : "/assets/images/productSample.png"} alt="pro_image" className='rounded-md' />
+                                            </div>
+                                            <div className='flex justify-between font-semibold mt-4 text-gray-800'>
+                                                <div>{value.prodctname}</div>                                                
+                                            </div>
+                                            <div className='flex justify-between text-sm mb-3'>
+                                                <div className={`${value.onhandqty > 0 ? 'text-green-700' : 'text-red-700'}`}>{value.onhandqty + " " + value.unitofmesure}</div>
+                                            </div>                                            
+                                            <div className='flex justify-between mt-3 text-white'>
+                                                <button className='bg-gray-600 p-1 rounded-md hover:bg-gray-800' onClick={()=>editProduct(value.id)}><Icon icon="basil:edit-solid" width={24} /></button>
+                                                <button className='bg-red-600 p-1 rounded-md hover:bg-red-800' onClick={()=>removeProduct(value.id)}><Icon icon="material-symbols-light:delete" width={26}/></button>
+                                                <ConfirmDialog visible={popupvisibility} />
+                                            </div>
+                                        </div>
                                     );
                                 })
                             }
@@ -61,6 +128,7 @@ const Inventory = () => {
                 </div>
             </div>
         </div>
+        <ToastContainer />
     </>
     )
 }

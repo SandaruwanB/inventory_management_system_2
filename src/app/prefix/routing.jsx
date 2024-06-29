@@ -15,6 +15,9 @@ import Settings from '../pages/admin/settings'
 import EmployeeForm from '../pages/forms/employee/employeeForm'
 import EmployeeEdit from '../pages/forms/employee/employeeEdit'
 import AddSuplier from '../pages/forms/suplier/addSuplier'
+import CustomerForm from '../pages/forms/customer/customerForm'
+import AddProduct from '../pages/forms/inventory/addProduct'
+import AddUser from '../pages/forms/users/addUser'
 
 function Routing() {
   return (
@@ -40,6 +43,12 @@ function Routing() {
             <Route path='/user/employees/add' element={<EmployeeForm />} />
 
             <Route path='/user/supliers/add' element={<AddSuplier />} />
+
+            <Route path='/user/customers/add' element={<CustomerForm />} />
+
+            <Route path='/user/inventory/add' element={<AddProduct />}/>
+
+            <Route path='/user/users/add' element={<AddUser />} />
 
         </Routes>
     </BrowserRouter>
