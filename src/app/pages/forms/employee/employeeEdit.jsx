@@ -41,33 +41,58 @@ const EmployeeEdit = () => {
   },[id]);
 
   const updateEmployee = ()=>{
-    if (firstname === "" || lastname === "" || email === "" || jobtitle === "" || city === "" || epf === ""){
-      toast.error('You missed some required fields!', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-      });
-  }
-  else if(!validator.isEmail(email)){
-      toast.error('Please check email address again!', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-      });
-  }
-  else{
-     
-    }
+      if (firstname === "" || lastname === "" || email === "" || jobtitle === "" || city === "" || epf === ""){
+        toast.error('You missed some required fields!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+      }
+      else if(!validator.isEmail(email)){
+          toast.error('Please check email address again!', {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+          });
+      }
+      else{
+          axios.put(`${apiConfig.url}/api/employees/update/${id}`,{
+                email : email,
+                firstname : firstname,
+                lastname : lastname,
+                gender : gender,
+                jobtitle : jobtitle,
+                contact : contact,
+                addressline1 : addressline1,
+                addressline2 : addressline2,
+                city : city,
+                postalcode : postalcode,
+                epfnumber : epf
+          }).then(result=>{
+            if(result.status === 200){
+                  toast.success('Successfully Updated!', {
+                      position: "top-right",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "light",
+                  });
+              }
+          })
+      }
   }
 
   return (
