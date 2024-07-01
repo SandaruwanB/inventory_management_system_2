@@ -21,6 +21,7 @@ import AddUser from '../pages/forms/users/addUser'
 import PaymentsForm from '../pages/forms/payment/paymentsForm'
 import CustomerEditForm from '../pages/forms/customer/customerEditForm'
 import EditProduct from '../pages/forms/inventory/editProduct'
+import EditSuplier from '../pages/forms/suplier/editSuplier'
 
 function Routing() {
   return (
@@ -46,6 +47,7 @@ function Routing() {
             <Route path='/user/employees/edit/:id' element={<EmployeeEdit/>} />
 
             <Route path='/user/supliers/add' element={<AddSuplier />} />
+            <Route path='/user/supliers/edit/:id' element={<EditSuplier />} />
 
             <Route path='/user/customers/add' element={<CustomerForm />} />
             <Route path='/user/customers/edit/:id' element={<CustomerEditForm />}/>
