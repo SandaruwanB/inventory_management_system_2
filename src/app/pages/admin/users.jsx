@@ -22,6 +22,7 @@ const Users = () => {
 
     const editUser = (id)=>{
         console.log("Edit clicked" + id);
+        navigate(`/user/users/edit/${id}`);
     }
 
     const removeUser = (id)=>{
