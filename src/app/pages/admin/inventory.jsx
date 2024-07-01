@@ -25,7 +25,7 @@ const Inventory = () => {
     }
 
     const editProduct = (id)=>{
-
+        navigate(`/user/inventory/edit/${id}`);
     }
 
     const removeProduct = (id)=>{

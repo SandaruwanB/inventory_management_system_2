@@ -20,6 +20,7 @@ import AddProduct from '../pages/forms/inventory/addProduct'
 import AddUser from '../pages/forms/users/addUser'
 import PaymentsForm from '../pages/forms/payment/paymentsForm'
 import CustomerEditForm from '../pages/forms/customer/customerEditForm'
+import EditInventory from '../pages/forms/inventory/editInventory'
 
 function Routing() {
   return (
@@ -43,13 +44,14 @@ function Routing() {
 
             <Route path='/user/employees/add' element={<EmployeeForm />} />
             <Route path='/user/employees/edit/:id' element={<EmployeeEdit/>} />
-            
+
             <Route path='/user/supliers/add' element={<AddSuplier />} />
 
             <Route path='/user/customers/add' element={<CustomerForm />} />
             <Route path='/user/customers/edit/:id' element={<CustomerEditForm />}/>
 
             <Route path='/user/inventory/add' element={<AddProduct />}/>
+            <Route path='/user/inventory/edit/:id' element={<EditInventory />} />
 
             <Route path='/user/users/add' element={<AddUser />} />
 
