@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Inventory = () => {
     document.title = "Stockify | Inventory";
+    
     const [inventory, setInventory] = useState([]);
     const [popupvisibility, setPopupvisibility] = useState(false);
     const navigate = useNavigate();
