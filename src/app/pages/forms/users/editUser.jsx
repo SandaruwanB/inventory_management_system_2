@@ -7,6 +7,7 @@ import { apiConfig } from '../../../../apiConfig';
 import validator from 'validator';
 
 const EditUser = () => {
+    document.title = "Stockify | Users";
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -102,8 +103,8 @@ const EditUser = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/users")}>Users</span> / Add</h1>
-                    <h1 className='font-semibold text-gray-700 mt-10'>Add new user</h1>
+                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/users")}>Users</span> / Edit</h1>
+                    <h1 className='font-semibold text-gray-700 mt-10'>Edit user details</h1>
                     <div className='w-full bg-gray-400 h-[2px]'></div>
                     <div className='w-full mt-10'>
                         <div className="w-full">
@@ -180,7 +181,7 @@ const EditUser = () => {
                                     </div>
                                     <div className="flex flex-wrap w-full -mx-3 mb-6">
                                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                            <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>updateUser()}>Save</button>
+                                            <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>updateUser()}>Update</button>
                                             <button className='bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/users')}>Cancel</button>
                                         </div>
                                     </div>
