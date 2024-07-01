@@ -10,8 +10,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Employees = () => {
-
     document.title = "Stockify | Employees";
+
     const [employees, setEmployees] = useState([]);
     const [popupvisibility, setPopupvisibility] = useState(false);
 
@@ -24,7 +24,7 @@ const Employees = () => {
     },[]);
 
     const editEmployee = (id)=>{
-        navigate(`/user/employees/edit/${id}`, {state : {id : id}});
+        navigate(`/user/employees/edit/${id}`);
     }
 
     const removeEmployee = (id)=>{
@@ -34,7 +34,7 @@ const Employees = () => {
             header : 'Confirmation',
             icon : 'pi pi-exclamation-triangle',
             accept : ()=>deleteEmployee(id),
-            reject : ()=>{},
+            reject : ()=>{setPopupvisibility(false)},
             rejectClassName : 'mr-2 bg-transparent',
             acceptClassName : 'bg-red-600 text-white px-3 py-1 hover:bg-red-700'
         });

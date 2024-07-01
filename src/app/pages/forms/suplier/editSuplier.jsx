@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import validator from 'validator';
 import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
+import validator from 'validator';
 
-const AddSuplier = () => {
+const EditSuplier = () => {
     document.title = "Stockify | Supliers";
-    
+
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
@@ -18,9 +18,25 @@ const AddSuplier = () => {
     const [addressline2, setAddressline2] = useState("");
     const [city, setCity] = useState("");
     const [postalcode, setPostalcode] = useState("");
+
+    const {id} = useParams();
     const navigate = useNavigate();
 
-    const addSuplier = async ()=>{
+    useEffect(()=>{
+        axios.get(`${apiConfig.url}/api/supliers/get/${id}`).then(result=>{
+            setFirstname(result.data.firstname);
+            setLastname(result.data.lastname);
+            setEmail(result.data.email);
+            setContact(result.data.contact);
+            setCompanyname(result.data.companyname);
+            setAddressline1(result.data.addressline1);
+            setAddressline2(result.data.addressline2);
+            setCity(result.data.city);
+            setPostalcode(result.data.postalcode);
+        });
+    },[id]);
+
+    const updateSuplier = async ()=>{
         if (firstname === "" || lastname === "" || email === "" || city === ""){
             toast.error('You missed some required fields!', {
                 position: "top-right",
@@ -46,7 +62,7 @@ const AddSuplier = () => {
             });
         }
         else{
-            await axios.post(`${apiConfig.url}/api/supliers/add`, {
+            await axios.put(`${apiConfig.url}/api/supliers/update/${id}`, {
                 firstname : firstname,
                 lastname : lastname,
                 email : email,
@@ -58,7 +74,7 @@ const AddSuplier = () => {
                 postalcode : postalcode
             }).then(result=>{
                 if (result.status === 200){
-                    toast.success('Succesfully Recorded.!', {
+                    toast.success('Succesfully Updated.!', {
                         position: "top-right",
                         autoClose: 5000,
                         hideProgressBar: false,
@@ -68,7 +84,6 @@ const AddSuplier = () => {
                         progress: undefined,
                         theme: "light",
                     });
-                    setFirstname("");setLastname("");setEmail("");setContact("");setCompanyname("");setAddressline1("");setAddressline2("");setCity("");setPostalcode("");
                 }
             })
         }
@@ -80,8 +95,8 @@ const AddSuplier = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/supliers")}>Supliers</span> / Add</h1>
-                    <h1 className='font-semibold text-gray-700 mt-10'>Add new suplier</h1>
+                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/supliers")}>Supliers</span> / Edit</h1>
+                    <h1 className='font-semibold text-gray-700 mt-10'>Edit suplier details</h1>
                     <div className='w-full bg-gray-400 h-[2px]'></div>
                     <div className='w-full mt-10'>
                         <div className="w-full">
@@ -161,7 +176,7 @@ const AddSuplier = () => {
                                     </div>
                                     <div className="flex flex-wrap w-full -mx-3 mb-6">
                                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                            <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>addSuplier()}>Save</button>
+                                            <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>updateSuplier()}>Update</button>
                                             <button className='bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/supliers')}>Cancel</button>
                                         </div>
                                     </div>
@@ -177,4 +192,4 @@ const AddSuplier = () => {
   )
 }
 
-export default AddSuplier
+export default EditSuplier

@@ -20,7 +20,7 @@ const Supliers = () => {
     }, []);
 
     const editSuplier = (id)=>{
-        console.log("Edit clicked" + id);
+        navigate(`/user/supliers/edit/${id}`);
     }
 
     const removeSupllier = (id)=>{
