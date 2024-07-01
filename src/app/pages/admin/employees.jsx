@@ -24,7 +24,7 @@ const Employees = () => {
     },[]);
 
     const editEmployee = (id)=>{
-        navigate(`/user/employees/edit/${id}`, {state : {id : id}});
+        navigate(`/user/employees/edit/${id}`);
     }
 
     const removeEmployee = (id)=>{

@@ -1,9 +1,12 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
 import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
+import { useNavigate } from 'react-router-dom';
 
 const Payments = () => {
     document.title = "Stockify | Payments";
+
+    const navigate = useNavigate();
 
     const payments = [
         {
@@ -53,7 +56,7 @@ const Payments = () => {
                     <div className='w-full mt-10'>
                         <div className='w-full flex justify-between'>
                             <div>
-                                <button className=' bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
+                                <button onClick={()=>navigate('/user/payments/add')} className=' bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
                             </div>
                             <div className='flex'>
                                 <div className=' text-gray-800 '>

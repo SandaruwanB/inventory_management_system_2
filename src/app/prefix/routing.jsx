@@ -18,6 +18,7 @@ import AddSuplier from '../pages/forms/suplier/addSuplier'
 import CustomerForm from '../pages/forms/customer/customerForm'
 import AddProduct from '../pages/forms/inventory/addProduct'
 import AddUser from '../pages/forms/users/addUser'
+import PaymentsForm from '../pages/forms/payment/paymentsForm'
 
 function Routing() {
   return (
@@ -49,6 +50,8 @@ function Routing() {
             <Route path='/user/inventory/add' element={<AddProduct />}/>
 
             <Route path='/user/users/add' element={<AddUser />} />
+
+            <Route path='/user/payments/add' element={<PaymentsForm />}/>
 
         </Routes>
     </BrowserRouter>
