@@ -7,6 +7,8 @@ import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
 
 const AddSuplier = () => {
+    document.title = "Stockify | Supliers";
+    
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
