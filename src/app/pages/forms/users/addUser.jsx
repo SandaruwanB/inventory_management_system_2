@@ -7,79 +7,81 @@ import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
 
 const AddUser = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [contact, setContact] = useState("");
-  const [address, setAddress] = useState("");
-  const [role, setRole] = useState("");
-  const [password, setPasssword] = useState("");
-  
-  const navigate = useNavigate();
+    document.title = "Stockify | Users";
 
-  const addUser = async ()=>{
-    if (username === "" || firstname === "" || lastname === "" || email === "" || password === "" || role === ""){
-      toast.error('You missed some required fields!', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-    else if (!validator.isEmail(email)){
-      toast.error('Invalid email address!', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-    else{
-      await axios.post(`${apiConfig.url}/api/users/add`, {
-        username : username,
-        email : email,
-        password : password,
-        firstname : firstname,
-        lastname : lastname,
-        phone : contact,
-        address : address,
-        role : role,
-        CreatedAt :  Date.now()
-      }).then((result)=>{
-        if (result.status === 200){
-            toast.success('Succesfully Recorded.!', {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [contact, setContact] = useState("");
+    const [address, setAddress] = useState("");
+    const [role, setRole] = useState("");
+    const [password, setPasssword] = useState("");
+    
+    const navigate = useNavigate();
+
+    const addUser = async ()=>{
+        if (username === "" || firstname === "" || lastname === "" || email === "" || role === ""){
+            toast.error('You missed some required fields!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
             });
-            setUsername("");setEmail("");setPasssword("");setFirstname("");setLastname("");setContact("");setAddress("");setRole("");
         }
-      }).catch(err=>{
-        toast.error('This user already exists!', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      })
+        else if (!validator.isEmail(email)){
+            toast.error('Invalid email address!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+        else{
+            await axios.post(`${apiConfig.url}/api/users/add`, {
+                username : username,
+                email : email,
+                password : password,
+                firstname : firstname,
+                lastname : lastname,
+                phone : contact,
+                address : address,
+                role : role,
+                CreatedAt :  Date.now()
+            }).then((result)=>{
+                if (result.status === 200){
+                    toast.success('Succesfully Recorded.!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
+                    setUsername("");setEmail("");setPasssword("");setFirstname("");setLastname("");setContact("");setAddress("");setRole("");
+                }
+            }).catch(err=>{
+                toast.error('This user already exists!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
+            })
     }
   }
 
@@ -107,7 +109,7 @@ const AddUser = () => {
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='firstname'>
-                                                First Name <span className='text-red-400 text-xs'>*</span>
+                                            First Name <span className='text-red-400 text-xs'>*</span>
                                             </label>
                                             <input onChange={(e)=>setFirstname(e.target.value)} value={firstname} name='firstname' id='firstname' className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"  type="text" placeholder="first name"/>
                                             {/*<p class="text-red-500 text-xs italic">* Please fill out this field.</p>*/}
