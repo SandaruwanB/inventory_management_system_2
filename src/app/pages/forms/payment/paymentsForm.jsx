@@ -7,6 +7,8 @@ import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
 
 const PaymentsForm = () => {
+    document.title = "Stockify | Payments";
+
     const [payslipcode, setPayslipcode] = useState("");
     const [status, setStatus] = useState("");
     const [note, setNote] = useState("");
@@ -34,7 +36,7 @@ const PaymentsForm = () => {
         });
     },[]);
 
-    const addPayment = ()=>{
+    const addPayment = async ()=>{
         console.log(paymenttype);
         if (status === "" || date === "" || paymentmethod === "" || amount === ""){
             toast.error('You missed some required fields !', {
@@ -85,7 +87,40 @@ const PaymentsForm = () => {
             });
         }
         else{
-
+            await axios.post(`${apiConfig.url}/api/payments/add`, {
+                payslipcode : payslipcode,
+                status : status,
+                note : note,
+                date : date,
+                paymentmethod : paymentmethod,
+                paymenttype : paymenttype,
+                accountnumber : accountnumber,
+                accountholder : accountholder,
+                bank : bank,
+                amount : amount,
+                customer : {
+                    id : parseInt(customer)
+                },
+                suplier : {
+                    id : parseInt(suplier)
+                },
+                createdAt : Date.now()
+            }).then(result=>{
+                if (result.status === 200){
+                    toast.success('Successfully Created!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    setStatus("");setNote("");setDate("");setPaymentMethod("");setPaymenttype("");setAccountnumber("");setAccountholder("");setBank("");setAmount("");
+                    setSuplier(0); setCustomer(0);
+                }
+            })
         }
     }
 
@@ -104,7 +139,7 @@ const PaymentsForm = () => {
                                 <div className='w-full max-w-lg'>
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
-                                            <input name='payslip' id='username' onChange={(e)=>setPayslipcode(e.target.value)} value={payslipcode} className="appearance-none block w-full text-gray-700 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text"/>
+                                            <input name='payslip' id='username' onChange={(e)=>setPayslipcode(e.target.value)} value={payslipcode} className="appearance-none block uppercase text-4xl w-full text-gray-700 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" readOnly/>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
@@ -168,7 +203,7 @@ const PaymentsForm = () => {
                                                     Suplier <span className='text-red-400 text-xs'>*</span>
                                                 </label>
                                                 <select id='suplier' name='suplier' onChange={(e)=>setSuplier(e.target.value)} value={suplier} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                                                    <option >None</option>
+                                                    <option value={0}>None</option>
                                                     {
                                                         supliers.map((value, index)=>{
                                                             return (
@@ -186,7 +221,7 @@ const PaymentsForm = () => {
                                                     Customer <span className='text-red-400 text-xs'>*</span>
                                                 </label>
                                                 <select id='customer' name='customer' onChange={(e)=>setCustomer(e.target.value)} value={customer} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                                                    <option >None</option>
+                                                    <option value={0}>None</option>
                                                     {
                                                         customers.map((value, index)=>{
                                                             return (
