@@ -1,50 +1,63 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
 import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { apiConfig } from '../../../apiConfig';
+import { ToastContainer, toast } from 'react-toastify';
+import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 
 const Payments = () => {
     document.title = "Stockify | Payments";
 
+    const [payments, setPayments] = useState([]);
+    const [popupvisibility, setPopupvisibility] = useState(false);
     const navigate = useNavigate();
 
-    const payments = [
-        {
-            "name" : "CSH123456",
-            "suplier" : "Nimal Shantha",
-            "amount" : "12700.00",
-            "contact" : "07611562233",
-            "status" : "draft",
-            "date" : "2024-06-23",
-            "image" : "/assets/images/defaultUser.png"
-        },
-        {
-            "name": "BNK123457",
-            "suplier": "Kasun Nishantha",
-            "amount": "22500.00",
-            "contact": "123-456-7890",
-            "status" : "posted",
-            "date" : "2024-06-23",
-            "image": "/assets/images/defaultUser.png"
-        },
-        {
-            "name": "CSH123458",
-            "suplier": "Nimal Susantha",
-            "amount": "23450.00",
-            "contact": "987-654-3210",
-            "status" : "canceled",
-            "date" : "2024-06-23",
-            "image": "/assets/images/defaultUser.png"
-        }
-    ];
+    useEffect(()=>{
+        axios.get(`${apiConfig.url}/api/payments/all`).then(result=>{
+            console.log(result.data);
+            setPayments(result.data);
+        })
+    },[]);
 
-    const editEmployee = (id)=>{
+    const editPayment = (id)=>{
         console.log("Edit clicked" + id);
     }
 
-    const removeEmployee = (id)=>{
-        console.log("Delete clicked" + id);
+    const removePayment = (id)=>{
+        setPopupvisibility(true);
+        confirmDialog({
+            message : 'Are you sure you want to remove this payment?',
+            header : 'Confirmation',
+            icon : 'pi pi-exclamation-triangle',
+            accept : ()=>deletePayment(id),
+            reject : ()=>{},
+            rejectClassName : 'mr-2 bg-transparent',
+            acceptClassName : 'bg-red-600 text-white px-3 py-1 hover:bg-red-700'
+        });
+        
     }
+
+    const deletePayment = async (id)=>{
+        setPopupvisibility(false);
+        await axios.delete(`${apiConfig.url}/api/payments/delete/${id}`).then(result=>{
+            if (result.status === 200){
+                toast.info('Successfully Removed!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                const remainingPayments = payments.filter((result)=>result.id !== id);
+                setPayments(remainingPayments);
+            }
+        });
+    } 
 
     return (
     <>
@@ -69,8 +82,10 @@ const Payments = () => {
                                 <tr>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left w-10'>No.</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Payment Voucher</th>
-                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Suplier</th>
+                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Customer / Suplier</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Amount</th>
+                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Payment Type</th>
+                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Payment Method</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Status</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Date</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Actions</th>
@@ -83,9 +98,11 @@ const Payments = () => {
                                         return (
                                             <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                 <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.name}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.suplier}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.payslipcode}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.suplier ? value.suplier.firstname + " " + value.suplier.lastname : value.customer.firstname + " " + value.customer.lastname}</td>
                                                 <td className='p-3 text-sm text-gray-700'>Rs. {value.amount}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.paymenttype}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.paymentmethod}</td>
                                                 <td className='p-3 text-sm text-white'>
                                                     <span className={`${value.status === "posted" ? "bg-green-500" : value.status === "canceled" ? "bg-red-500" : "bg-yellow-500"} px-2 py-[3px] rounded-md`}>
                                                         {value.status}
@@ -93,15 +110,16 @@ const Payments = () => {
                                                 </td>
                                                 <td className='p-3 text-sm text-gray-700'>{value.date}</td>
                                                 <td className='p-3 text-sm text-gray-700'>
-                                                    <button className='hover:text-green-500' onClick={()=>editEmployee(index)}><Icon icon="basil:edit-solid" width={26} /></button>
-                                                    <button className='ml-4 hover:text-red-500' onClick={()=>removeEmployee(index)}><Icon icon="material-symbols-light:delete"  width={28}/></button>
+                                                    <button className='hover:text-green-500' onClick={()=>editPayment(value.id)}><Icon icon="basil:edit-solid" width={26} /></button>
+                                                    <button className='ml-4 hover:text-red-500' onClick={()=>removePayment(value.id)}><Icon icon="material-symbols-light:delete"  width={28}/></button>
+                                                    <ConfirmDialog visible={popupvisibility} />
                                                 </td>
                                             </tr>
                                         )
                                     })
                                 :
                                 <tr className='bg-white'>
-                                    <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={6}>
+                                    <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={9}>
                                         <p>No payments found.</p>
                                     </td>
                                 </tr>
@@ -112,6 +130,7 @@ const Payments = () => {
                 </div>
             </div>
         </div>
+        <ToastContainer />
     </>
   )
 }
