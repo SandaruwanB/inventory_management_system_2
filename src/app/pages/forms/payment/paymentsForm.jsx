@@ -104,7 +104,7 @@ const PaymentsForm = () => {
                                 <div className='w-full max-w-lg'>
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
-                                            <input name='payslip' id='username' onChange={(e)=>setPayslipcode(e.target.value)} value={payslipcode} className="appearance-none block w-full bg-gray-200 text-gray-700 border-b-2 border-gray-400 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="example"/>
+                                            <input name='payslip' id='username' onChange={(e)=>setPayslipcode(e.target.value)} value={payslipcode} className="appearance-none block w-full text-gray-700 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text"/>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
