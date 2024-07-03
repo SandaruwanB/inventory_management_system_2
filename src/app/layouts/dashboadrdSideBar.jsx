@@ -38,6 +38,11 @@ const DashboadrdSideBar = () => {
       path : "/user/invoicing",
     },
     {
+      title : "GRN",
+      icon : "ep:goods-filled",
+      path : "/user/grn",
+    },
+    {
       title : "Payments",
       icon : "streamline:payment-10-solid",
       path : "/user/payments",
