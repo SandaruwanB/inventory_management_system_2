@@ -118,7 +118,7 @@ const PaymentsForm = () => {
                         theme: "light",
                     });
                     setStatus("");setNote("");setDate("");setPaymentMethod("");setPaymenttype("");setAccountnumber("");setAccountholder("");setBank("");setAmount("");
-                    setSuplier(0); setCustomer(0);
+                    setSuplier(0); setCustomer(0);setPayslipcode("PAY" + Math.floor((Math.random() * (99999 - 10000) + 10000 )));
                 }
             })
         }
