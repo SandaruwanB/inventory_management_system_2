@@ -23,6 +23,7 @@ import CustomerEditForm from '../pages/forms/customer/customerEditForm'
 import EditProduct from '../pages/forms/inventory/editProduct'
 import EditSuplier from '../pages/forms/suplier/editSuplier'
 import EditUser from '../pages/forms/users/editUser'
+import EditPayments from '../pages/forms/payment/editPayments'
 
 function Routing() {
   return (
@@ -60,6 +61,7 @@ function Routing() {
             <Route path='/user/users/edit/:id' element={<EditUser />} />
 
             <Route path='/user/payments/add' element={<PaymentsForm />}/>
+            <Route path='/user/payments/edit/:id' element={<EditPayments />} />
 
         </Routes>
     </BrowserRouter>

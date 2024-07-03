@@ -22,7 +22,7 @@ const Payments = () => {
     },[]);
 
     const editPayment = (id)=>{
-        console.log("Edit clicked" + id);
+        navigate(`/user/payments/edit/${id}`);
     }
 
     const removePayment = (id)=>{
@@ -101,7 +101,7 @@ const Payments = () => {
                                                 <td className='p-3 text-sm text-gray-700'>{value.payslipcode}</td>
                                                 <td className='p-3 text-sm text-gray-700'>{value.suplier ? value.suplier.firstname + " " + value.suplier.lastname : value.customer.firstname + " " + value.customer.lastname}</td>
                                                 <td className='p-3 text-sm text-gray-700'>Rs. {value.amount}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.paymenttype}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.paymenttype} payment</td>
                                                 <td className='p-3 text-sm text-gray-700'>{value.paymentmethod}</td>
                                                 <td className='p-3 text-sm text-white'>
                                                     <span className={`${value.status === "posted" ? "bg-green-500" : value.status === "canceled" ? "bg-red-500" : "bg-yellow-500"} px-2 py-[3px] rounded-md`}>
