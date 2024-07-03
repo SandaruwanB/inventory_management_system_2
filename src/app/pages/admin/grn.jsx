@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
 import { ToastContainer, toast } from 'react-toastify';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
+import axios from 'axios';
+import { apiConfig } from '../../../apiConfig';
 
 const Grn = () => {
     document.title = "Stockify | GRN";
@@ -13,6 +15,11 @@ const Grn = () => {
 
     const navigate = useNavigate();
     
+    useEffect(()=>{
+        axios.get(`${apiConfig.url}/api/grn/all`).then(result=>{
+            setGrns(result.data);
+        });
+    },[]);
     
     const editGrn = (id)=>{
 
@@ -56,9 +63,9 @@ const Grn = () => {
                                         return (
                                             <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                 <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.firstname + " " + value.lastname}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.jobtitle}</td>
-                                                <td className='p-3 text-sm text-gray-700'>{value.email}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.grncode}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.suplier.firstname + " " + value.suplier.lastname}</td>
+                                                <td className='p-3 text-sm text-gray-700'>{value.date}</td>
                                                 <td className='p-3 text-sm text-gray-700'>
                                                     <button className='hover:text-green-500' onClick={()=>editGrn(value.id)}><Icon icon="basil:edit-solid" width={26} /></button>
                                                     <button className='ml-4 hover:text-red-500' onClick={()=>removeGrn(value.id)}><Icon icon="material-symbols-light:delete"  width={28}/></button>
