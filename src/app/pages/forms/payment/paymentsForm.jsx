@@ -37,7 +37,6 @@ const PaymentsForm = () => {
     },[]);
 
     const addPayment = async ()=>{
-        console.log(paymenttype);
         if (status === "" || date === "" || paymentmethod === "" || amount === ""){
             toast.error('You missed some required fields !', {
                 position: "top-right",
