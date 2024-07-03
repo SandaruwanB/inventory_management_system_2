@@ -23,7 +23,7 @@ const Invoicing = () => {
     },[]);
 
     const editInvoice = (id)=>{
-        console.log("Edit clicked" + id);
+        navigate(`/user/invoicing/edit/${id}`);
     }
 
     const removeInvoice = (id)=>{

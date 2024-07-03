@@ -27,6 +27,7 @@ import EditPayments from '../pages/forms/payment/editPayments'
 import Grn from '../pages/admin/grn'
 import Orders from '../pages/admin/orders'
 import AddInvoicing from '../pages/forms/invoicing/addInvoicing'
+import EditInvoicing from '../pages/forms/invoicing/editInvoicing'
 
 function Routing() {
   return (
@@ -69,6 +70,7 @@ function Routing() {
             <Route path='/user/payments/edit/:id' element={<EditPayments />} />
 
             <Route path='/user/invoicing/add' element={<AddInvoicing />}/>
+            <Route path='/user/invoicing/edit/:id' element={<EditInvoicing />} />
         </Routes>
     </BrowserRouter>
   )
