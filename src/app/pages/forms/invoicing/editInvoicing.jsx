@@ -52,8 +52,22 @@ const EditInvoicing = () => {
 
     }
 
-    const cancelEntry = ()=>{
-
+    const cancelEntry = async ()=>{
+        await axios.put(`${apiConfig.url}/api/invoicing/entry/cancel/${id}`).then(result=>{
+            if (result.status === 200){
+                toast.info('Entry canceled!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                setStatus("canceled");
+            }
+        })
     }
 
   return (
