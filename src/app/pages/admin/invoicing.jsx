@@ -5,12 +5,15 @@ import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import { apiConfig } from '../../../apiConfig';
+import { useNavigate } from 'react-router-dom';
 
 const Invoicing = () => {
     document.title = "Stockify | Invoicing";
 
     const [invoices, setInvoices] = useState([]);
     const [popupvisibility, setPopupvisibility] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(()=>{
         axios.get(`${apiConfig.url}/api/invoicing/all`).then(result=>{
@@ -65,7 +68,7 @@ const Invoicing = () => {
                     <div className='w-full mt-10'>
                         <div className='w-full flex justify-between'>
                             <div>
-                                <button className=' bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
+                                <button onClick={()=>navigate('/user/invoicing/add')} className=' bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
                             </div>
                             <div className='flex'>
                                 <div className=' text-gray-800 '>
