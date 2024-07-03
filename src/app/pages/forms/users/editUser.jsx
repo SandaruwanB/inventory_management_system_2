@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar';
-import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import validator from 'validator';
 import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
+import validator from 'validator';
 
-const AddUser = () => {
+const EditUser = () => {
     document.title = "Stockify | Users";
 
     const [username, setUsername] = useState("");
@@ -17,10 +17,23 @@ const AddUser = () => {
     const [address, setAddress] = useState("");
     const [role, setRole] = useState("");
     const [password, setPasssword] = useState("");
-    
+
+    const {id} = useParams();
     const navigate = useNavigate();
 
-    const addUser = async ()=>{
+    useEffect(()=>{
+        axios.get(`${apiConfig.url}/api/users/get/${id}`).then(result=>{
+            setUsername(result.data.username);
+            setEmail(result.data.email);
+            setFirstname(result.data.firstname);
+            setLastname(result.data.lastname);
+            setContact(result.data.phone);
+            setAddress(result.data.address);
+            setRole(result.data.role)
+        });
+    },[id]);
+
+    const updateUser = async ()=>{
         if (username === "" || firstname === "" || lastname === "" || email === "" || role === ""){
             toast.error('You missed some required fields!', {
                 position: "top-right",
@@ -46,7 +59,7 @@ const AddUser = () => {
             });
         }
         else{
-            await axios.post(`${apiConfig.url}/api/users/add`, {
+            await axios.put(`${apiConfig.url}/api/users/update/${id}`, {
                 username : username,
                 email : email,
                 password : password,
@@ -55,8 +68,8 @@ const AddUser = () => {
                 phone : contact,
                 address : address,
                 role : role,
-                CreatedAt :  Date.now()
-            }).then((result)=>{
+                updatedAt : Date.now()
+            }).then(result=>{
                 if (result.status === 200){
                     toast.success('Succesfully Recorded.!', {
                     position: "top-right",
@@ -68,31 +81,30 @@ const AddUser = () => {
                     progress: undefined,
                     theme: "light",
                     });
-                    setUsername("");setEmail("");setPasssword("");setFirstname("");setLastname("");setContact("");setAddress("");setRole("");
                 }
             }).catch(err=>{
-                toast.error('This user already exists!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
+                toast.error('This details already exists!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
                 });
             })
+        }
     }
-  }
 
   return (
-      <>
+    <>
         <DashboadrdSideBar />
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/users")}>Users</span> / Add</h1>
-                    <h1 className='font-semibold text-gray-700 mt-10'>Add new user</h1>
+                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/users")}>Users</span> / Edit</h1>
+                    <h1 className='font-semibold text-gray-700 mt-10'>Edit user details</h1>
                     <div className='w-full bg-gray-400 h-[2px]'></div>
                     <div className='w-full mt-10'>
                         <div className="w-full">
@@ -152,7 +164,7 @@ const AddUser = () => {
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='password'>
                                                 Password <span className='text-red-400 text-xs'>*</span>
                                             </label>
-                                            <input name='password' id='password' onChange={(e)=>setPasssword(e.target.value)} value={password} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="****************"/>
+                                            <input name='password' id='password' onChange={(e)=>setPasssword(e.target.value)} value={password} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="******************"/>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
@@ -169,7 +181,7 @@ const AddUser = () => {
                                     </div>
                                     <div className="flex flex-wrap w-full -mx-3 mb-6">
                                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                            <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>addUser()}>Save</button>
+                                            <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>updateUser()}>Update</button>
                                             <button className='bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/users')}>Cancel</button>
                                         </div>
                                     </div>
@@ -180,9 +192,9 @@ const AddUser = () => {
                 </div>
             </div>
         </div>
-        <ToastContainer />
+        <ToastContainer />      
     </>
   )
 }
 
-export default AddUser
+export default EditUser
