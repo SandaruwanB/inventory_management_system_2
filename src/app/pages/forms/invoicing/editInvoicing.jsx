@@ -4,6 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import InvoicePDF from '../../../components/invoicePDF';
 
 const EditInvoicing = () => {
 
@@ -16,6 +18,10 @@ const EditInvoicing = () => {
     const [status, setStatus] = useState("");
     const [customer, setCustomer] = useState("");
     const [customers, setCustomers] = useState([]);
+
+    const [docCustomer, setDoccustomer] = useState([]);
+    const [company, setCompany] = useState([]);
+    const [invoice, setInvoice] = useState([]);
 
     const {id} = useParams();
 
@@ -33,10 +39,20 @@ const EditInvoicing = () => {
             setAmount(result.data.amount);
             setCustomer(result.data.customer.id);
             setStatus(result.data.status);
+            setInvoice(result.data);
+            setDoccustomer(result.data.customer);
+        });
+
+        axios.get(`${apiConfig.url}/api/company/all`).then(result=>{
+            setCompany(result.data[0]);
         });
     },[id])
 
     const updateInvoice = ()=>{
+
+    }
+
+    const cancelEntry = ()=>{
 
     }
 
@@ -47,7 +63,20 @@ const EditInvoicing = () => {
             <div className="p-4">
                 <div className='w-full'>
                     <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/invoicing")}>Invoices</span> / Edit</h1>
-                    <h1 className='font-semibold text-gray-700 mt-10'>Edit & view invoice</h1>
+                    <div className='mt-10 flex justify-between'>
+                        <div>
+                            <h1 className='font-semibold text-gray-700'>Edit & view invoice</h1>
+                        </div>
+                        <div className='mr-2'>
+                            <PDFDownloadLink document={<InvoicePDF customer={docCustomer} invoice={invoice} company={company}  />} fileName='invoice'>
+                                {({loading})=>(loading ? "creating..." : <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>)}
+                            </PDFDownloadLink>
+                            {
+                                status === "canceled" ? "" :
+                                <button onClick={()=>cancelEntry()} className='py-1 px-2 rounded mb-1 bg-yellow-600 text-white font-semibold text-sm hover:bg-yellow-800'>Cancel Entry</button>
+                            }
+                        </div>
+                    </div>
                     <div className='w-full bg-gray-400 h-[2px]'></div>
                     <div className='w-full mt-10'>
                         <div className="w-full">
@@ -64,9 +93,15 @@ const EditInvoicing = () => {
                                                 Status <span className='text-red-400 text-xs'>*</span>
                                             </label>
                                             <select id='status' name='status' onChange={(e)=>setStatus(e.target.value)} value={status} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                                                <option >None</option>
-                                                <option value="draft">Draft</option>
-                                                <option value="posted" >Posted</option>
+                                                {
+                                                    status === "canceled" ? 
+                                                    <option>Canceled</option> :
+                                                    <>
+                                                        <option value="">None</option>
+                                                        <option value="draft" >Draft</option>
+                                                        <option value="posted" >Posted</option>
+                                                    </>
+                                                }
                                             </select>
                                         </div>
                                     </div>
