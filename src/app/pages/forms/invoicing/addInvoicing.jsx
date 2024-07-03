@@ -8,6 +8,8 @@ import validator from 'validator';
 
 const AddInvoicing = () => {
 
+    document.title = "Stockify | Invoicing";
+
     const [invoicenumber, setInvoicenumber] = useState("");
     const [note, setNote] = useState("");
     const [date, setDate] = useState("");
@@ -27,7 +29,7 @@ const AddInvoicing = () => {
 
 
     const addInvoice = async ()=>{
-        if (date === "" || amount === "" || status === "" || customer === ""){
+        if (date === "" || amount === "" || status === "" || customer === "" || customer === 0){
             toast.error('You missed some required fields !', {
                 position: "top-right",
                 autoClose: 5000,
