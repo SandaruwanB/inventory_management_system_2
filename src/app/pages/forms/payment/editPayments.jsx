@@ -23,7 +23,11 @@ const EditPayments = () => {
     const [paymenttype, setPaymenttype] = useState("");
     const [customer, setCustomer] = useState("");
     const [suplier, setSuplier] = useState("");
+
+    const [docCustomer, setDocCustomer] = useState([]);
+    const [docSuplier, setDocSuplier] = useState([]);    
     const [company, setCompany] = useState([]);
+    const [payment, setPayment] = useState([]);
 
     const [customers, setCustomers] = useState([]);
     const [supliers, setSupliers] = useState([]);
@@ -51,10 +55,12 @@ const EditPayments = () => {
             setPaymenttype(result.data.paymenttype);
             setCustomer(result.data.customer ? result.data.customer.id : 0);
             setSuplier(result.data.suplier ? result.data.suplier.id : 0);
+            setPayment(result.data);
+            setDocCustomer(result.data.customer);
+            setDocSuplier(result.data.suplier);
         });
         axios.get(`${apiConfig.url}/api/company/all`).then(result=>{
             setCompany(result.data[0]);
-            console.log(result.data[0]);
         })
     },[id]);
 
@@ -131,14 +137,13 @@ const EditPayments = () => {
                         </div>
                         <div className='mr-2'>
 
-                            <PDFDownloadLink document={<PaymentPDF status={status} />} fileName='payment_receipt'>
+                            <PDFDownloadLink document={<PaymentPDF payment={payment} company={company} suplier={docSuplier} customer={docCustomer} />} fileName='payment_receipt'>
                                 {({loading})=>(loading ? "creating..." : <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>)}
                             </PDFDownloadLink>
                             {
                                 status === "canceled" ? "" :
                                 <button onClick={()=>cancelEntry()} className='py-1 px-2 rounded mb-1 bg-yellow-600 text-white font-semibold text-sm hover:bg-yellow-800'>Cancel Entry</button>
                             }
-                            
                         </div>
                     </div>
                     
