@@ -25,8 +25,38 @@ const Grn = () => {
 
     }
     const removeGrn = (id)=>{
-
+        setPopupvisibility(true);
+        confirmDialog({
+            message : 'Are you sure you want to remove this grn?',
+            header : 'Confirmation',
+            icon : 'pi pi-exclamation-triangle',
+            accept : ()=>deleteGrn(id),
+            reject : ()=>{setPopupvisibility(false)},
+            rejectClassName : 'mr-2 bg-transparent',
+            acceptClassName : 'bg-red-600 text-white px-3 py-1 hover:bg-red-700'
+        });
     }
+
+    const deleteGrn = async (id)=>{
+        setPopupvisibility(false);
+    
+        axios.delete(`${apiConfig.url}/api/grn/delete/${id}`).then(()=>{
+            toast.info('Successfully Removed!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+
+            const existingGrns = grns.filter(((result)=>result.id !== id));
+            setGrns(existingGrns);
+        });
+    }
+
 
   return (
     <>
