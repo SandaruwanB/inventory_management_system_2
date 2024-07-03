@@ -5,6 +5,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
 import validator from 'validator';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import PaymentPDF from '../../../components/paymentPDF';
 
 
 const EditPayments = () => {
@@ -136,7 +138,10 @@ const EditPayments = () => {
                             <h1 className='font-semibold'>Edit & view payment details</h1>
                         </div>
                         <div className='mr-2'>
-                            <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>
+
+                            <PDFDownloadLink document={<PaymentPDF />} fileName='payment_receipt'>
+                                {({loading})=>(loading ? "creating..." : <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>)}
+                            </PDFDownloadLink>
                             <button onClick={()=>cancelEntry()} className='py-1 px-2 rounded mb-1 bg-yellow-600 text-white font-semibold text-sm hover:bg-yellow-800'>Cancel Entry</button>
                         </div>
                     </div>
