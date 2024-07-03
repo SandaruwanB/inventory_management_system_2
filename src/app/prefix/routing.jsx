@@ -25,6 +25,7 @@ import EditSuplier from '../pages/forms/suplier/editSuplier'
 import EditUser from '../pages/forms/users/editUser'
 import EditPayments from '../pages/forms/payment/editPayments'
 import Grn from '../pages/admin/grn'
+import Orders from '../pages/admin/orders'
 
 function Routing() {
   return (
@@ -44,6 +45,7 @@ function Routing() {
             <Route path='/user/invoicing' element={<Invoicing />} />
             <Route path='/user/payments' element={<Payments />} />
             <Route path='/user/grn' element={<Grn />}/>
+            <Route path='/user/orders' element={<Orders />} />
             <Route path='/user/users' element={<Users />} />
             <Route path='/user/settings' element={<Settings />} />
 
