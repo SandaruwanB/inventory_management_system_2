@@ -22,7 +22,7 @@ const AddInvoicing = () => {
 
     useEffect(()=>{
         axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
-            console.log(JSON.stringify(result.data));
+            setCustomers(result.data);
         });
         setInvoicenumber("INV" + Math.floor((Math.random() * (99999 - 10000) + 10000 )));
     },[]);
