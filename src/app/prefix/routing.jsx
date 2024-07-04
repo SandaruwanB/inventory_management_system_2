@@ -24,6 +24,10 @@ import EditProduct from '../pages/forms/inventory/editProduct'
 import EditSuplier from '../pages/forms/suplier/editSuplier'
 import EditUser from '../pages/forms/users/editUser'
 import EditPayments from '../pages/forms/payment/editPayments'
+import Grn from '../pages/admin/grn'
+import Orders from '../pages/admin/orders'
+import AddInvoicing from '../pages/forms/invoicing/addInvoicing'
+import EditInvoicing from '../pages/forms/invoicing/editInvoicing'
 
 function Routing() {
   return (
@@ -42,6 +46,8 @@ function Routing() {
             <Route path='/user/inventory' element={<Inventory />} />
             <Route path='/user/invoicing' element={<Invoicing />} />
             <Route path='/user/payments' element={<Payments />} />
+            <Route path='/user/grn' element={<Grn />}/>
+            <Route path='/user/orders' element={<Orders />} />
             <Route path='/user/users' element={<Users />} />
             <Route path='/user/settings' element={<Settings />} />
 
@@ -63,6 +69,8 @@ function Routing() {
             <Route path='/user/payments/add' element={<PaymentsForm />}/>
             <Route path='/user/payments/edit/:id' element={<EditPayments />} />
 
+            <Route path='/user/invoicing/add' element={<AddInvoicing />}/>
+            <Route path='/user/invoicing/edit/:id' element={<EditInvoicing />} />
         </Routes>
     </BrowserRouter>
   )

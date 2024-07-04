@@ -4,7 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
-import validator from 'validator';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import PaymentPDF from '../../../components/paymentPDF';
 
 
 const EditPayments = () => {
@@ -22,6 +23,11 @@ const EditPayments = () => {
     const [paymenttype, setPaymenttype] = useState("");
     const [customer, setCustomer] = useState("");
     const [suplier, setSuplier] = useState("");
+
+    const [docCustomer, setDocCustomer] = useState([]);
+    const [docSuplier, setDocSuplier] = useState([]);    
+    const [company, setCompany] = useState([]);
+    const [payment, setPayment] = useState([]);
 
     const [customers, setCustomers] = useState([]);
     const [supliers, setSupliers] = useState([]);
@@ -49,7 +55,13 @@ const EditPayments = () => {
             setPaymenttype(result.data.paymenttype);
             setCustomer(result.data.customer ? result.data.customer.id : 0);
             setSuplier(result.data.suplier ? result.data.suplier.id : 0);
+            setPayment(result.data);
+            setDocCustomer(result.data.customer);
+            setDocSuplier(result.data.suplier);
         });
+        axios.get(`${apiConfig.url}/api/company/all`).then(result=>{
+            setCompany(result.data[0]);
+        })
     },[id]);
 
     const updatePayment = ()=>{
@@ -79,18 +91,6 @@ const EditPayments = () => {
         }
         else if (paymenttype === "" && ( customer === "" || suplier === "")){
             toast.error('Please choose payment type !', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        }
-        else if (!validator.isFloat(amount) || !validator.isInt(amount)){
-            toast.error('Invalid amount entered !', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -136,8 +136,14 @@ const EditPayments = () => {
                             <h1 className='font-semibold'>Edit & view payment details</h1>
                         </div>
                         <div className='mr-2'>
-                            <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>
-                            <button onClick={()=>cancelEntry()} className='py-1 px-2 rounded mb-1 bg-yellow-600 text-white font-semibold text-sm hover:bg-yellow-800'>Cancel Entry</button>
+
+                            <PDFDownloadLink document={<PaymentPDF payment={payment} company={company} suplier={docSuplier} customer={docCustomer} />} fileName='payment_receipt'>
+                                {({loading})=>(loading ? "creating..." : <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>)}
+                            </PDFDownloadLink>
+                            {
+                                status === "canceled" ? "" :
+                                <button onClick={()=>cancelEntry()} className='py-1 px-2 rounded mb-1 bg-yellow-600 text-white font-semibold text-sm hover:bg-yellow-800'>Cancel Entry</button>
+                            }
                         </div>
                     </div>
                     

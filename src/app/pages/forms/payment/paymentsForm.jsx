@@ -34,6 +34,7 @@ const PaymentsForm = () => {
         axios.get(`${apiConfig.url}/api/supliers/all`).then(result=>{
             setSupliers(result.data);
         });
+        setPayslipcode("PAY" + Math.floor((Math.random() * (99999 - 10000) + 10000 )));
     },[]);
 
     const addPayment = async ()=>{
@@ -117,7 +118,7 @@ const PaymentsForm = () => {
                         theme: "light",
                     });
                     setStatus("");setNote("");setDate("");setPaymentMethod("");setPaymenttype("");setAccountnumber("");setAccountholder("");setBank("");setAmount("");
-                    setSuplier(0); setCustomer(0);
+                    setSuplier(0); setCustomer(0);setPayslipcode("PAY" + Math.floor((Math.random() * (99999 - 10000) + 10000 )));
                 }
             })
         }
@@ -166,7 +167,7 @@ const PaymentsForm = () => {
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='paymentmethod'>
                                                 Payment method <span className='text-red-400 text-xs'>*</span>
                                             </label>
-                                            <select id='paymentmethod' name='paymentmethod' onChange={(e)=>setPaymentMethod(e.target.value)} value={paymentmethod} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                                            <select id='paymentmethod' name='paymentmethod' onChange={(e)=>{setPaymentMethod(e.target.value); if (e.target.value === "cash"){ setPayslipcode("CSH" + payslipcode.slice(3))}else{setPayslipcode("BNK" + payslipcode.slice(3)) }}} value={paymentmethod} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                                                 <option >None</option>
                                                 <option value="cash">Cash</option>
                                                 <option value="bank" >Bank</option>
