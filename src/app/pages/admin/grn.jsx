@@ -22,7 +22,7 @@ const Grn = () => {
     },[]);
     
     const editGrn = (id)=>{
-
+        navigate(`/user/grn/edit/${id}`);
     }
     const removeGrn = (id)=>{
         setPopupvisibility(true);
