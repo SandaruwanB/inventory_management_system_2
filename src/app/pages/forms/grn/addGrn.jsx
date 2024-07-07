@@ -31,6 +31,7 @@ const AddGrn = () => {
       axios.get(`${apiConfig.url}/api/inventory/all`).then(result=>{
           setProducts(result.data);
       });
+      setGrncode("GRN" + Math.floor((Math.random() * (99999 - 10000) + 10000 )));
   },[]);
 
   const removeItem = (index)=>{
