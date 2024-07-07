@@ -105,7 +105,7 @@ const Inventory = () => {
                             {
                                 inventory.map((value, index)=>{
                                     return (
-                                        <div className='bg-gray-200 w-full p-4 cursor-pointer rounded hover:bg-gray-300'>
+                                        <div key={index} className='bg-gray-200 w-full p-4 cursor-pointer rounded hover:bg-gray-300'>
                                             <div className='text-center w-full flex justify-center items-center text-gray-600'>
                                                 <img src={value.image ? value.image : "/assets/images/productSample.png"} alt="pro_image" className='rounded-md' />
                                             </div>
