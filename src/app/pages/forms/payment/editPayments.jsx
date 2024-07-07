@@ -64,7 +64,7 @@ const EditPayments = () => {
         })
     },[id]);
 
-    const updatePayment = ()=>{
+    const updatePayment = async ()=>{
         if (status === "" || date === "" || paymentmethod === "" || amount === ""){
             toast.error('You missed some required fields !', {
                 position: "top-right",
@@ -102,7 +102,40 @@ const EditPayments = () => {
             });
         }
         else{
-            
+            await axios.put(`${apiConfig.url}/api/payments/update/${id}`,{
+                payslipcode : payslipcode,
+                status : status,
+                note : note,
+                date : date,
+                paymentmethod : paymentmethod,
+                paymenttype : paymenttype,
+                accountnumber : accountnumber,
+                accountholder : accountholder,
+                bank : bank,
+                amount : amount,
+                customer : {
+                    id : parseInt(customer)
+                },
+                suplier : {
+                    id : parseInt(suplier)
+                },
+            }).then(result=>{
+                if (result.status === 200){
+                    toast.success('Successfully Created!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    setPayment(result.data);
+                    setDocCustomer(result.data.customer);
+                    setDocSuplier(result.data.suplier);
+                }
+            })
         }
     }
 
@@ -191,7 +224,7 @@ const EditPayments = () => {
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='paymentmethod'>
                                                 Payment method <span className='text-red-400 text-xs'>*</span>
                                             </label>
-                                            <select id='paymentmethod' name='paymentmethod' onChange={(e)=>setPaymentMethod(e.target.value)} value={paymentmethod} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                                            <select id='paymentmethod' name='paymentmethod' onChange={(e)=>{setPaymentMethod(e.target.value); if (e.target.value === "cash"){ setPayslipcode("CSH" + payslipcode.slice(3))}else{setPayslipcode("BNK" + payslipcode.slice(3)) }}} value={paymentmethod} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                                                 <option value="">None</option>
                                                 <option value="cash">Cash</option>
                                                 <option value="bank" >Bank</option>

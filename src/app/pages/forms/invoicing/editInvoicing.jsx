@@ -6,6 +6,7 @@ import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import InvoicePDF from '../../../components/invoicePDF';
+import validator from 'validator';
 
 const EditInvoicing = () => {
 
@@ -48,7 +49,46 @@ const EditInvoicing = () => {
         });
     },[id])
 
-    const updateInvoice = ()=>{
+    const updateInvoice = async ()=>{
+        if (date === "" || amount === "" || status === "" || customer === "" || customer === 0){
+            toast.error('You missed some required fields !', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+        else{
+            await axios.put(`${apiConfig.url}/api/invoicing/update/${id}`,{
+                invoicenumber : invoicenumber,
+                note : note,
+                date : date,
+                amount : amount,
+                status : status,
+                customer : {
+                    id : customer
+                }
+            }).then(result=>{
+                if (result.status === 200){
+                    toast.success('Successfully Created!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    setInvoice(result.data);
+                    setDoccustomer(result.data.customer);
+                }
+            });
+        }
 
     }
 
