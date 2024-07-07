@@ -75,10 +75,9 @@ const AddGrn = () => {
                   },
                   "quantity" : count,
               };
-
               setSelected((prevvalues)=>[...prevvalues, array]);
               setShowmenu(false);
-          })
+          });
       }
   }
 
@@ -117,17 +116,20 @@ const AddGrn = () => {
               },
               movements : selected
           }).then(result=>{
-              if (result.status === 200){
-                  toast.success('Successfully Created!', {
-                      position: "top-right",
-                      autoClose: 5000,
-                      hideProgressBar: false,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                      theme: "light",
-                  });
+                if (result.status === 200){
+                    toast.success('Successfully Created!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+
+                    setGrncode("GRN" + Math.floor((Math.random() * (99999 - 10000) + 10000 )));  
+                    setSuplier(0);setNote("");setSelected([]);
               } 
           })
       }
