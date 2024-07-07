@@ -11,7 +11,7 @@ const AddGrn = () => {
   document.title = "Stockify | GRN";
 
   const [grncode, setGrncode] = useState("");
-  const [suplier, setSuplier] = useState("");
+  const [suplier, setSuplier] = useState(0);
   const [date, setDate] = useState("");
   const [note, setNote] = useState("");
   
@@ -65,16 +65,69 @@ const AddGrn = () => {
       else{
           await axios.get(`${apiConfig.url}/api/inventory/get/${product}`).then(result=>{
               const array = {
-                "id" : product,
-                "prodctname" : result.data.prodctname,
-                "availability" : result.data.onhandqty > 20 ? "available" : "low stock",
-                "onhandqty" : result.data.onhandqty + count,
-                "inqty" : result.data.inqty + count,
-                "quantity" : count,
+                  "product" : {
+                      "id" : product,
+                      "prodctname" : result.data.prodctname,
+                      "availability" : result.data.onhandqty > 20 ? "available" : "low stock",
+                      "onhandqty" : parseFloat(result.data.onhandqty) + parseFloat(count),
+                      "inqty" : parseFloat(result.data.inqty) + parseFloat(count),
+                  },
+                  "quantity" : count,
               };
 
               setSelected((prevvalues)=>[...prevvalues, array]);
               setShowmenu(false);
+          })
+      }
+  }
+
+  const addGrn = async ()=>{
+      if (suplier === 0 || date === ""){
+          toast.error('You missed some required files!', {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+          });
+      }
+      else if (selected.length === 0){
+          toast.error('Please provide products and counts!', {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+          });
+      }
+      else{
+          await axios.post(`${apiConfig.url}/api/grn/add`, {
+              grncode : grncode,
+              date :date,
+              note : note,
+              suplier : {
+                  id : suplier
+              },
+              movements : selected
+          }).then(result=>{
+              if (result.status === 200){
+                  toast.success('Successfully Created!', {
+                      position: "top-right",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "light",
+                  });
+              } 
           })
       }
   }
@@ -150,9 +203,9 @@ const AddGrn = () => {
                                 {
                                   selected.map((value, index)=>(
                                     <tr key={index}>
-                                        <td className='p-1 text-sm font-semibold tracking-wide text-left pl-5'>{value.prodctname}</td>
+                                        <td className='p-1 text-sm font-semibold tracking-wide text-left pl-5'>{value.product.prodctname}</td>
                                         <td className='p-1 text-sm font-semibold tracking-wide text-left'>{value.quantity}</td>
-                                        <td className='p-1 text-sm font-semibold tracking-wide text-center'>{value.availability === "available" ? <p className='text-green-600'>available</p> : <p className='text-red-600'>Low stock</p>}</td>
+                                        <td className='p-1 text-sm font-semibold tracking-wide text-center'>{value.product.availability === "available" ? <p className='text-green-600'>available</p> : <p className='text-red-600'>Low stock</p>}</td>
                                         <td>
                                           <button className='ml-4 hover:text-red-500' onClick={()=>removeItem(index)}><Icon icon="material-symbols-light:delete"  width={28}/></button>
                                         </td>
@@ -167,7 +220,7 @@ const AddGrn = () => {
                             </div>
                         </div>
                         <div className='mt-10 w-100'>
-                            <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded'>Complete</button>
+                            <button onClick={()=>addGrn()} className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded'>Complete</button>
                             <button onClick={()=>navigate('/user/grn')} className='ml-4 bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded'>Cancel</button>
                         </div>
                     </div>
