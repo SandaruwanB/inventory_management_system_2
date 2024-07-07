@@ -29,6 +29,7 @@ import Orders from '../pages/admin/orders'
 import AddInvoicing from '../pages/forms/invoicing/addInvoicing'
 import EditInvoicing from '../pages/forms/invoicing/editInvoicing'
 import AddOrder from '../pages/forms/order/addOrder'
+import AddGrn from '../pages/forms/grn/addGrn'
 
 function Routing() {
   return (
@@ -74,6 +75,8 @@ function Routing() {
             <Route path='/user/invoicing/edit/:id' element={<EditInvoicing />} />
 
             <Route path='/user/orders/add' element={<AddOrder />} />
+
+            <Route path='/user/grn/add' element={<AddGrn />} />
         </Routes>
     </BrowserRouter>
   )

@@ -68,7 +68,7 @@ const Grn = () => {
                     <div className='w-full mt-10'>
                         <div className='w-full flex justify-between'>
                             <div>
-                                <button onClick={()=>navigate('/user/employees/add')} className=' bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
+                                <button onClick={()=>navigate('/user/grn/add')} className=' bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
                             </div>
                             <div className='flex'>
                                 <div className=' text-gray-800 '>
