@@ -65,18 +65,20 @@ const AddGrn = () => {
       }
       else{
           await axios.get(`${apiConfig.url}/api/inventory/get/${product}`).then(result=>{
-              const array = {
-                  "product" : {
-                      "id" : product,
-                      "prodctname" : result.data.prodctname,
-                      "availability" : result.data.onhandqty > 20 ? "available" : "low stock",
-                      "onhandqty" : parseFloat(result.data.onhandqty) + parseFloat(count),
-                      "inqty" : parseFloat(result.data.inqty) + parseFloat(count),
-                  },
-                  "quantity" : count,
-              };
-              setSelected((prevvalues)=>[...prevvalues, array]);
-              setShowmenu(false);
+                const array = {
+                    "product" : {
+                        "id" : product,
+                        "prodctname" : result.data.prodctname,
+                        "availability" : result.data.onhandqty > 20 ? "available" : "low stock",
+                        "onhandqty" : parseFloat(result.data.onhandqty) + parseFloat(count),
+                        "inqty" : parseFloat(result.data.inqty) + parseFloat(count),
+                    },
+                    "quantity" : count,
+                };
+                setSelected((prevvalues)=>[...prevvalues, array]);
+                setShowmenu(false);
+                setCount("");
+                setProduct(0);
           });
       }
   }
@@ -202,7 +204,7 @@ const AddGrn = () => {
                                     <th className='p-1 text-sm font-semibold tracking-wide'></th>
                                 </tr>
                             </thead>
-                            <tbody className=' divide-y divide-gray-200'>
+                            <tbody>
                                 {
                                   selected.map((value, index)=>(
                                     <tr key={index}>
