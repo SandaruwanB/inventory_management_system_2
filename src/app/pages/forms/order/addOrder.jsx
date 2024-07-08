@@ -14,7 +14,7 @@ const AddOrder = () => {
     const [ordername, setOrdername] = useState("");
     const [note, setNote] = useState("");
     const [date, setDate] = useState("");
-    const [customer, setCustomer] = useState("");
+    const [customer, setCustomer] = useState(0);
     const [product, setProduct] = useState(0);
     const [count, setCount] = useState("");
     const [orderlines, setOrderlines] = useState([]);
@@ -32,10 +32,59 @@ const AddOrder = () => {
         axios.get(`${apiConfig.url}/api/inventory/all`).then(result=>{
             setProducts(result.data);
         });
+        setOrdername("ORDER" + Math.floor((Math.random() * (99999 - 10000) + 10000 )));
     },[]);
 
-    const saveOrder = ()=>{
-
+    const saveOrder = async ()=>{
+        if (date === "" || customer === 0){
+            toast.error('You missed some required files!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+        else if (orderlines.length === 0){
+            toast.error('Please provide products and counts!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+        else{
+            await axios.post(`${apiConfig.url}/api/orders/add`, {
+                ordername : ordername,
+                note : note,
+                date : date,
+                customer : {
+                    id : customer
+                },
+                ordermove : orderlines
+            }).then(result=>{
+                if (result.status === 200){
+                    toast.success('Successfully Created!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    setNote("");setDate("");setCustomer(0);setOrderlines([]);
+                }
+            })
+        }
     }
 
     const removeItem = (index)=>{
@@ -74,8 +123,8 @@ const AddOrder = () => {
                         "id" : product,
                         "prodctname" : result.data.prodctname,
                         "availability" : result.data.onhandqty > 20 ? "available" : "low stock",
-                        "onhandqty" : parseFloat(result.data.onhandqty) + parseFloat(count),
-                        "inqty" : parseFloat(result.data.inqty) + parseFloat(count),
+                        "onhandqty" : parseFloat(result.data.onhandqty) - parseFloat(count),
+                        "inqty" : parseFloat(result.data.inqty) - parseFloat(count),
                     },
                     "itemcount" : count,
                 };
@@ -110,7 +159,7 @@ const AddOrder = () => {
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='date' >
-                                                date
+                                                date <span className='text-red-400 text-xs'>*</span>
                                             </label>
                                             <input name='date' id='date' onChange={(e)=>setDate(e.target.value)} value={date} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="date" placeholder="120"/>
                                         </div>
@@ -118,13 +167,13 @@ const AddOrder = () => {
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='customer'>
-                                                Customer
+                                                Customer <span className='text-red-400 text-xs'>*</span>
                                             </label>
                                             <select id='customer' onChange={(e)=>setCustomer(e.target.value)} value={customer} name='customer' className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                                                 <option value={0}>None</option>
                                                 {
                                                     customers.map((value,index)=>(
-                                                        <option key={index}>{value.firstname + " " + value.lastname + " " + value.city}</option>
+                                                        <option key={index} value={value.id}>{value.firstname + " " + value.lastname + " " + value.city}</option>
                                                     ))
                                                 }
                                             </select>
