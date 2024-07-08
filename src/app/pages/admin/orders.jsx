@@ -38,6 +38,7 @@ const Orders = () => {
     }
 
     const deleteOrder = async (id)=>{
+        setPopupvisibility(false);
         await axios.delete(`${apiConfig.url}/api/orders/delete/${id}`).then(()=>{
             toast.info('Successfully Removed!', {
                 position: "top-right",
