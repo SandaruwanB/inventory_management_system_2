@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { apiConfig } from '../../../../apiConfig';
 import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar';
+import OrderPDF from '../../../components/orderPDF';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 
 const EditOrder = () => {
     document.title = "Stockify | Orders";
@@ -10,6 +12,7 @@ const EditOrder = () => {
     const [order, setOrder] = useState([]);
     const [ordermove, setOrdermove] = useState([]);
     const [customer, setCustomer] = useState([]);
+    const [company, setCompany] = useState([]);
 
     const { id } = useParams();
 
@@ -21,6 +24,9 @@ const EditOrder = () => {
             setOrdermove(result.data.ordermove);
             setCustomer(result.data.customer);
         });
+        axios.get(`${apiConfig.url}/api/company/all`).then(result=>{
+            setCompany(result.data[0]);
+        })
     },[id])
 
 
@@ -31,7 +37,16 @@ const EditOrder = () => {
             <div className="p-4">
                 <div className='w-full'>
                     <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/orders")}>Orders</span> / {order.ordername}</h1>
-                    <h1 className='font-semibold text-gray-700 mt-10'>Add new order</h1>
+                        <div className='mt-10 flex justify-between'>
+                            <div>
+                              <h1 className='font-semibold text-gray-700'>View order details</h1>
+                            </div>
+                        <div className='mr-2'>
+                            <PDFDownloadLink document={<OrderPDF customer={customer} orderlines={ordermove} company={company} order={order} />} fileName='order'>
+                                {({loading})=>(loading ? "creating..." : <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>)}
+                            </PDFDownloadLink>
+                        </div>
+                    </div>
                     <div className='w-full bg-gray-400 h-[2px]'></div>
                     <div className='w-full mt-10'>
                         <div className="w-full">

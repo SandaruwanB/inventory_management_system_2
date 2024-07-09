@@ -20,8 +20,7 @@ const EditGrn = () => {
 
     useEffect(()=>{
         axios.get(`${apiConfig.url}/api/company/all`).then(result=>{
-            setCompany(result.data);
-            console.log(result.data);
+            setCompany(result.data[0]);
         });      
         axios.get(`${apiConfig.url}/api/grn/get/${id}`).then(result=>{
             setGrn(result.data);
