@@ -22,7 +22,7 @@ const Orders = () => {
     },[]);
 
     const editOrder = (id)=>{
-
+        navigate(`/user/orders/edit/${id}`);
     }
     const removeOrder = (id)=>{
         setPopupvisibility(true);
@@ -97,7 +97,7 @@ const Orders = () => {
                                                 <td className='p-3 text-sm text-gray-700'>{value.ordermove ? (value.ordermove).length : 0}</td>
                                                 <td className='p-3 text-sm text-gray-700'>{value.date}</td>
                                                 <td className='p-3 text-sm text-gray-700'>
-                                                    <button className='hover:text-green-500' onClick={()=>editOrder(value.id)}><Icon icon="basil:edit-solid" width={26} /></button>
+                                                    <button className='hover:text-green-500' onClick={()=>editOrder(value.id)}><Icon icon="ion:open" width={26} /></button>
                                                     <button className='ml-4 hover:text-red-500' onClick={()=>removeOrder(value.id)}><Icon icon="material-symbols-light:delete"  width={28}/></button>
                                                     <ConfirmDialog visible={popupvisibility} />
                                                 </td>

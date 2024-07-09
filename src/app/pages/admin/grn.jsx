@@ -97,7 +97,7 @@ const Grn = () => {
                                                 <td className='p-3 text-sm text-gray-700'>{value.suplier.firstname + " " + value.suplier.lastname}</td>
                                                 <td className='p-3 text-sm text-gray-700'>{value.date}</td>
                                                 <td className='p-3 text-sm text-gray-700'>
-                                                    <button className='hover:text-green-500' onClick={()=>editGrn(value.id)}><Icon icon="basil:edit-solid" width={26} /></button>
+                                                    <button className='hover:text-green-500' onClick={()=>editGrn(value.id)}><Icon icon="ion:open" width={26} /></button>
                                                     <button className='ml-4 hover:text-red-500' onClick={()=>removeGrn(value.id)}><Icon icon="material-symbols-light:delete"  width={28}/></button>
                                                     <ConfirmDialog visible={popupvisibility} />
                                                 </td>

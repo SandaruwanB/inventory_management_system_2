@@ -144,8 +144,8 @@ const AddOrder = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/orders")}>Orders</span> / Add</h1>
-                    <h1 className='font-semibold text-gray-700 mt-10'>Add new order</h1>
+                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/orders")}>Orders</span> / </h1>
+                    <h1 className='font-semibold text-gray-700 mt-10'>Order details</h1>
                     <div className='w-full bg-gray-400 h-[2px]'></div>
                     <div className='w-full mt-10'>
                         <div className="w-full">
@@ -153,7 +153,7 @@ const AddOrder = () => {
                                 <div className='w-full max-w-lg'>
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
-                                            <input name='ordername' id='ordername' onChange={()=>setOrdername()} value={ordername} className="appearance-none block w-full text-4xl text-gray-700 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="ORDER1213" />
+                                            <input name='ordername' id='ordername' onChange={()=>setOrdername()} value={ordername} className="appearance-none block w-full text-4xl text-gray-700 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="ORDER1213" readOnly/>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
