@@ -68,7 +68,7 @@ const Dashboard = () => {
                             <tbody className=' divide-y divide-gray-200'>
                                 {
                                     finalinvoices.map((value, index)=>(
-                                        index < 5 ?
+                                        index < 4 ?
                                         <tr className={ index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
                                             <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                             <td className='p-3 text-sm text-gray-700'>{value.invoicenumber}</td>
@@ -104,7 +104,7 @@ const Dashboard = () => {
                                 {
                                     finalpayments.map((value,index)=>(
 
-                                        index < 5 ? 
+                                        index < 4 ? 
                                         <tr className={ index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
                                             <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                             <td className='p-3 text-sm text-gray-700'>{value.payslipcode}</td>
