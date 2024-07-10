@@ -128,7 +128,7 @@ const OrderPDF = ({customer, company, orderlines, order, total }) => (
                         <Text>--------------------</Text>
                     </View>
                     <View style={[style.absolute, style.midFont, {left : '75%', top : (orderlines.length * 20) + 20, fontWeight : 'bold'}]} >
-                        <Text>Total</Text>
+                        <Text>TOTAL</Text>
                     </View>
                     <View style={[style.absolute, style.smallFont, {left : '85%', top : (orderlines.length * 20) + 20, fontWeight : 'bold'}]} >
                         <Text>Rs.{total}</Text>
