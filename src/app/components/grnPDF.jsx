@@ -96,6 +96,22 @@ const GrnPDF = ({suplier, company, selected, grn }) => (
                     </View>
 
                     <View style={style.line}></View>
+
+                    {
+                        selected.map((value,index)=>(
+                            <>
+                                <View style={[ style.absolute, {left : 2,top : index === 0 ? 20 : (index + 1) * 17}]}>
+                                    <Text style={[style.smallFont, {marginTop : 3}]}>{index + 1}</Text>
+                                </View>
+                                <View style={[ style.absolute, {left : '25%',top : index === 0 ? 20 : (index + 1) * 17}]}>
+                                    <Text style={[style.smallFont, {marginTop : 3}]}>{value.product.prodctname}</Text>
+                                </View>
+                                <View style={[ style.absolute, {left : '85%',top : index === 0 ? 20 : (index + 1) * 17}]}>
+                                    <Text style={[style.smallFont, {marginTop : 3}]}>{value.quantity + " " + value.product.unitofmesure}</Text>
+                                </View>
+                            </>
+                        ))
+                    }
                 </View>
             </View>
         </Page>
