@@ -99,6 +99,14 @@ const Settings = () => {
         })
     }
 
+    const updateUserDetails = ()=>{
+
+    }
+
+    const changePassword = ()=>{
+
+    }
+
     const logOut = ()=>{
         navigate('/');
     }
@@ -172,7 +180,7 @@ const Settings = () => {
                                         </div>
                                         <div className="flex flex-wrap w-full -mx-3 mb-6">
                                             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                                <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>{}}>Update</button>
+                                                <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>updateUserDetails()}>Update</button>
                                             </div>
                                         </div>
                                     </div>
@@ -208,7 +216,7 @@ const Settings = () => {
                                         </div>
                                         <div className="flex flex-wrap w-full -mx-3 mb-6">
                                             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                                <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>{}}>Update</button>
+                                                <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>changePassword()}>Update</button>
                                             </div>
                                         </div>
                                     </div>
