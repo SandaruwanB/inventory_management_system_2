@@ -49,7 +49,7 @@ const style = StyleSheet.create({
     }
 });
 
-const OrderPDF = ({customer, company, orderlines, order }) => (
+const OrderPDF = ({customer, company, orderlines, order, total }) => (
     <Document>
         <Page size={'A4'} style={style.page}>
             <View style={style.header}>
@@ -84,14 +84,55 @@ const OrderPDF = ({customer, company, orderlines, order }) => (
                 <View style={{marginTop : 20, width : '100%', backgroundColor : 'gray', padding : 5, textAlign : 'center'}}>
                     <Text style={{color : 'white', fontSize : 12}}>{order.ordername}</Text>
                 </View>
-                <View style={[ style.absolute, {left : 2}]}>
-                    <Text style={[style.midFont, {fontWeight : 'extrabold'}]}>No.</Text>
-                </View>
-                <View style={[ style.absolute, {left : '25%'}]}>
-                    <Text style={[style.midFont, {fontWeight : 'extrabold'}]}>Product</Text>
-                </View>
-                <View style={[ style.absolute, {left : '85%'}]}>
-                    <Text style={[style.midFont, {fontWeight : 'extrabold'}]}>Quantity</Text>
+                <View style={style.tableContainer}>
+                    <View style={[ style.absolute, {left : 2}]}>
+                        <Text style={[style.midFont, {fontWeight : 'extrabold'}]}>No.</Text>
+                    </View>
+                    <View style={[ style.absolute, {left : '15%'}]}>
+                        <Text style={[style.midFont, {fontWeight : 'extrabold'}]}>Product</Text>
+                    </View>
+                    <View style={[ style.absolute, {left : '50%'}]}>
+                        <Text style={[style.midFont, {fontWeight : 'extrabold'}]}>Unit Price</Text>
+                    </View>
+                    <View style={[ style.absolute, {left : '65%'}]}>
+                        <Text style={[style.midFont, {fontWeight : 'extrabold'}]}>Quantity</Text>
+                    </View>
+                    <View style={[ style.absolute, {left : '85%'}]}>
+                        <Text style={[style.midFont, {fontWeight : 'extrabold'}]}>Price</Text>
+                    </View>
+
+                    <View style={style.line}></View>
+
+                    {
+                        orderlines.map((value,index)=>(
+                            <>
+                                <View style={[ style.absolute, {left : 2,top : index === 0 ? 20 : (index + 1) * 17}]}>
+                                    <Text style={[style.smallFont, {marginTop : 3}]}>{index + 1}</Text>
+                                </View>
+                                <View style={[ style.absolute, {left : '15%',top : index === 0 ? 20 : (index + 1) * 17}]}>
+                                    <Text style={[style.smallFont, {marginTop : 3}]}>{value.product.prodctname}</Text>
+                                </View>
+                                <View style={[ style.absolute, {left : '50%',top : index === 0 ? 20 : (index + 1) * 17}]}>
+                                    <Text style={[style.smallFont, {marginTop : 3}]}>Rs.{value.product.unitprice}</Text>
+                                </View>
+                                <View style={[ style.absolute, {left : '65%',top : index === 0 ? 20 : (index + 1) * 17}]}>
+                                    <Text style={[style.smallFont, {marginTop : 3}]}>Rs.{value.itemcount}</Text>
+                                </View>
+                                <View style={[ style.absolute, {left : '85%',top : index === 0 ? 20 : (index + 1) * 17}]}>
+                                    <Text style={[style.smallFont, {marginTop : 3}]}>Rs.{value.itemcount * value.product.unitprice}</Text>
+                                </View>
+                            </>
+                        ))
+                    }
+                    <View style={[style.absolute, style.midFont, {left : '85%', top : (orderlines.length * 20) + 10, fontWeight : 'bold'}]} >
+                        <Text>--------------------</Text>
+                    </View>
+                    <View style={[style.absolute, style.midFont, {left : '75%', top : (orderlines.length * 20) + 20, fontWeight : 'bold'}]} >
+                        <Text>Total</Text>
+                    </View>
+                    <View style={[style.absolute, style.smallFont, {left : '85%', top : (orderlines.length * 20) + 20, fontWeight : 'bold'}]} >
+                        <Text>Rs.{total}</Text>
+                    </View>
                 </View>
             </View>
         </Page>

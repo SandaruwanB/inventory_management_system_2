@@ -13,6 +13,7 @@ const EditOrder = () => {
     const [ordermove, setOrdermove] = useState([]);
     const [customer, setCustomer] = useState([]);
     const [company, setCompany] = useState([]);
+    const [total, setTotal] = useState(0);
 
     const { id } = useParams();
 
@@ -26,8 +27,15 @@ const EditOrder = () => {
         });
         axios.get(`${apiConfig.url}/api/company/all`).then(result=>{
             setCompany(result.data[0]);
-        })
-    },[id])
+        });
+
+        let total = 0;
+        ordermove.map((value,index)=>{
+            total += value.itemcount * value.product.unitprice;
+            return 0;
+        });
+        setTotal(total);
+    },[id, ordermove])
 
 
   return (
@@ -42,7 +50,7 @@ const EditOrder = () => {
                               <h1 className='font-semibold text-gray-700'>View order details</h1>
                             </div>
                         <div className='mr-2'>
-                            <PDFDownloadLink document={<OrderPDF customer={customer} orderlines={ordermove} company={company} order={order} />} fileName='order'>
+                            <PDFDownloadLink document={<OrderPDF total={total} customer={customer} orderlines={ordermove} company={company} order={order} />} fileName='order'>
                                 {({loading})=>(loading ? "creating..." : <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>)}
                             </PDFDownloadLink>
                         </div>
