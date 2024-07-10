@@ -11,24 +11,29 @@ const Dashboard = () => {
     const [supliers, setSupliers] = useState([]);
     const [items, setItems] = useState([]);
     const [employees, setEmployees] = useState([]);
+    const [finalinvoices, setFinalinvoices] = useState([]);
+    const [finalpayments, setFinalpaymanets] = useState([]);
 
     useEffect(()=>{
-        const getData = async ()=>{
-            await axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
-                setCustomers(result.data);
-            });
-            await axios.get(`${apiConfig.url}/api/supliers/all`).then(result=>{
-                setSupliers(result.data);
-            });
-            await axios.get(`${apiConfig.url}/api/inventory/all`).then(result=>{
-                setItems(result.data);
-            });
-            await axios.get(`${apiConfig.url}/api/employees/all`).then(result=>{
-                setEmployees(result.data);
-            })
-        }
-        getData();
-    },[setCustomers,setEmployees,setItems,setSupliers]);
+        axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
+            setCustomers(result.data);
+        });
+        axios.get(`${apiConfig.url}/api/supliers/all`).then(result=>{
+            setSupliers(result.data);
+        });
+        axios.get(`${apiConfig.url}/api/inventory/all`).then(result=>{
+            setItems(result.data);
+        });
+        axios.get(`${apiConfig.url}/api/employees/all`).then(result=>{
+            setEmployees(result.data);
+        });
+        axios.get(`${apiConfig.url}/api/payments/all/desc`).then(result=>{
+            setFinalpaymanets(result.data);
+        });
+        axios.get(`${apiConfig.url}/api/invoicing/all/desc`).then(result=>{
+            setFinalinvoices(result.data);
+        })
+    },[]);
 
 
   return (
@@ -58,46 +63,20 @@ const Dashboard = () => {
                                 </tr>
                             </thead>
                             <tbody className=' divide-y divide-gray-200'>
-                                <tr className='bg-white'>
-                                    <td className='p-3 text-sm text-gray-700'>1</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-white'>
-                                        <span className=' bg-yellow-500 px-4 py-1 rounded'>Draft</span>
-                                    </td>
-                                    <td className='p-3 text-sm text-gray-700'>2024-06-08</td>
-                                    <td className='p-3 text-sm text-gray-700'>Rs.1345.98</td>
-                                </tr>
-                                <tr className='bg-gray-100'>
-                                    <td className='p-3 text-sm text-gray-700'>2</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-white'>
-                                        <span className=' bg-green-700 px-4 py-1 rounded'>Posted</span>
-                                    </td>
-                                    <td className='p-3 text-sm text-gray-700'>2024-05-01</td>
-                                    <td className='p-3 text-sm text-gray-700'>Rs.1345.98</td>
-                                </tr>
-                                <tr className='bg-white'>
-                                    <td className='p-3 text-sm text-gray-700'>3</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-white'>
-                                        <span className=' bg-red-700 px-4 py-1 rounded'>Canceled</span>
-                                    </td>
-                                    <td className='p-3 text-sm text-gray-700'>2024-04-29</td>
-                                    <td className='p-3 text-sm text-gray-700'>Rs.1345.98</td>
-                                </tr>
-                                <tr className='bg-gray-100'>
-                                    <td className='p-3 text-sm text-gray-700'>4</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-white'>
-                                        <span className=' bg-green-700 px-4 py-1 rounded'>Posted</span>
-                                    </td>
-                                    <td className='p-3 text-sm text-gray-700'>2024-04-28</td>
-                                    <td className='p-3 text-sm text-gray-700'>Rs.1345.98</td>
-                                </tr>
+                                {
+                                    finalinvoices.map((value, index)=>(
+                                        <tr className={ index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
+                                            <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
+                                            <td className='p-3 text-sm text-gray-700'>{value.invoicenumber}</td>
+                                            <td className='p-3 text-sm text-gray-700'>{value.customer.firstname + " " + value.customer.lastname}</td>
+                                            <td className='p-3 text-sm text-white'>
+                                                <span className={value.status === "draft" ? 'bg-yellow-500 px-4 py-1 rounded' : value.status === "posted" ? 'bg-green-500 px-4 py-1 rounded' : 'bg-red-500 px-4 py-1 rounded'}>{value.status}</span>
+                                            </td>
+                                            <td className='p-3 text-sm text-gray-700'>{value.date}</td>
+                                            <td className='p-3 text-sm text-gray-700'>Rs.{value.amount}</td>
+                                        </tr>
+                                    ))
+                                }
                                 <tr className='bg-white'>
                                     <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={5}>Show More...</td>
                                 </tr>
@@ -111,48 +90,25 @@ const Dashboard = () => {
                                 <tr>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left w-10'>No.</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Pay Slip no.</th>
-                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Suplier</th>
+                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Suplier/Customer</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Status</th>
                                     <th className='p-3 text-sm font-semibold tracking-wide text-left'>Amount</th>
                                 </tr>
                             </thead>
                             <tbody className=' divide-y divide-gray-200'>
-                                <tr className='bg-white'>
-                                    <td className='p-3 text-sm text-gray-700'>1</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-white'>
-                                        <span className=' bg-yellow-500 px-4 py-1 rounded'>Draft</span>
-                                    </td>
-                                    <td className='p-3 text-sm text-gray-700'>Rs.1345.98</td>
-                                </tr>
-                                <tr className='bg-gray-100'>
-                                    <td className='p-3 text-sm text-gray-700'>2</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-white'>
-                                        <span className=' bg-green-700 px-4 py-1 rounded'>Posted</span>
-                                    </td>
-                                    <td className='p-3 text-sm text-gray-700'>Rs.1345.98</td>
-                                </tr>
-                                <tr className='bg-white'>
-                                    <td className='p-3 text-sm text-gray-700'>3</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-white'>
-                                        <span className=' bg-red-700 px-4 py-1 rounded'>Canceled</span>
-                                    </td>
-                                    <td className='p-3 text-sm text-gray-700'>Rs.1345.98</td>
-                                </tr>
-                                <tr className='bg-gray-100'>
-                                    <td className='p-3 text-sm text-gray-700'>4</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-gray-700'>sdhgs</td>
-                                    <td className='p-3 text-sm text-white'>
-                                        <span className=' bg-green-700 px-4 py-1 rounded'>Posted</span>
-                                    </td>
-                                    <td className='p-3 text-sm text-gray-700'>Rs.1345.98</td>
-                                </tr>
+                                {
+                                    finalpayments.map((value,index)=>(
+                                        <tr className={ index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
+                                            <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
+                                            <td className='p-3 text-sm text-gray-700'>{value.payslipcode}</td>
+                                            <td className='p-3 text-sm text-gray-700'>{value.suplier ? value.suplier.firstname + " " + value.suplier.lastname : value.customer.firstname + " " + value.customer.lastname }</td>
+                                            <td className='p-3 text-sm text-white'>
+                                                <span className={value.status === "draft" ? 'bg-yellow-500 px-4 py-1 rounded' : value.status === "posted" ? 'bg-green-500 px-4 py-1 rounded' : 'bg-red-500 px-4 py-1 rounded'}>{value.status}</span>
+                                            </td>
+                                            <td className='p-3 text-sm text-gray-700'>Rs.{value.amount}</td>
+                                        </tr>
+                                    ))
+                                }
                                 <tr className='bg-white'>
                                     <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={5}>Show More...</td>
                                 </tr>
