@@ -3,6 +3,7 @@ import DashboadrdSideBar from '../../layouts/dashboadrdSideBar'
 import DashItem from '../../components/dashItem';
 import axios from 'axios';
 import { apiConfig } from '../../../apiConfig';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
     document.title = "Stockify | Dashboard";
@@ -13,6 +14,8 @@ const Dashboard = () => {
     const [employees, setEmployees] = useState([]);
     const [finalinvoices, setFinalinvoices] = useState([]);
     const [finalpayments, setFinalpaymanets] = useState([]);
+
+    const navigate = useNavigate();
 
     useEffect(()=>{
         axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
@@ -65,6 +68,7 @@ const Dashboard = () => {
                             <tbody className=' divide-y divide-gray-200'>
                                 {
                                     finalinvoices.map((value, index)=>(
+                                        index < 5 ?
                                         <tr className={ index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
                                             <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                             <td className='p-3 text-sm text-gray-700'>{value.invoicenumber}</td>
@@ -75,10 +79,11 @@ const Dashboard = () => {
                                             <td className='p-3 text-sm text-gray-700'>{value.date}</td>
                                             <td className='p-3 text-sm text-gray-700'>Rs.{value.amount}</td>
                                         </tr>
+                                        : ''
                                     ))
                                 }
                                 <tr className='bg-white'>
-                                    <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={5}>Show More...</td>
+                                    <td onClick={()=>navigate('/user/invoicing')} className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={6}>Show More...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -98,6 +103,8 @@ const Dashboard = () => {
                             <tbody className=' divide-y divide-gray-200'>
                                 {
                                     finalpayments.map((value,index)=>(
+
+                                        index < 5 ? 
                                         <tr className={ index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
                                             <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                             <td className='p-3 text-sm text-gray-700'>{value.payslipcode}</td>
@@ -106,11 +113,11 @@ const Dashboard = () => {
                                                 <span className={value.status === "draft" ? 'bg-yellow-500 px-4 py-1 rounded' : value.status === "posted" ? 'bg-green-500 px-4 py-1 rounded' : 'bg-red-500 px-4 py-1 rounded'}>{value.status}</span>
                                             </td>
                                             <td className='p-3 text-sm text-gray-700'>Rs.{value.amount}</td>
-                                        </tr>
+                                        </tr> : ''
                                     ))
                                 }
                                 <tr className='bg-white'>
-                                    <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={5}>Show More...</td>
+                                    <td onClick={()=>navigate('/user/payments')} className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={5}>Show More...</td>
                                 </tr>
                             </tbody>
                         </table>
