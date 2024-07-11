@@ -99,6 +99,22 @@ const Settings = () => {
         })
     }
 
+    const updateUserDetails = ()=>{
+
+    }
+
+    const changePassword = ()=>{
+
+    }
+
+    const logOut = ()=>{
+        navigate('/');
+    }
+
+    const removeAccount = ()=>{
+
+    }
+
 
     return (
         <>
@@ -164,7 +180,7 @@ const Settings = () => {
                                         </div>
                                         <div className="flex flex-wrap w-full -mx-3 mb-6">
                                             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                                <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>{}}>Update</button>
+                                                <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>updateUserDetails()}>Update</button>
                                             </div>
                                         </div>
                                     </div>
@@ -200,7 +216,7 @@ const Settings = () => {
                                         </div>
                                         <div className="flex flex-wrap w-full -mx-3 mb-6">
                                             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                                <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>{}}>Update</button>
+                                                <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>changePassword()}>Update</button>
                                             </div>
                                         </div>
                                     </div>
@@ -288,8 +304,8 @@ const Settings = () => {
                                 <div className='grid md:grid-cols-2 grid-cols-1 gap-2'>
                                     <div className="flex flex-wrap w-full -mx-3 mb-6">
                                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                            <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>{}}>Log Out</button>
-                                            <button className='bg-red-600 hover:bg-red-800 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/employees')}>Remove Account</button>
+                                            <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>logOut()}>Log Out</button>
+                                            <button className='bg-red-600 hover:bg-red-800 px-4 py-2 text-white rounded ml-4' onClick={()=>removeAccount()}>Remove Account</button>
                                         </div>
                                     </div>
                                 </div>
