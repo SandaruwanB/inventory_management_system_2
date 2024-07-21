@@ -51,7 +51,7 @@ const DashboadrdSideBar = () => {
         },
         {
           title: "Customer Payments",
-          path: "/user/payments",
+          path: "/user/customer/payments",
           icon : "mdi:account-payment"
         },
       ],
@@ -77,7 +77,7 @@ const DashboadrdSideBar = () => {
         },
         {
           title: "Suplier Payments",
-          path: "/user/payments",
+          path: "/user/suplier/payments",
           icon : "mdi:account-payment"
         },
       ],

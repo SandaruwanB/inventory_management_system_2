@@ -7,7 +7,7 @@ import { apiConfig } from '../../../apiConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 
-const Payments = () => {
+const SuplierPayments = () => {
     document.title = "Stockify | Payments";
 
     const [payments, setPayments] = useState([]);
@@ -96,7 +96,7 @@ const Payments = () => {
                                     payments.map((value, index)=>{
                                         return (
                                             
-                                                value.paymenttype === "customer" ? 
+                                                value.paymenttype === "suplier" ? 
                                                     <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                         <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.payslipcode}</td>
@@ -136,4 +136,4 @@ const Payments = () => {
   )
 }
 
-export default Payments
+export default SuplierPayments

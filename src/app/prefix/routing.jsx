@@ -32,6 +32,7 @@ import AddOrder from '../pages/forms/order/addOrder'
 import AddGrn from '../pages/forms/grn/addGrn'
 import EditGrn from '../pages/forms/grn/editGrn'
 import EditOrder from '../pages/forms/order/editOrder'
+import SuplierPayments from '../pages/admin/suplierPayments'
 
 function Routing() {
   return (
@@ -49,7 +50,8 @@ function Routing() {
             <Route path='/user/supliers' element={<Supliers />} />
             <Route path='/user/inventory' element={<Inventory />} />
             <Route path='/user/invoicing' element={<Invoicing />} />
-            <Route path='/user/payments' element={<Payments />} />
+            <Route path='/user/customer/payments' element={<Payments />} />
+            <Route path='/user/suplier/payments' element={<SuplierPayments />} />
             <Route path='/user/grn' element={<Grn />}/>
             <Route path='/user/orders' element={<Orders />} />
             <Route path='/user/users' element={<Users />} />
