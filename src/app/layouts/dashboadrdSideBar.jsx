@@ -115,18 +115,7 @@ const DashboadrdSideBar = () => {
     {
       title: "Settings",
       icon: "material-symbols:settings",
-      subcategories: [
-        {
-          title: "User Settings",
-          path: "/user/settings",
-          icon : "flowbite:user-settings-solid"
-        },
-        {
-          title: "Log Out",
-          path: "/user/customers/add",
-          icon : "clarity:logout-solid",
-        },
-      ],
+      path: "/user/settings"
     },
   ];
 
