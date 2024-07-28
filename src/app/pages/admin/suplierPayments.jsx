@@ -18,14 +18,14 @@ const SuplierPayments = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/payments/all`).then(result => {
+        axios.get(`${apiConfig.url}/api/payments/suplier`).then(result => {
             setPayments(result.data);
             setFilteredPayments(result.data);
         });
     }, []);
 
     const editPayment = (id) => {
-        navigate(`/user/payments/edit/${id}`);
+        navigate(`/user/suplier/payments/edit/${id}`);
     }
 
     const removePayment = (id) => {
@@ -83,11 +83,11 @@ const SuplierPayments = () => {
             <div className="p-4 sm:ml-64">
                 <div className="p-4">
                     <div className='w-full'>
-                        <h1 className='mb-4 text-3xl text-gray-800 font-semibold'>Payments</h1>
+                        <h1 className='mb-4 text-3xl text-gray-800 font-semibold'>Suplier Payments</h1>
                         <div className='w-full mt-10'>
                             <div className='w-full flex justify-between'>
                                 <div>
-                                    <button onClick={() => navigate('/user/payments/add')} className='bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
+                                    <button onClick={() => navigate('/user/suplier/payments/add')} className='bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
                                 </div>
                                 <div className='flex'>
                                     <input

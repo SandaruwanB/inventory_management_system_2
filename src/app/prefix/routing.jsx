@@ -36,6 +36,8 @@ import SuplierPayments from '../pages/admin/suplierPayments'
 import SuplierOrders from '../pages/admin/suplierOrders'
 import AddCustomerOrder from '../pages/forms/order/addCustomerOrder'
 import EditSuplierOrder from '../pages/forms/order/editSuplierOrder'
+import SuplierPaymentForm from '../pages/forms/payment/suplierPaymentForm'
+import EditSuplierPayment from '../pages/forms/payment/editSuplierPayment'
 
 function Routing() {
   return (
@@ -78,6 +80,8 @@ function Routing() {
 
             <Route path='/user/customer/payments/add' element={<PaymentsForm />}/>
             <Route path='/user/customer/payments/edit/:id' element={<EditPayments />} />
+            <Route path='/user/suplier/payments/add' element={<SuplierPaymentForm />} />
+            <Route path='/user/suplier/payments/edit/:id' element={<EditSuplierPayment />} />
 
             <Route path='/user/invoicing/add' element={<AddInvoicing />}/>
             <Route path='/user/invoicing/edit/:id' element={<EditInvoicing />} />

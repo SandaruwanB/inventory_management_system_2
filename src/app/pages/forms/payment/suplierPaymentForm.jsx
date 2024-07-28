@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar';
-import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import validator from 'validator';
 import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import PaymentPDF from '../../../components/paymentPDF';
 
 
-const EditPayments = () => {
-    document.title = "Stockify | Customer Payments";
+const SuplierPaymentForm = () => {
+    document.title = "Stockify | Suplier Payments";
 
     const [payslipcode, setPayslipcode] = useState("");
     const [status, setStatus] = useState("");
@@ -20,51 +19,21 @@ const EditPayments = () => {
     const [accountholder, setAccountholder] = useState("");
     const [bank, setBank] = useState("");
     const [amount, setAmount] = useState("");
-    const [paymenttype, setPaymenttype] = useState("");
     const [customer, setCustomer] = useState("");
     const [suplier, setSuplier] = useState("");
 
-    const [docCustomer, setDocCustomer] = useState([]);
-    const [docSuplier, setDocSuplier] = useState([]);    
-    const [company, setCompany] = useState([]);
-    const [payment, setPayment] = useState([]);
-
-    const [customers, setCustomers] = useState([]);
     const [supliers, setSupliers] = useState([]);
 
-    const {id} = useParams();
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
-            setCustomers(result.data);
-        });
         axios.get(`${apiConfig.url}/api/supliers/all`).then(result=>{
             setSupliers(result.data);
         });
-        axios.get(`${apiConfig.url}/api/payments/get/${id}`).then(result=>{
-            setPayslipcode(result.data.payslipcode);
-            setStatus(result.data.status);
-            setNote(result.data.note ? result.data.note : "");
-            setDate(result.data.date);
-            setPaymentMethod(result.data.paymentmethod);
-            setAccountnumber(result.data.accountnumber);
-            setAccountholder(result.data.accountholder);
-            setBank(result.data.bank);
-            setAmount(result.data.amount);
-            setPaymenttype(result.data.paymenttype);
-            setCustomer(result.data.customer ? result.data.customer.id : 0);
-            setSuplier(result.data.suplier ? result.data.suplier.id : 0);
-            setPayment(result.data);
-            setDocCustomer(result.data.customer);
-            setDocSuplier(result.data.suplier);
-        });
-        axios.get(`${apiConfig.url}/api/company/all`).then(result=>{
-            setCompany(result.data[0]);
-        })
-    },[id]);
+        setPayslipcode("PAY" + Math.floor((Math.random() * (99999 - 10000) + 10000 )));
+    },[]);
 
-    const updatePayment = async ()=>{
+    const addPayment = async ()=>{
         if (status === "" || date === "" || paymentmethod === "" || amount === ""){
             toast.error('You missed some required fields !', {
                 position: "top-right",
@@ -89,8 +58,20 @@ const EditPayments = () => {
                 theme: "light",
             });
         }
-        else if (paymenttype === "" && ( customer === "" || suplier === "")){
-            toast.error('Please choose payment type !', {
+        else if (customer === ""){
+            toast.error('Please choose customer !', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+        else if (!validator.isFloat(amount) || !validator.isInt(amount)){
+            toast.error('Invalid amount entered !', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -102,13 +83,13 @@ const EditPayments = () => {
             });
         }
         else{
-            await axios.put(`${apiConfig.url}/api/payments/update/${id}`,{
+            await axios.post(`${apiConfig.url}/api/payments/add`, {
                 payslipcode : payslipcode,
                 status : status,
                 note : note,
                 date : date,
                 paymentmethod : paymentmethod,
-                paymenttype : paymenttype,
+                paymenttype : "suplier",
                 accountnumber : accountnumber,
                 accountholder : accountholder,
                 bank : bank,
@@ -119,6 +100,7 @@ const EditPayments = () => {
                 suplier : {
                     id : parseInt(suplier)
                 },
+                createdAt : Date.now()
             }).then(result=>{
                 if (result.status === 200){
                     toast.success('Successfully Created!', {
@@ -131,30 +113,11 @@ const EditPayments = () => {
                         progress: undefined,
                         theme: "light",
                     });
-                    setPayment(result.data);
-                    setDocCustomer(result.data.customer);
-                    setDocSuplier(result.data.suplier);
+                    setStatus("");setNote("");setDate("");setPaymentMethod("");setAccountnumber("");setAccountholder("");setBank("");setAmount("");
+                    setSuplier(0); setCustomer(0);setPayslipcode("PAY" + Math.floor((Math.random() * (99999 - 10000) + 10000 )));
                 }
             })
         }
-    }
-
-    const cancelEntry = async ()=>{
-        await axios.put(`${apiConfig.url}/api/payments/entry/cancel/${id}`).then(result=>{
-            if (result.status === 200){
-                toast.info('Entry canceled!', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
-                setStatus("canceled");
-            }
-        })
     }
 
   return (
@@ -163,23 +126,8 @@ const EditPayments = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/customer/payments")}>Customer Payments</span> / Edit</h1>
-                    <div className='mt-10 flex justify-between'>
-                        <div className='text-gray-700'>
-                            <h1 className='font-semibold'>Edit & view payment details</h1>
-                        </div>
-                        <div className='mr-2'>
-
-                            <PDFDownloadLink document={<PaymentPDF payment={payment} company={company} suplier={docSuplier} customer={docCustomer} />} fileName='payment_receipt'>
-                                {({loading})=>(loading ? "creating..." : <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>)}
-                            </PDFDownloadLink>
-                            {
-                                status === "canceled" ? "" :
-                                <button onClick={()=>cancelEntry()} className='py-1 px-2 rounded mb-1 bg-yellow-600 text-white font-semibold text-sm hover:bg-yellow-800'>Cancel Entry</button>
-                            }
-                        </div>
-                    </div>
-                    
+                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/suplier/payments")}>Suplier Payments</span> / Add</h1>
+                    <h1 className='font-semibold text-gray-700 mt-10'>Create Suplier payment</h1>
                     <div className='w-full bg-gray-400 h-[2px]'></div>
                     <div className='w-full mt-10'>
                         <div className="w-full">
@@ -187,7 +135,7 @@ const EditPayments = () => {
                                 <div className='w-full max-w-lg'>
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
-                                            <input name='payslip' id='payslip' onChange={(e)=>setPayslipcode(e.target.value)} value={payslipcode} className="appearance-none block uppercase text-4xl w-full text-gray-700 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" readOnly autoComplete='false'/>
+                                            <input name='payslip' id='username' onChange={(e)=>setPayslipcode(e.target.value)} value={payslipcode} className="appearance-none block uppercase text-4xl w-full text-gray-700 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" readOnly/>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
@@ -196,21 +144,15 @@ const EditPayments = () => {
                                                 Status <span className='text-red-400 text-xs'>*</span>
                                             </label>
                                             <select id='status' name='status' onChange={(e)=>setStatus(e.target.value)} value={status} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                                                {
-                                                    status === "canceled" ? 
-                                                    <option>Canceled</option> :
-                                                    <>
-                                                        <option value="">None</option>
-                                                        <option value="draft" >Draft</option>
-                                                        <option value="posted" >Posted</option>
-                                                    </>
-                                                }
+                                                <option >None</option>
+                                                <option value="draft">Draft</option>
+                                                <option value="posted" >Posted</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
-                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='datefield'>
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='datefild'>
                                                 Date <span className='text-red-400 text-xs'>*</span>
                                             </label>
                                             <input name='datefield' id='datefield' onChange={(e)=>setDate(e.target.value)} value={date} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="date" />
@@ -222,7 +164,7 @@ const EditPayments = () => {
                                                 Payment method <span className='text-red-400 text-xs'>*</span>
                                             </label>
                                             <select id='paymentmethod' name='paymentmethod' onChange={(e)=>{setPaymentMethod(e.target.value); if (e.target.value === "cash"){ setPayslipcode("CSH" + payslipcode.slice(3))}else{setPayslipcode("BNK" + payslipcode.slice(3)) }}} value={paymentmethod} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                                                <option value="">None</option>
+                                                <option >None</option>
                                                 <option value="cash">Cash</option>
                                                 <option value="bank" >Bank</option>
                                             </select>
@@ -237,7 +179,7 @@ const EditPayments = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='w-full max-w-lg'> 
+                                <div className='w-full max-w-lg'>
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='customer'>
@@ -246,7 +188,7 @@ const EditPayments = () => {
                                             <select id='customer' name='customer' onChange={(e)=>setCustomer(e.target.value)} value={customer} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                                                 <option value={0}>None</option>
                                                 {
-                                                    customers.map((value, index)=>{
+                                                    supliers.map((value, index)=>{
                                                         return (
                                                             <option key={index} value={value.id}>{value.firstname + " " + value.lastname + " " + value.city}</option>
                                                         )
@@ -293,11 +235,8 @@ const EditPayments = () => {
                                     </div>
                                     <div className="flex flex-wrap w-full -mx-3 mb-6">
                                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                            {
-                                                status === "canceled" ? "" : 
-                                                <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>updatePayment()}>Update</button>
-                                            }                                            
-                                            <button className='bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/customer/payments')}>Cancel</button>
+                                            <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>addPayment()}>Save</button>
+                                            <button className='bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/suplier/payments')}>Cancel</button>
                                         </div>
                                     </div>
                                 </div>
@@ -312,4 +251,4 @@ const EditPayments = () => {
   )
 }
 
-export default EditPayments
+export default SuplierPaymentForm

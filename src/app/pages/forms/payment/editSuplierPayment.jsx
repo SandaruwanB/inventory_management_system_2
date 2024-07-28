@@ -7,9 +7,8 @@ import { apiConfig } from '../../../../apiConfig';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import PaymentPDF from '../../../components/paymentPDF';
 
-
-const EditPayments = () => {
-    document.title = "Stockify | Customer Payments";
+const EditSuplierPayment = () => {
+    document.title = "Stockify | Suplier Payments";
 
     const [payslipcode, setPayslipcode] = useState("");
     const [status, setStatus] = useState("");
@@ -29,16 +28,12 @@ const EditPayments = () => {
     const [company, setCompany] = useState([]);
     const [payment, setPayment] = useState([]);
 
-    const [customers, setCustomers] = useState([]);
     const [supliers, setSupliers] = useState([]);
 
     const {id} = useParams();
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
-            setCustomers(result.data);
-        });
         axios.get(`${apiConfig.url}/api/supliers/all`).then(result=>{
             setSupliers(result.data);
         });
@@ -54,7 +49,6 @@ const EditPayments = () => {
             setAmount(result.data.amount);
             setPaymenttype(result.data.paymenttype);
             setCustomer(result.data.customer ? result.data.customer.id : 0);
-            setSuplier(result.data.suplier ? result.data.suplier.id : 0);
             setPayment(result.data);
             setDocCustomer(result.data.customer);
             setDocSuplier(result.data.suplier);
@@ -89,7 +83,7 @@ const EditPayments = () => {
                 theme: "light",
             });
         }
-        else if (paymenttype === "" && ( customer === "" || suplier === "")){
+        else if (customer === ""){
             toast.error('Please choose payment type !', {
                 position: "top-right",
                 autoClose: 5000,
@@ -163,7 +157,7 @@ const EditPayments = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/customer/payments")}>Customer Payments</span> / Edit</h1>
+                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/suplier/payments")}>Suplier Payments</span> / Edit</h1>
                     <div className='mt-10 flex justify-between'>
                         <div className='text-gray-700'>
                             <h1 className='font-semibold'>Edit & view payment details</h1>
@@ -205,6 +199,9 @@ const EditPayments = () => {
                                                         <option value="posted" >Posted</option>
                                                     </>
                                                 }
+                                                {
+
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -236,25 +233,37 @@ const EditPayments = () => {
                                             <input name='amount' id='amount' onChange={(e)=>setAmount(e.target.value)} value={amount} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="1500.00"/>
                                         </div>
                                     </div>
-                                </div>
-                                <div className='w-full max-w-lg'> 
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
-                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='customer'>
-                                                Customer <span className='text-red-400 text-xs'>*</span>
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='paytype'>
+                                                Payment type <span className='text-red-400 text-xs'>*</span>
                                             </label>
-                                            <select id='customer' name='customer' onChange={(e)=>setCustomer(e.target.value)} value={customer} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                                                <option value={0}>None</option>
-                                                {
-                                                    customers.map((value, index)=>{
-                                                        return (
-                                                            <option key={index} value={value.id}>{value.firstname + " " + value.lastname + " " + value.city}</option>
-                                                        )
-                                                    })
-                                                }
+                                            <select id='paytype' name='paytype' onChange={(e)=>setPaymenttype(e.target.value)} value={paymenttype} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                                                <option value="">None</option>
+                                                <option value="suplier">Suplier payment</option>
+                                                <option value="customer" >Customer payment</option>
                                             </select>
                                         </div>
                                     </div>
+                                </div>
+                                <div className='w-full max-w-lg'>
+                                        <div className="flex flex-wrap -mx-3 mb-6">
+                                            <div className="w-full px-3">
+                                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='suplier'>
+                                                    Suplier <span className='text-red-400 text-xs'>*</span>
+                                                </label>
+                                                <select id='suplier' name='suplier' onChange={(e)=>setSuplier(e.target.value)} value={suplier} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                                                    <option value={0}>None</option>
+                                                    {
+                                                        supliers.map((value, index)=>{
+                                                            return (
+                                                                <option key={index} value={value.id}>{value.firstname + " " + value.lastname  + " " + value.companyname} </option>
+                                                            )
+                                                        })
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
                                     { paymentmethod === "bank" ?
                                         <> 
                                             <div className="flex flex-wrap -mx-3 mb-6">
@@ -297,7 +306,7 @@ const EditPayments = () => {
                                                 status === "canceled" ? "" : 
                                                 <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>updatePayment()}>Update</button>
                                             }                                            
-                                            <button className='bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/customer/payments')}>Cancel</button>
+                                            <button className='bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/suplier/payments')}>Cancel</button>
                                         </div>
                                     </div>
                                 </div>
@@ -312,4 +321,4 @@ const EditPayments = () => {
   )
 }
 
-export default EditPayments
+export default EditSuplierPayment
