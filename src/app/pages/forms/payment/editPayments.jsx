@@ -30,7 +30,6 @@ const EditPayments = () => {
     const [payment, setPayment] = useState([]);
 
     const [customers, setCustomers] = useState([]);
-    const [supliers, setSupliers] = useState([]);
 
     const {id} = useParams();
     const navigate = useNavigate();
@@ -38,9 +37,6 @@ const EditPayments = () => {
     useEffect(()=>{
         axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
             setCustomers(result.data);
-        });
-        axios.get(`${apiConfig.url}/api/supliers/all`).then(result=>{
-            setSupliers(result.data);
         });
         axios.get(`${apiConfig.url}/api/payments/get/${id}`).then(result=>{
             setPayslipcode(result.data.payslipcode);

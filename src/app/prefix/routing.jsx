@@ -38,6 +38,7 @@ import AddCustomerOrder from '../pages/forms/order/addCustomerOrder'
 import EditSuplierOrder from '../pages/forms/order/editSuplierOrder'
 import SuplierPaymentForm from '../pages/forms/payment/suplierPaymentForm'
 import EditSuplierPayment from '../pages/forms/payment/editSuplierPayment'
+import InventoryComponents from '../pages/admin/inventoryXomponents'
 
 function Routing() {
   return (
@@ -58,6 +59,7 @@ function Routing() {
             <Route path='/user/customer/payments' element={<Payments />} />
             <Route path='/user/suplier/payments' element={<SuplierPayments />} />
             <Route path='/user/grn' element={<Grn />}/>
+            <Route path='/user/inventory/details' element={<InventoryComponents />} />
             <Route path='/user/customer/orders' element={<Orders />} />
             <Route path='/user/suplier/orders' element={<SuplierOrders />} />
             <Route path='/user/users' element={<Users />} />

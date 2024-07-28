@@ -93,7 +93,7 @@ const DashboadrdSideBar = () => {
         },
         {
           title: "Inventory",
-          path: "/user/customers/add",
+          path: "/user/inventory/details",
           icon : "ic:baseline-inventory"
         },
       ],
