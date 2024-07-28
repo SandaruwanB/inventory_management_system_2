@@ -103,13 +103,10 @@ const DashboadrdSideBar = () => {
       icon: "solar:document-bold",
       subcategories: [
         {
-          title: "All Customers",
-          path: "/user/customers/all",
-        },
-        {
-          title: "Add Customer",
-          path: "/user/customers/add",
-        },
+          title: "Sales Report",
+          path: "/user/reports/sales",
+          icon : "game-icons:sell-card"
+        }
       ],
     },
     {
