@@ -9,7 +9,7 @@ import validator from 'validator';
 
 
 const AddOrder = () => {
-    document.title = "Stockify | Orders";
+    document.title = "Stockify | Suplier Orders";
 
     const [ordername, setOrdername] = useState("");
     const [note, setNote] = useState("");
@@ -65,6 +65,7 @@ const AddOrder = () => {
                 ordername : ordername,
                 note : note,
                 date : date,
+                type : "suplier",
                 customer : {
                     id : customer
                 },
@@ -227,7 +228,7 @@ const AddOrder = () => {
                         </div>
                         <div className='mt-10 w-100'>
                             <button onClick={()=>saveOrder()} className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded'>Complete</button>
-                            <button onClick={()=>navigate('/user/orders')} className='ml-4 bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded'>Cancel</button>
+                            <button onClick={()=>navigate('/user/suplier/orders')} className='ml-4 bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded'>Cancel</button>
                         </div>
                     </div>
                 </div>

@@ -18,14 +18,14 @@ const Orders = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/orders/all`).then(result => {
+        axios.get(`${apiConfig.url}/api/orders/customer`).then(result => {
             setOrders(result.data);
             setFilteredOrders(result.data);
         });
     }, []);
 
     const editOrder = (id) => {
-        navigate(`/user/orders/edit/${id}`);
+        navigate(`/user/customer/orders/edit/${id}`);
     }
     const removeOrder = (id) => {
         setPopupvisibility(true);
@@ -80,11 +80,11 @@ const Orders = () => {
             <div className="p-4 sm:ml-64">
                 <div className="p-4">
                     <div className='w-full'>
-                        <h1 className=' mb-4 text-3xl text-gray-800 font-semibold'>Orders</h1>
+                        <h1 className=' mb-4 text-3xl text-gray-800 font-semibold'>Customer Orders</h1>
                         <div className='w-full mt-10'>
                             <div className='w-full flex justify-between'>
                                 <div>
-                                    <button onClick={() => navigate('/user/orders/add')} className=' bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
+                                    <button onClick={() => navigate('/user/customer/orders/add')} className=' bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
                                 </div>
                                 <div className='flex'>
                                     <input

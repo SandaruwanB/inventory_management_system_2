@@ -41,7 +41,7 @@ const DashboadrdSideBar = () => {
         },
         {
           title: "Customer Orders",
-          path: "/user/orders",
+          path: "/user/customer/orders",
           icon : "material-symbols:orders-rounded"
         },
         {
@@ -67,7 +67,7 @@ const DashboadrdSideBar = () => {
         },
         {
           title: "Suplier Orders",
-          path: "/user/orders",
+          path: "/user/suplier/orders",
           icon : "material-symbols:orders-rounded"
         },
         {

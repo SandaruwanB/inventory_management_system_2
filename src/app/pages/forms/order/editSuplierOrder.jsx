@@ -6,7 +6,7 @@ import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar';
 import OrderPDF from '../../../components/orderPDF';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 
-const EditOrder = () => {
+const EditSuplierOrder = () => {
     document.title = "Stockify | Orders";
 
     const [order, setOrder] = useState([]);
@@ -121,7 +121,7 @@ const EditOrder = () => {
                             </tbody>
                         </table>
                         <div className='mt-10 w-100'>
-                            <button onClick={()=>navigate('/user/orders')} className='ml-4 bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded'>Back</button>
+                            <button onClick={()=>navigate('/user/customer/orders')} className='ml-4 bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded'>Back</button>
                         </div>
                     </div>
                 </div>
@@ -131,4 +131,4 @@ const EditOrder = () => {
   )
 }
 
-export default EditOrder
+export default EditSuplierOrder
