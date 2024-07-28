@@ -41,7 +41,7 @@ const DashboadrdSideBar = () => {
         },
         {
           title: "Customer Orders",
-          path: "/user/orders",
+          path: "/user/customer/orders",
           icon : "material-symbols:orders-rounded"
         },
         {
@@ -51,7 +51,7 @@ const DashboadrdSideBar = () => {
         },
         {
           title: "Customer Payments",
-          path: "/user/payments",
+          path: "/user/customer/payments",
           icon : "mdi:account-payment"
         },
       ],
@@ -67,7 +67,7 @@ const DashboadrdSideBar = () => {
         },
         {
           title: "Suplier Orders",
-          path: "/user/orders",
+          path: "/user/suplier/orders",
           icon : "material-symbols:orders-rounded"
         },
         {
@@ -77,7 +77,7 @@ const DashboadrdSideBar = () => {
         },
         {
           title: "Suplier Payments",
-          path: "/user/payments",
+          path: "/user/suplier/payments",
           icon : "mdi:account-payment"
         },
       ],
@@ -93,7 +93,7 @@ const DashboadrdSideBar = () => {
         },
         {
           title: "Inventory",
-          path: "/user/customers/add",
+          path: "/user/inventory/details",
           icon : "ic:baseline-inventory"
         },
       ],
@@ -103,30 +103,16 @@ const DashboadrdSideBar = () => {
       icon: "solar:document-bold",
       subcategories: [
         {
-          title: "All Customers",
-          path: "/user/customers/all",
-        },
-        {
-          title: "Add Customer",
-          path: "/user/customers/add",
-        },
+          title: "Sales Report",
+          path: "/user/reports/sales",
+          icon : "game-icons:sell-card"
+        }
       ],
     },
     {
       title: "Settings",
       icon: "material-symbols:settings",
-      subcategories: [
-        {
-          title: "User Settings",
-          path: "/user/settings",
-          icon : "flowbite:user-settings-solid"
-        },
-        {
-          title: "Log Out",
-          path: "/user/customers/add",
-          icon : "clarity:logout-solid",
-        },
-      ],
+      path: "/user/settings"
     },
   ];
 

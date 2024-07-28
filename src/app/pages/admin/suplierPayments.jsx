@@ -7,8 +7,8 @@ import { apiConfig } from '../../../apiConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 
-const Payments = () => {
-    document.title = "Stockify | Payments";
+const SuplierPayments = () => {
+    document.title = "Stockify | Suplier Payments";
 
     const [payments, setPayments] = useState([]);
     const [popupvisibility, setPopupvisibility] = useState(false);
@@ -18,14 +18,14 @@ const Payments = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/payments/customer`).then(result => {
+        axios.get(`${apiConfig.url}/api/payments/suplier`).then(result => {
             setPayments(result.data);
             setFilteredPayments(result.data);
         });
     }, []);
 
     const editPayment = (id) => {
-        navigate(`/user/customer/payments/edit/${id}`);
+        navigate(`/user/suplier/payments/edit/${id}`);
     }
 
     const removePayment = (id) => {
@@ -70,7 +70,7 @@ const Payments = () => {
         } else {
             setFilteredPayments(payments.filter(payment =>
                 payment.payslipcode.toLowerCase().includes(query)
-                || `${payment.customer.firstname} ${payment.customer.lastname}`.toLowerCase().includes(query)
+                || `${payment.suplier.firstname} ${payment.suplier.lastname}`.toLowerCase().includes(query)
                 || payment.paymentmethod.toLowerCase().includes(query)
                 || payment.date.toLowerCase().includes(query)
             ));
@@ -83,11 +83,11 @@ const Payments = () => {
             <div className="p-4 sm:ml-64">
                 <div className="p-4">
                     <div className='w-full'>
-                        <h1 className='mb-4 text-3xl text-gray-800 font-semibold'>Customer Payments</h1>
+                        <h1 className='mb-4 text-3xl text-gray-800 font-semibold'>Suplier Payments</h1>
                         <div className='w-full mt-10'>
                             <div className='w-full flex justify-between'>
                                 <div>
-                                    <button onClick={() => navigate('/user/customer/payments/add')} className='bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
+                                    <button onClick={() => navigate('/user/suplier/payments/add')} className='bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Add New</button>
                                 </div>
                                 <div className='flex'>
                                     <input
@@ -107,7 +107,7 @@ const Payments = () => {
                                     <tr>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left w-10'>No.</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Payment Voucher</th>
-                                        <th className='p-3 text-sm font-semibold tracking-wide text-left'>Customer</th>
+                                        <th className='p-3 text-sm font-semibold tracking-wide text-left'>Supplier</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Amount</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Payment Method</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Status</th>
@@ -120,7 +120,7 @@ const Payments = () => {
                                         filteredPayments.length > 0 ?
                                             filteredPayments.map((value, index) => {
                                                 return (
-                                                    value.paymenttype === "customer" ?
+                                                    value.paymenttype === "suplier" ?
                                                         <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                             <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                                             <td className='p-3 text-sm text-gray-700'>{value.payslipcode}</td>
@@ -160,4 +160,4 @@ const Payments = () => {
     )
 }
 
-export default Payments;
+export default SuplierPayments;

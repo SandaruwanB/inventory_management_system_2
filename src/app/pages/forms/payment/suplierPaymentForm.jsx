@@ -6,8 +6,9 @@ import validator from 'validator';
 import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
 
-const PaymentsForm = () => {
-    document.title = "Stockify | Customer Payments";
+
+const SuplierPaymentForm = () => {
+    document.title = "Stockify | Suplier Payments";
 
     const [payslipcode, setPayslipcode] = useState("");
     const [status, setStatus] = useState("");
@@ -21,13 +22,13 @@ const PaymentsForm = () => {
     const [customer, setCustomer] = useState("");
     const [suplier, setSuplier] = useState("");
 
-    const [customers, setCustomers] = useState([]);
+    const [supliers, setSupliers] = useState([]);
 
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
-            setCustomers(result.data);
+        axios.get(`${apiConfig.url}/api/supliers/all`).then(result=>{
+            setSupliers(result.data);
         });
         setPayslipcode("PAY" + Math.floor((Math.random() * (99999 - 10000) + 10000 )));
     },[]);
@@ -88,7 +89,7 @@ const PaymentsForm = () => {
                 note : note,
                 date : date,
                 paymentmethod : paymentmethod,
-                paymenttype : "customer",
+                paymenttype : "suplier",
                 accountnumber : accountnumber,
                 accountholder : accountholder,
                 bank : bank,
@@ -125,8 +126,8 @@ const PaymentsForm = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/customer/payments")}>Payments</span> / Add</h1>
-                    <h1 className='font-semibold text-gray-700 mt-10'>Create payment</h1>
+                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/suplier/payments")}>Suplier Payments</span> / Add</h1>
+                    <h1 className='font-semibold text-gray-700 mt-10'>Create Suplier payment</h1>
                     <div className='w-full bg-gray-400 h-[2px]'></div>
                     <div className='w-full mt-10'>
                         <div className="w-full">
@@ -187,7 +188,7 @@ const PaymentsForm = () => {
                                             <select id='customer' name='customer' onChange={(e)=>setCustomer(e.target.value)} value={customer} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                                                 <option value={0}>None</option>
                                                 {
-                                                    customers.map((value, index)=>{
+                                                    supliers.map((value, index)=>{
                                                         return (
                                                             <option key={index} value={value.id}>{value.firstname + " " + value.lastname + " " + value.city}</option>
                                                         )
@@ -235,7 +236,7 @@ const PaymentsForm = () => {
                                     <div className="flex flex-wrap w-full -mx-3 mb-6">
                                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                             <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>addPayment()}>Save</button>
-                                            <button className='bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/payments')}>Cancel</button>
+                                            <button className='bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/suplier/payments')}>Cancel</button>
                                         </div>
                                     </div>
                                 </div>
@@ -250,4 +251,4 @@ const PaymentsForm = () => {
   )
 }
 
-export default PaymentsForm
+export default SuplierPaymentForm

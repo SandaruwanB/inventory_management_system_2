@@ -25,13 +25,21 @@ import EditSuplier from '../pages/forms/suplier/editSuplier'
 import EditUser from '../pages/forms/users/editUser'
 import EditPayments from '../pages/forms/payment/editPayments'
 import Grn from '../pages/admin/grn'
-import Orders from '../pages/admin/orders'
+import Orders from '../pages/admin/customerOrders'
 import AddInvoicing from '../pages/forms/invoicing/addInvoicing'
 import EditInvoicing from '../pages/forms/invoicing/editInvoicing'
-import AddOrder from '../pages/forms/order/addOrder'
+import AddOrder from '../pages/forms/order/addSuplierOrder'
 import AddGrn from '../pages/forms/grn/addGrn'
 import EditGrn from '../pages/forms/grn/editGrn'
-import EditOrder from '../pages/forms/order/editOrder'
+import EditOrder from '../pages/forms/order/editCustomerOrder'
+import SuplierPayments from '../pages/admin/suplierPayments'
+import SuplierOrders from '../pages/admin/suplierOrders'
+import AddCustomerOrder from '../pages/forms/order/addCustomerOrder'
+import EditSuplierOrder from '../pages/forms/order/editSuplierOrder'
+import SuplierPaymentForm from '../pages/forms/payment/suplierPaymentForm'
+import EditSuplierPayment from '../pages/forms/payment/editSuplierPayment'
+import InventoryComponents from '../pages/admin/inventoryXomponents'
+import SalesReport from '../pages/admin/salesReport'
 
 function Routing() {
   return (
@@ -49,11 +57,15 @@ function Routing() {
             <Route path='/user/supliers' element={<Supliers />} />
             <Route path='/user/inventory' element={<Inventory />} />
             <Route path='/user/invoicing' element={<Invoicing />} />
-            <Route path='/user/payments' element={<Payments />} />
+            <Route path='/user/customer/payments' element={<Payments />} />
+            <Route path='/user/suplier/payments' element={<SuplierPayments />} />
             <Route path='/user/grn' element={<Grn />}/>
-            <Route path='/user/orders' element={<Orders />} />
+            <Route path='/user/inventory/details' element={<InventoryComponents />} />
+            <Route path='/user/customer/orders' element={<Orders />} />
+            <Route path='/user/suplier/orders' element={<SuplierOrders />} />
             <Route path='/user/users' element={<Users />} />
             <Route path='/user/settings' element={<Settings />} />
+            <Route path='/user/reports/sales' element={<SalesReport />} />
 
             <Route path='/user/employees/add' element={<EmployeeForm />} />
             <Route path='/user/employees/edit/:id' element={<EmployeeEdit/>} />
@@ -70,14 +82,18 @@ function Routing() {
             <Route path='/user/users/add' element={<AddUser />} />
             <Route path='/user/users/edit/:id' element={<EditUser />} />
 
-            <Route path='/user/payments/add' element={<PaymentsForm />}/>
-            <Route path='/user/payments/edit/:id' element={<EditPayments />} />
+            <Route path='/user/customer/payments/add' element={<PaymentsForm />}/>
+            <Route path='/user/customer/payments/edit/:id' element={<EditPayments />} />
+            <Route path='/user/suplier/payments/add' element={<SuplierPaymentForm />} />
+            <Route path='/user/suplier/payments/edit/:id' element={<EditSuplierPayment />} />
 
             <Route path='/user/invoicing/add' element={<AddInvoicing />}/>
             <Route path='/user/invoicing/edit/:id' element={<EditInvoicing />} />
 
-            <Route path='/user/orders/add' element={<AddOrder />} />
-            <Route path='/user/orders/edit/:id' element={<EditOrder />} />
+            <Route path='/user/suplier/orders/add' element={<AddOrder />} />
+            <Route path='/user/customer/orders/add' element={<AddCustomerOrder />} />
+            <Route path='/user/customer/orders/edit/:id' element={<EditOrder />} />
+            <Route path='/user/suplier/orders/edit/:id' element={<EditSuplierOrder />} />
 
             <Route path='/user/grn/add' element={<AddGrn />} />
             <Route path='/user/grn/edit/:id' element={<EditGrn />} />
