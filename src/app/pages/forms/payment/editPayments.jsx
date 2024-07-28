@@ -163,7 +163,7 @@ const EditPayments = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/payments")}>Payments</span> / Edit</h1>
+                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/customer/payments")}>Payments</span> / Edit</h1>
                     <div className='mt-10 flex justify-between'>
                         <div className='text-gray-700'>
                             <h1 className='font-semibold'>Edit & view payment details</h1>
@@ -332,7 +332,7 @@ const EditPayments = () => {
                                                 status === "canceled" ? "" : 
                                                 <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>updatePayment()}>Update</button>
                                             }                                            
-                                            <button className='bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/payments')}>Cancel</button>
+                                            <button className='bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded ml-4' onClick={()=>navigate('/user/customer/payments')}>Cancel</button>
                                         </div>
                                     </div>
                                 </div>

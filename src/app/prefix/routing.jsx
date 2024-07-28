@@ -76,8 +76,8 @@ function Routing() {
             <Route path='/user/users/add' element={<AddUser />} />
             <Route path='/user/users/edit/:id' element={<EditUser />} />
 
-            <Route path='/user/payments/add' element={<PaymentsForm />}/>
-            <Route path='/user/payments/edit/:id' element={<EditPayments />} />
+            <Route path='/user/customer/payments/add' element={<PaymentsForm />}/>
+            <Route path='/user/customer/payments/edit/:id' element={<EditPayments />} />
 
             <Route path='/user/invoicing/add' element={<AddInvoicing />}/>
             <Route path='/user/invoicing/edit/:id' element={<EditInvoicing />} />
