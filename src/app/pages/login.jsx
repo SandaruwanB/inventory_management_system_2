@@ -7,6 +7,8 @@ function Login() {
   const [isPassword, setIsPassword] = useState(true);
   const [email,setEmail] = useState("");
   const [password,setPasword] = useState("");
+  const [emailError, setEmailError] = useState(false);
+  const [passError, setPassError] = useState(false);
   const navigate = useNavigate();
 
   document.title = "Stockify | Sign in";
@@ -16,8 +18,21 @@ function Login() {
   }
 
   const handleLogin = ()=>{
-    console.log(email + " " + password)
-    navigate('/user/dashboard');
+    if(email === "" && password === ""){
+        setEmailError(true);
+        setPassError(true);
+    }
+    else if (email === ""){
+        setEmailError(true);
+        setPassError(false);
+    }
+    else if (password === ""){
+        setEmailError(false);
+        setPassError(true);
+    }
+    else{
+        navigate('/user/dashboard');
+    }   
   }
 
   return (
@@ -35,16 +50,20 @@ function Login() {
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
               <Icon icon={'solar:user-bold'} width={24} height={24} className='text-cyan-950' />
             </div>
-            <input type="text" className="block w-full p-3 ps-10 text-sm text-cyan-950 border-2 border-cyan-950 rounded-lg bg-transparent outline-none" placeholder="Email Address" onChange={(e)=>setEmail(e.target.value)} />
+            <input type="text" className={`block w-full p-3 ps-10 text-sm text-cyan-950 border-2 ${emailError ? 'border-red-500' : 'border-cyan-950' } rounded-lg bg-transparent outline-none`} placeholder="Email Address" onChange={(e)=>{setEmail(e.target.value); setEmailError(false)}} />
+            
           </div>
+          {
+              emailError ? 
+              <p className='text-center text-red-500 text-sm'>User name is required</p> : ""
+          }
         </div>
         <div className='mt-7'>
           <div className="relative">
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
               <Icon icon={'material-symbols:lock'} width={24} height={24} className='text-cyan-950' />
             </div>
-            <input type={isPassword ? 'password' : 'text'} className="block w-full p-3 ps-10 text-sm text-cyan-950 border-2 border-cyan-950 rounded-lg bg-transparent outline-none" placeholder="Password"  onChange={(e)=>setPasword(e.target.value)} />
-            
+            <input type={isPassword ? 'password' : 'text'} className={`block w-full p-3 ps-10 text-sm text-cyan-950 border-2 ${passError ? 'border-red-500' : 'border-cyan-950'} rounded-lg bg-transparent outline-none" placeholder="Password`}  onChange={(e)=>{setPasword(e.target.value); setPassError(false)}} placeholder='Password'/>
             {
               isPassword ?
               <div className="absolute inset-y-0 end-2 flex items-center ps-3 cursor-pointer">
@@ -56,6 +75,11 @@ function Login() {
               </div>
             }
           </div>
+          {
+              passError ? 
+              <p className='text-center text-red-500 text-sm'>Password is required.</p>
+              : ""
+          }
         </div>
         <div className='text-right mt-1'>
             <span className=' text-cyan-950 mr-3 hover:underline cursor-pointer' onClick={()=>forgetPassword()}>Forgot Password?</span>
