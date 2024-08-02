@@ -9,7 +9,7 @@ const SalesReport = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className='mb-4 text-3xl text-gray-800 font-semibold'>Monthly Sales</h1>
+                    <h1 className='mb-4 text-3xl text-gray-800 font-semibold'>Sales Report</h1>
                     <div className='w-full mt-10'>
                         <div className='w-full flex justify-between'>
                             <div>
@@ -17,9 +17,12 @@ const SalesReport = () => {
                             </div>
                             <div className='flex'>
                                 <div className='text-gray-800 ml-4'>
-                                    showing results <span className='text-blue-950 font-bold'>{}</span>
+                                   
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            <h1>asdhasjd</h1>
                         </div>
                     </div>
                 </div>
