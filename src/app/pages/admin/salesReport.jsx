@@ -5,6 +5,7 @@ import { apiConfig } from '../../../apiConfig';
 
 
 const SalesReport = () => {
+    document.title = "Stokify | Sales Report"
     const [sales, setSales] = useState([]);
 
     useEffect(()=>{
@@ -34,8 +35,8 @@ const SalesReport = () => {
                             </div>
                         </div>
                         <div className='mt-10 w-full'>
-                            <div className='grid grid-cols-3 gap-2'>
-                                <div className='col-span-2 h-full'>
+                            <div className='grid grid-cols-2 gap-10'>
+                                <div className='h-full'>
                                     <table className='w-full table-fixed border-collapse mt-3'>
                                         <thead className='bg-gray-200 border-b-2 border-gray-400'>
                                             <tr>
@@ -54,7 +55,13 @@ const SalesReport = () => {
                                                             <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                                             <td className='p-3 text-sm text-gray-700'>{value.customer.firstname + " " + value.customer.lastname}</td>
                                                             <td className='p-3 text-sm text-gray-700'>{value.date}</td>
-                                                            <td className='p-3 text-sm text-gray-700 text-right'>{}</td>
+                                                            <td className='p-3 text-sm text-gray-700 text-right'>
+                                                                {value.ordermove.map((line, lineIndex) => (
+                                                                    <div key={lineIndex}>
+                                                                        Rs.{ line.itemcount * line.product.unitprice }
+                                                                    </div>
+                                                                ))}
+                                                            </td>
                                                         </tr>
                                                     )
                                                 })
