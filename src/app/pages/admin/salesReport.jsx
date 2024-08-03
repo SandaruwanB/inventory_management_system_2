@@ -3,6 +3,8 @@ import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
 import axios from 'axios';
 import { apiConfig } from '../../../apiConfig';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import SalesReportComponent from '../../components/salesReport';
 
@@ -10,11 +12,13 @@ const SalesReport = () => {
     document.title = "Stokify | Sales Report";
     const [sales, setSales] = useState([]);
     const [chartData, setChartData] = useState([]);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [filteredSales, setFilteredSales] = useState([]);
 
     useEffect(() => {
         axios.get(`${apiConfig.url}/api/orders/customer`).then((result) => {
             setSales(result.data);
-            console.log(result.data);
 
             const aggregatedData = result.data.reduce((acc, sale) => {
                 const saleDate = sale.date;
@@ -29,10 +33,22 @@ const SalesReport = () => {
 
                 return acc;
             }, []);
-            
+
             setChartData(aggregatedData);
         });
     }, []);
+
+    useEffect(() => {
+        if (startDate && endDate) {
+            const filtered = sales.filter(sale => {
+                const saleDate = new Date(sale.date);
+                return saleDate >= startDate && saleDate <= endDate;
+            });
+            setFilteredSales(filtered);
+        } else {
+            setFilteredSales(sales);
+        }
+    }, [startDate, endDate, sales]);
 
     return (
         <>
@@ -49,7 +65,26 @@ const SalesReport = () => {
                                     </PDFDownloadLink>                                    
                                 </div>
                                 <div className="flex">
-                                    <div className="text-gray-800 ml-4"></div>
+                                    <div className="text-gray-800 ml-4">
+                                        <DatePicker
+                                            selected={startDate}
+                                            onChange={date => setStartDate(date)}
+                                            selectsStart
+                                            startDate={startDate}
+                                            endDate={endDate}
+                                            placeholderText="Start Date"
+                                            className="mr-2 p-2 border rounded"
+                                        />
+                                        <DatePicker
+                                            selected={endDate}
+                                            onChange={date => setEndDate(date)}
+                                            selectsEnd
+                                            startDate={startDate}
+                                            endDate={endDate}
+                                            placeholderText="End Date"
+                                            className="p-2 border rounded"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             <div className="mt-10 w-full">
@@ -65,8 +100,8 @@ const SalesReport = () => {
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-gray-200">
-                                                {sales.length > 0 ? (
-                                                    sales.map((value, index) => (
+                                                {filteredSales.length > 0 ? (
+                                                    filteredSales.map((value, index) => (
                                                         <tr className={index % 2 === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                             <td className="p-3 text-sm text-gray-700">{index + 1}</td>
                                                             <td className="p-3 text-sm text-gray-700">
