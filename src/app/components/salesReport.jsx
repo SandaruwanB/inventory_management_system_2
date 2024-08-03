@@ -54,7 +54,7 @@ const formatDate = (date) => {
     return new Date(date).toLocaleDateString('en-US', options);
 };
 
-const SalesReportComponent = ({ lines, start_date, end_date }) => {
+const SalesReportComponent = ({ lines, start_date, end_date, type }) => {
     const formattedStartDate = formatDate(start_date);
     const formattedEndDate = formatDate(end_date);
 
@@ -62,7 +62,7 @@ const SalesReportComponent = ({ lines, start_date, end_date }) => {
         <Document>
             <Page size={'A4'} style={style.page}>
                 <View style={style.header}>
-                    <Text>Sales Details Report</Text>
+                    <Text>{type} Details Report</Text>
                 </View>
                 <View style={{ marginTop: 30 }}>
                     <Text style={style.companyDetails}>Date: {formattedStartDate} - {formattedEndDate}</Text>
