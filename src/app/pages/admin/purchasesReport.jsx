@@ -6,6 +6,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import SalesReportComponent from '../../components/salesReport';
 
 const PurchasesReport = () => {
     document.title = "Stokify | Purchases Report";
@@ -59,7 +60,9 @@ const PurchasesReport = () => {
                         <div className='w-full mt-10'>
                             <div className='w-full flex justify-between'>
                                 <div>
-                                    <button className='bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Download PDF</button>
+                                    <PDFDownloadLink document={<SalesReportComponent partner={"Suplier"} type={"Purchasing"} lines={filteredPurchasing} start_date={startDate} end_date={endDate} />} fileName='purchasing report'>
+                                        {({loading})=>(loading ? "creating..." : <button className="bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded">Download PDF</button> )}
+                                    </PDFDownloadLink> 
                                 </div>
                                 <div className='flex'>
                                     <div className='text-gray-800 ml-4'>

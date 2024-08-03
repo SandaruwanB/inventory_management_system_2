@@ -93,7 +93,7 @@ const SalesReportComponent = ({ lines, start_date, end_date, type, partner }) =>
                                     <Text style={[style.smallFont, {marginTop : 3}]}>{value.customer.firstname + " " + value.customer.lastname}</Text>
                                 </View>
                                 <View style={[ style.absolute, {left : '60%',top : index === 0 ? 20 : (index + 1) * 17}]}>
-                                    <Text style={[style.smallFont, {marginTop : 3}]}>Rs.{value.date}</Text>
+                                    <Text style={[style.smallFont, {marginTop : 3}]}>{value.date}</Text>
                                 </View>
                                 <View style={[ style.absolute, {left : '85%',top : index === 0 ? 20 : (index + 1) * 17}]}>
                                     {value.ordermove.map((line, lineIndex) => (
