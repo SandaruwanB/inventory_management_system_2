@@ -3,6 +3,8 @@ import DashboadrdSideBar from '../../layouts/dashboadrdSideBar';
 import axios from 'axios';
 import { apiConfig } from '../../../apiConfig';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import SalesReportComponent from '../../components/salesReport';
 
 const SalesReport = () => {
     document.title = "Stokify | Sales Report";
@@ -43,7 +45,9 @@ const SalesReport = () => {
                         <div className="w-full mt-10">
                             <div className="w-full flex justify-between">
                                 <div>
-                                    <button className="bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded">Download PDF</button>
+                                    <PDFDownloadLink document={<SalesReportComponent />} fileName='sales report'>
+                                        {({loading})=>(loading ? "creating..." : <button className="bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded">Download PDF</button> )}
+                                    </PDFDownloadLink>                                    
                                 </div>
                                 <div className="flex">
                                     <div className="text-gray-800 ml-4"></div>

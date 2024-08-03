@@ -49,7 +49,7 @@ const style = StyleSheet.create({
     }
 });
 
-const SalesReport = () => (
+const SalesReportComponent = () => (
     <Document>
         <Page size={'A4'} style={style.page}>
             <View style={style.header}>
@@ -59,4 +59,4 @@ const SalesReport = () => (
     </Document>
 )
 
-export default SalesReport
+export default SalesReportComponent

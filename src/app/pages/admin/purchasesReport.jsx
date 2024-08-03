@@ -43,6 +43,7 @@ const PurchasesReport = () => {
                         <div className='w-full mt-10'>
                             <div className='w-full flex justify-between'>
                                 <div>
+                                    
                                     <button className='bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded'>Download PDF</button>
                                 </div>
                                 <div className='flex'>
