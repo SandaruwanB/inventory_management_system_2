@@ -8,27 +8,27 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import SalesReportComponent from '../../components/salesReport';
 
-const SalesReport = () => {
-    document.title = "Stokify | Sales Report";
-    const [sales, setSales] = useState([]);
+const PurchasesReport = () => {
+    document.title = "Stokify | Purchases Report";
+    const [purchasing, setPurchasings] = useState([]);
     const [chartData, setChartData] = useState([]);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
-    const [filteredSales, setFilteredSales] = useState([]);
+    const [filteredPurchasing, setFilteredPurchasing] = useState([]);
 
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/orders/customer`).then((result) => {
-            setSales(result.data);
+        axios.get(`${apiConfig.url}/api/orders/suplier`).then(result => {
+            setPurchasings(result.data);
 
-            const aggregatedData = result.data.reduce((acc, sale) => {
-                const saleDate = sale.date;
-                const totalAmount = sale.ordermove.reduce((acc, line) => acc + line.itemcount * line.product.unitprice, 0);
+            const aggregatedData = result.data.reduce((acc, purchase) => {
+                const purchaseDate = purchase.date;
+                const totalAmount = purchase.ordermove.reduce((acc, line) => acc + line.itemcount * line.product.unitprice, 0);
 
-                const existingEntry = acc.find(entry => entry.date === saleDate);
+                const existingEntry = acc.find(entry => entry.date === purchaseDate);
                 if (existingEntry) {
                     existingEntry.totalAmount += totalAmount;
                 } else {
-                    acc.push({ date: saleDate, totalAmount });
+                    acc.push({ date: purchaseDate, totalAmount });
                 }
 
                 return acc;
@@ -40,32 +40,32 @@ const SalesReport = () => {
 
     useEffect(() => {
         if (startDate && endDate) {
-            const filtered = sales.filter(sale => {
-                const saleDate = new Date(sale.date);
-                return saleDate >= startDate && saleDate <= endDate;
+            const filtered = purchasing.filter(purchase => {
+                const purchaseDate = new Date(purchase.date);
+                return purchaseDate >= startDate && purchaseDate <= endDate;
             });
-            setFilteredSales(filtered);
+            setFilteredPurchasing(filtered);
         } else {
-            setFilteredSales(sales);
+            setFilteredPurchasing(purchasing);
         }
-    }, [startDate, endDate, sales]);
+    }, [startDate, endDate, purchasing]);
 
     return (
         <>
             <DashboadrdSideBar />
             <div className="p-4 sm:ml-64">
                 <div className="p-4">
-                    <div className="w-full">
-                        <h1 className="mb-4 text-3xl text-gray-800 font-semibold">Sales Report</h1>
-                        <div className="w-full mt-10">
-                            <div className="w-full flex justify-between">
+                    <div className='w-full'>
+                        <h1 className='mb-4 text-3xl text-gray-800 font-semibold'>Purchasing Report</h1>
+                        <div className='w-full mt-10'>
+                            <div className='w-full flex justify-between'>
                                 <div>
-                                    <PDFDownloadLink document={<SalesReportComponent partner={"Customer"} type={"Sales"} lines={filteredSales} start_date={startDate} end_date={endDate} />} fileName='sales report'>
+                                    <PDFDownloadLink document={<SalesReportComponent partner={"Suplier"} type={"Purchasing"} lines={filteredPurchasing} start_date={startDate} end_date={endDate} />} fileName='purchasing report'>
                                         {({loading})=>(loading ? "creating..." : <button className="bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded">Download PDF</button> )}
-                                    </PDFDownloadLink>                                    
+                                    </PDFDownloadLink> 
                                 </div>
-                                <div className="flex">
-                                    <div className="text-gray-800 ml-4">
+                                <div className='flex'>
+                                    <div className='text-gray-800 ml-4'>
                                         <DatePicker
                                             selected={startDate}
                                             onChange={date => setStartDate(date)}
@@ -87,26 +87,24 @@ const SalesReport = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="mt-10 w-full">
-                                <div className="grid grid-cols-2 gap-10">
-                                    <div className="h-full">
-                                        <table className="w-full table-fixed border-collapse mt-3">
-                                            <thead className="bg-gray-200 border-b-2 border-gray-400">
+                            <div className='mt-10 w-full'>
+                                <div className='grid grid-cols-2 gap-10'>
+                                    <div className='h-full'>
+                                        <table className='w-full table-fixed border-collapse mt-3'>
+                                            <thead className='bg-gray-200 border-b-2 border-gray-400'>
                                                 <tr>
-                                                    <th className="p-3 text-sm font-semibold tracking-wide text-left w-10">No.</th>
-                                                    <th className="p-3 text-sm font-semibold tracking-wide text-left">Customer</th>
-                                                    <th className="p-3 text-sm font-semibold tracking-wide text-left">Date</th>
-                                                    <th className="p-3 text-sm font-semibold tracking-wide text-right">Amount</th>
+                                                    <th className='p-3 text-sm font-semibold tracking-wide text-left w-10'>No.</th>
+                                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Supplier</th>
+                                                    <th className='p-3 text-sm font-semibold tracking-wide text-left'>Date</th>
+                                                    <th className='p-3 text-sm font-semibold tracking-wide text-right'>Amount</th>
                                                 </tr>
                                             </thead>
-                                            <tbody className="divide-y divide-gray-200">
-                                                {filteredSales.length > 0 ? (
-                                                    filteredSales.map((value, index) => (
+                                            <tbody className='divide-y divide-gray-200'>
+                                                {filteredPurchasing.length > 0 ? (
+                                                    filteredPurchasing.map((value, index) => (
                                                         <tr className={index % 2 === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                             <td className="p-3 text-sm text-gray-700">{index + 1}</td>
-                                                            <td className="p-3 text-sm text-gray-700">
-                                                                {value.customer.firstname + ' ' + value.customer.lastname}
-                                                            </td>
+                                                            <td className="p-3 text-sm text-gray-700">{value.customer.firstname + ' ' + value.customer.lastname}</td>
                                                             <td className="p-3 text-sm text-gray-700">{value.date}</td>
                                                             <td className="p-3 text-sm text-gray-700 text-right">
                                                                 {value.ordermove.map((line, lineIndex) => (
@@ -120,14 +118,14 @@ const SalesReport = () => {
                                                 ) : (
                                                     <tr className="bg-white">
                                                         <td className="text-center text-blue-400 hover:underline cursor-pointer text-sm p-3" colSpan={4}>
-                                                            No Sales Details Found
+                                                            No Purchasing Details Found
                                                         </td>
                                                     </tr>
                                                 )}
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div className="w-full h-64">
+                                    <div className='w-full h-64'>
                                         <ResponsiveContainer width="100%" height="100%">
                                             <BarChart data={chartData}>
                                                 <CartesianGrid strokeDasharray="3 3" />
@@ -147,6 +145,6 @@ const SalesReport = () => {
             </div>
         </>
     );
-};
+}
 
-export default SalesReport;
+export default PurchasesReport;

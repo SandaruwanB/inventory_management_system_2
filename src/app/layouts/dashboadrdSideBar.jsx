@@ -106,6 +106,11 @@ const DashboadrdSideBar = () => {
           title: "Sales Report",
           path: "/user/reports/sales",
           icon : "game-icons:sell-card"
+        },
+        {
+          title: "Purchase Report",
+          path: "/user/reports/purchases",
+          icon : "f7:purchased-circle-fill"
         }
       ],
     },

@@ -40,6 +40,7 @@ import SuplierPaymentForm from '../pages/forms/payment/suplierPaymentForm'
 import EditSuplierPayment from '../pages/forms/payment/editSuplierPayment'
 import InventoryComponents from '../pages/admin/inventoryXomponents'
 import SalesReport from '../pages/admin/salesReport'
+import PurchasesReport from '../pages/admin/purchasesReport'
 
 function Routing() {
   return (
@@ -66,6 +67,7 @@ function Routing() {
             <Route path='/user/users' element={<Users />} />
             <Route path='/user/settings' element={<Settings />} />
             <Route path='/user/reports/sales' element={<SalesReport />} />
+            <Route path='/user/reports/purchases' element={<PurchasesReport />}/>
 
             <Route path='/user/employees/add' element={<EmployeeForm />} />
             <Route path='/user/employees/edit/:id' element={<EmployeeEdit/>} />
