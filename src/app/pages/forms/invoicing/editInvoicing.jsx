@@ -6,7 +6,6 @@ import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import InvoicePDF from '../../../components/invoicePDF';
-import validator from 'validator';
 
 const EditInvoicing = () => {
 
