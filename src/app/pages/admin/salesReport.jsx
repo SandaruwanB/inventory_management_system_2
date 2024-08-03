@@ -16,7 +16,6 @@ const SalesReport = () => {
             setSales(result.data);
             console.log(result.data);
 
-            // Prepare chart data by aggregating sales by date
             const aggregatedData = result.data.reduce((acc, sale) => {
                 const saleDate = sale.date;
                 const totalAmount = sale.ordermove.reduce((acc, line) => acc + line.itemcount * line.product.unitprice, 0);
