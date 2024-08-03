@@ -22,7 +22,7 @@ const EmployeeForm = () => {
     const [gender, setGender] = useState("");
     const [epf, setEpf] = useState("");
     const [nic, setNic] = useState("");
-    const [isWorking, setIsWorking] = useState(true);
+    const [isWorking, setIsWorking] = useState(1);
     const navigate = useNavigate();
 
     const addEmployee = ()=>{
@@ -64,7 +64,8 @@ const EmployeeForm = () => {
                 city : city,
                 postalcode : postalcode,
                 epfnumber : epf,
-                nic : nic
+                nic : nic,
+                is_working : isWorking
             }).then(result=>{
                 if (result.status === 200 ){
                     toast.success('Successfully Created!', {
@@ -78,7 +79,7 @@ const EmployeeForm = () => {
                         theme: "light",
                     });
                     setEmail("");setFirstname("");setLastname("");setGender("");setJobtitle("");setContact("");setAddressline1("");setAddressline2("");setCity("");
-                    setPostalcode("");setEpf("");
+                    setPostalcode("");setEpf("");setIsWorking(1); setNic("");
                 } 
             })
         }
@@ -160,8 +161,8 @@ const EmployeeForm = () => {
                                                 Is Currently Working
                                             </label>
                                             <select id='isworking' name='isworking' onChange={(e)=>setIsWorking(e.target.value)} value={isWorking} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                                                <option value={true}>Yes</option>
-                                                <option value={false} >No</option>
+                                                <option value={1}>Yes</option>
+                                                <option value={0} >No</option>
                                             </select>
                                         </div>
                                     </div>

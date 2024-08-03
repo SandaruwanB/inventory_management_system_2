@@ -112,6 +112,7 @@ const Employees = () => {
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Email Address</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Contact</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Location</th>
+                                        <th className='p-3 text-sm font-semibold tracking-wide text-left'>Status</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Actions</th>
                                     </tr>
                                 </thead>
@@ -127,6 +128,7 @@ const Employees = () => {
                                                         <td className='p-3 text-sm text-gray-700'>{value.email}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.contact}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.city}</td>
+                                                        <td>{value.is_working === 1 ? "Available" : "Not Available"}</td>
                                                         <td className='p-3 text-sm text-gray-700'>
                                                             <Button className='hover:text-green-500' onClick={() => editEmployee(value.id)}><Icon icon="basil:edit-solid" width={26} /></Button>
                                                             <Button className='ml-4 hover:text-red-500' onClick={() => removeEmployee(value.id)}><Icon icon="material-symbols-light:delete" width={28} /></Button>
