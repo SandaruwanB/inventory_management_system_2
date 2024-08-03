@@ -136,8 +136,6 @@ const EmployeeForm = () => {
                                             <input name='contact' id='contact' onChange={(e)=>setContact(e.target.value)} value={contact} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="+947512314412"/>
                                         </div>
                                     </div>
-                                </div>
-                                <div className='w-full max-w-lg'>
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='epf'>
@@ -154,6 +152,8 @@ const EmployeeForm = () => {
                                             <input name='nic' id='nic' onChange={(e)=>setNic(e.target.value)} value={nic} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="995261561315v"/>
                                         </div>
                                     </div>
+                                </div>
+                                <div className='w-full max-w-lg'>                                    
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='isworking'>
