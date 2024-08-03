@@ -54,7 +54,7 @@ const formatDate = (date) => {
     return new Date(date).toLocaleDateString('en-US', options);
 };
 
-const SalesReportComponent = ({ lines, start_date, end_date, type }) => {
+const SalesReportComponent = ({ lines, start_date, end_date, type, partner }) => {
     const formattedStartDate = formatDate(start_date);
     const formattedEndDate = formatDate(end_date);
 
@@ -72,7 +72,7 @@ const SalesReportComponent = ({ lines, start_date, end_date, type }) => {
                         <Text style={[style.midFont, {fontWeight : 'bold'}]}>No.</Text>
                     </View>
                     <View style={[ style.absolute, {left : '15%'}]}>
-                        <Text style={[style.midFont, {fontWeight : 'bold'}]}>Customer</Text>
+                        <Text style={[style.midFont, {fontWeight : 'bold'}]}>{partner}</Text>
                     </View>
                     <View style={[ style.absolute, {left : '60%'}]}>
                         <Text style={[style.midFont, {fontWeight : 'bold'}]}>Date</Text>

@@ -60,7 +60,7 @@ const SalesReport = () => {
                         <div className="w-full mt-10">
                             <div className="w-full flex justify-between">
                                 <div>
-                                    <PDFDownloadLink document={<SalesReportComponent type={"Sales"} lines={filteredSales} start_date={startDate} end_date={endDate} />} fileName='sales report'>
+                                    <PDFDownloadLink document={<SalesReportComponent partner={"Customer"} type={"Sales"} lines={filteredSales} start_date={startDate} end_date={endDate} />} fileName='sales report'>
                                         {({loading})=>(loading ? "creating..." : <button className="bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded">Download PDF</button> )}
                                     </PDFDownloadLink>                                    
                                 </div>
