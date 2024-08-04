@@ -6,7 +6,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import SalesReportComponent from '../../components/salesReport';
+import PurchaseReportComponent from '../../components/purchaseReport';
 
 const PurchasesReport = () => {
     document.title = "Stokify | Purchases Report";
@@ -60,7 +60,7 @@ const PurchasesReport = () => {
                         <div className='w-full mt-10'>
                             <div className='w-full flex justify-between'>
                                 <div>
-                                    <PDFDownloadLink document={<SalesReportComponent partner={"Suplier"} type={"Purchasing"} lines={filteredPurchasing} start_date={startDate} end_date={endDate} />} fileName='purchasing report'>
+                                    <PDFDownloadLink document={<PurchaseReportComponent partner={"Suplier"} type={"Purchasing"} lines={filteredPurchasing} start_date={startDate} end_date={endDate} />} fileName='purchasing report'>
                                         {({loading})=>(loading ? "creating..." : <button className="bg-green-800 hover:bg-green-950 text-white font-semibold px-3 py-1 rounded">Download PDF</button> )}
                                     </PDFDownloadLink> 
                                 </div>
@@ -104,7 +104,7 @@ const PurchasesReport = () => {
                                                     filteredPurchasing.map((value, index) => (
                                                         <tr className={index % 2 === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                             <td className="p-3 text-sm text-gray-700">{index + 1}</td>
-                                                            <td className="p-3 text-sm text-gray-700">{value.customer.firstname + ' ' + value.customer.lastname}</td>
+                                                            <td className="p-3 text-sm text-gray-700">{value.suplier.firstname + ' ' + value.suplier.lastname}</td>
                                                             <td className="p-3 text-sm text-gray-700">{value.date}</td>
                                                             <td className="p-3 text-sm text-gray-700 text-right">
                                                                 {value.ordermove.map((line, lineIndex) => (

@@ -54,9 +54,10 @@ const formatDate = (date) => {
     return new Date(date).toLocaleDateString('en-US', options);
 };
 
-const SalesReportComponent = ({ lines, start_date, end_date, type, partner }) => {
+const PurchaseReportComponent = ({ lines, start_date, end_date, type, partner }) => {
     const formattedStartDate = formatDate(start_date);
     const formattedEndDate = formatDate(end_date);
+
 
     return (
         <Document>
@@ -90,7 +91,7 @@ const SalesReportComponent = ({ lines, start_date, end_date, type, partner }) =>
                                     <Text style={[style.smallFont, {marginTop : 3}]}>{index + 1}</Text>
                                 </View>
                                 <View style={[ style.absolute, {left : '15%',top : index === 0 ? 20 : (index + 1) * 17}]}>
-                                    <Text style={[style.smallFont, {marginTop : 3}]}>{ value.customer.firstname + " " + value.customer.lastname }</Text>
+                                    <Text style={[style.smallFont, {marginTop : 3}]}>{ value.suplier.firstname + " " + value.suplier.lastname }</Text>
                                 </View>
                                 <View style={[ style.absolute, {left : '60%',top : index === 0 ? 20 : (index + 1) * 17}]}>
                                     <Text style={[style.smallFont, {marginTop : 3}]}>{value.date}</Text>
@@ -108,7 +109,7 @@ const SalesReportComponent = ({ lines, start_date, end_date, type, partner }) =>
                 </View>
             </Page>
         </Document>
-    );
+    )
 }
 
-export default SalesReportComponent;
+export default PurchaseReportComponent
