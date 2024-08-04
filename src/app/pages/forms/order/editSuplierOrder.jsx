@@ -44,7 +44,7 @@ const EditSuplierOrder = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/orders")}>Orders</span> / {order.ordername}</h1>
+                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/suplier/orders")}>Orders</span> / {order.ordername}</h1>
                         <div className='mt-10 flex justify-between'>
                             <div>
                               <h1 className='font-semibold text-gray-700'>View order details</h1>
@@ -121,7 +121,7 @@ const EditSuplierOrder = () => {
                             </tbody>
                         </table>
                         <div className='mt-10 w-100'>
-                            <button onClick={()=>navigate('/user/customer/orders')} className='ml-4 bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded'>Back</button>
+                            <button onClick={()=>navigate('/user/suplier/orders')} className='ml-4 bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded'>Back</button>
                         </div>
                     </div>
                 </div>

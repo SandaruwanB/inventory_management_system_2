@@ -26,7 +26,7 @@ const AddOrder = () => {
     const navigate = useNavigate();
     
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
+        axios.get(`${apiConfig.url}/api/supliers/all`).then(result=>{
             setCustomers(result.data);
         });
         axios.get(`${apiConfig.url}/api/inventory/all`).then(result=>{
@@ -119,16 +119,19 @@ const AddOrder = () => {
         }
         else{
             await axios.get(`${apiConfig.url}/api/inventory/get/${product}`).then(result=>{
+                console.log(result.data);
                 const array = {
                     "product" : {
                         "id" : product,
                         "prodctname" : result.data.prodctname,
                         "availability" : result.data.onhandqty > 20 ? "available" : "low stock",
-                        "onhandqty" : parseFloat(result.data.onhandqty) - parseFloat(count),
-                        "inqty" : parseFloat(result.data.inqty) - parseFloat(count),
+                        "onhandqty" : parseFloat(result.data.onhandqty) + parseFloat(count),
+                        "inqty" : parseFloat(result.data.inqty) + parseFloat(count),
                     },
                     "itemcount" : count,
                 };
+
+                console.log(array);
 
                 setOrderlines((previous)=>[...previous, array]);
                 setShowmenu(false);
@@ -145,7 +148,7 @@ const AddOrder = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/orders")}>Orders</span> / </h1>
+                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/suplier/orders")}>Supplier Orders</span> / Create</h1>
                     <h1 className='font-semibold text-gray-700 mt-10'>Order details</h1>
                     <div className='w-full bg-gray-400 h-[2px]'></div>
                     <div className='w-full mt-10'>
@@ -168,7 +171,7 @@ const AddOrder = () => {
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='customer'>
-                                                Customer <span className='text-red-400 text-xs'>*</span>
+                                                Supplier <span className='text-red-400 text-xs'>*</span>
                                             </label>
                                             <select id='customer' onChange={(e)=>setCustomer(e.target.value)} value={customer} name='customer' className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                                                 <option value={0}>None</option>
