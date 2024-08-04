@@ -105,7 +105,7 @@ const SuplierOrders = () => {
                                     <tr>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left w-10'>No.</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Order Number</th>
-                                        <th className='p-3 text-sm font-semibold tracking-wide text-left'>Customer</th>
+                                        <th className='p-3 text-sm font-semibold tracking-wide text-left'>Suplier</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Total Products</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Date</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Actions</th>
@@ -119,7 +119,7 @@ const SuplierOrders = () => {
                                                     <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                         <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.ordername}</td>
-                                                        <td className='p-3 text-sm text-gray-700'>{value.customer.firstname + " " + value.customer.lastname}</td>
+                                                        <td className='p-3 text-sm text-gray-700'>{value.suplier.firstname + " " + value.suplier.lastname}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.ordermove ? (value.ordermove).length : 0}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.date}</td>
                                                         <td className='p-3 text-sm text-gray-700'>

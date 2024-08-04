@@ -124,7 +124,7 @@ const AddCustomerOrder = () => {
                         "prodctname" : result.data.prodctname,
                         "availability" : result.data.onhandqty > 20 ? "available" : "low stock",
                         "onhandqty" : parseFloat(result.data.onhandqty) - parseFloat(count),
-                        "inqty" : parseFloat(result.data.inqty) - parseFloat(count),
+                        "outqty" : parseFloat(result.data.inqty) - parseFloat(count),
                     },
                     "itemcount" : count,
                 };

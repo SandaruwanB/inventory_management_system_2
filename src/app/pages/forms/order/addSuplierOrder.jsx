@@ -66,7 +66,7 @@ const AddOrder = () => {
                 note : note,
                 date : date,
                 type : "suplier",
-                customer : {
+                suplier : {
                     id : customer
                 },
                 ordermove : orderlines
