@@ -62,6 +62,23 @@ const Employees = () => {
         });
     }
 
+    const disableEmployee = (id)=>{
+        setPopupvisibility(true);
+        confirmDialog({
+            message: 'Are you sure you want to disable this employee?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => performDisable(id),
+            reject: () => { setPopupvisibility(false) },
+            rejectClassName: 'mr-2 bg-transparent',
+            acceptClassName: 'bg-red-600 text-white px-3 py-1 hover:bg-red-700'
+        });
+    }
+
+    const performDisable = async (id)=>{
+        console.log(id);
+    }
+
     const handleSearch = (e) => {
         const query = e.target.value.toLowerCase();
         setSearchQuery(query);
@@ -128,9 +145,14 @@ const Employees = () => {
                                                         <td className='p-3 text-sm text-gray-700'>{value.email}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.contact}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.city}</td>
-                                                        <td>{value.is_working === 1 ? "Available" : "Not Available"}</td>
+                                                        <td className='text-gray-700'>{value.is_working === 1 ? 
+                                                            <><div className='bg-green-500 w-3 h-3 rounded-xl inline-block'></div><span className='inline-block pl-2 text-sm'>Available</span></>
+                                                            :
+                                                            <><div className='bg-red-500 w-3 h-3 rounded-xl inline-block'></div><span className='inline-block pl-2 text-sm'>Not Available</span></>}
+                                                        </td>
                                                         <td className='p-3 text-sm text-gray-700'>
-                                                            <Button className='hover:text-green-500' onClick={() => editEmployee(value.id)}><Icon icon="basil:edit-solid" width={26} /></Button>
+                                                            <Button className='hover:text-red-500' onClick={() => disableEmployee(value.id)}><Icon icon="fe:disabled" width={26} /></Button>
+                                                            <Button className='ml-4 hover:text-green-500' onClick={() => editEmployee(value.id)}><Icon icon="basil:edit-solid" width={26} /></Button>
                                                             <Button className='ml-4 hover:text-red-500' onClick={() => removeEmployee(value.id)}><Icon icon="material-symbols-light:delete" width={28} /></Button>
                                                             <ConfirmDialog visible={popupvisibility} />
                                                         </td>
