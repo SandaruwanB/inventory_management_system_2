@@ -42,5 +42,9 @@ public class Suplier {
     @JsonIgnore
     @OneToMany(mappedBy = "suplier")
     private List<GRN> grn;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "suplier")
+    private List<Order> orders;
     
 }
