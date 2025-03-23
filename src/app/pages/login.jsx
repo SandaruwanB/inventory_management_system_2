@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { apiConfig } from '../../apiConfig';
 
 
 function Login() {
@@ -9,7 +11,9 @@ function Login() {
   const [password,setPasword] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [passError, setPassError] = useState(false);
-  const navigate = useNavigate();
+  const [emailErrMsg, setEmailErrorMsg] = useState("");
+  const [passErrorMsg, setPassErrorMsg] = useState("");
+  const navigate = useNavigate(); 
 
   document.title = "Stockify | Sign in";
 
@@ -19,19 +23,35 @@ function Login() {
 
   const handleLogin = ()=>{
     if(email === "" && password === ""){
-        setEmailError(true);
-        setPassError(true);
+      setEmailErrorMsg("This field is required");
+      setPassErrorMsg("This field is required");
+      setEmailError(true);
+      setPassError(true);
     }
     else if (email === ""){
-        setEmailError(true);
-        setPassError(false);
+      setEmailErrorMsg("This field is required");
+      setEmailError(true);
+      setPassError(false);
     }
     else if (password === ""){
-        setEmailError(false);
-        setPassError(true);
+      setPassErrorMsg("This field is required");
+      setEmailError(false);
+      setPassError(true);
     }
     else{
+      setEmailError(false);
+      setPassError(false);
+      axios.post(`${apiConfig.url}/auth/token`, {
+        'username' : email,
+        'password' : password
+      }).then(result=>{
+        sessionStorage.setItem('session', result.data);
         navigate('/user/dashboard');
+      }).catch((err)=>{
+        setPasword("");
+        setEmailErrorMsg("Invalid credentials.");
+        setEmailError(true);        
+      })
     }   
   }
 
@@ -55,7 +75,7 @@ function Login() {
           </div>
           {
               emailError ? 
-              <p className='text-center text-red-500 text-sm'>User name is required</p> : ""
+              <p className='text-center text-red-500 text-sm'>{emailErrMsg}</p> : ""
           }
         </div>
         <div className='mt-7'>
@@ -63,7 +83,7 @@ function Login() {
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
               <Icon icon={'material-symbols:lock'} width={24} height={24} className='text-cyan-950' />
             </div>
-            <input type={isPassword ? 'password' : 'text'} className={`block w-full p-3 ps-10 text-sm text-cyan-950 border-2 ${passError ? 'border-red-500' : 'border-cyan-950'} rounded-lg bg-transparent outline-none" placeholder="Password`}  onChange={(e)=>{setPasword(e.target.value); setPassError(false)}} placeholder='Password'/>
+            <input value={password} type={isPassword ? 'password' : 'text'} className={`block w-full p-3 ps-10 text-sm text-cyan-950 border-2 ${passError ? 'border-red-500' : 'border-cyan-950'} rounded-lg bg-transparent outline-none" placeholder="Password`}  onChange={(e)=>{setPasword(e.target.value); setPassError(false)}} placeholder='Password'/>
             {
               isPassword ?
               <div className="absolute inset-y-0 end-2 flex items-center ps-3 cursor-pointer">
@@ -77,7 +97,7 @@ function Login() {
           </div>
           {
               passError ? 
-              <p className='text-center text-red-500 text-sm'>Password is required.</p>
+              <p className='text-center text-red-500 text-sm'>{passErrorMsg}</p>
               : ""
           }
         </div>
