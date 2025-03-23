@@ -72,8 +72,8 @@ const EditProduct = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/inventory")}>Inventory</span> / Add</h1>
-                    <h1 className='font-semibold text-gray-700 mt-10'>Add new product</h1>
+                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/inventory")}>Inventory</span> / {productname}</h1>
+                    <h1 className='font-semibold text-gray-700 mt-10'>{productname}</h1>
                     <div className='w-full bg-gray-400 h-[2px]'></div>
                     <div className='w-full mt-10'>
                         <div className="w-full">
