@@ -24,7 +24,6 @@ import com.inventory_management.filter.AuthFilter;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    
     @Bean
     public UserDetailsService userDetailsService(){
         return new UserInfoService();
@@ -35,8 +34,8 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                                        .requestMatchers("/auth/*").permitAll()
-                                        .requestMatchers("/api/*").hasAnyAuthority("ROLE_USER")
+                                        .requestMatchers("/auth/**").permitAll()
+                                        .requestMatchers("/api/**").hasAnyAuthority("ROLE_USER")
                                         .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
