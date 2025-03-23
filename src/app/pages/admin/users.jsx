@@ -14,14 +14,25 @@ const Users = () => {
     const [popupvisibility, setPopupvisibility] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const [token, setToken] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/users/all`).then(result => {
-            setUsers(result.data);
-            setFilteredUsers(result.data);
-        })
-    }, [])
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/users/all`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result => {
+                setUsers(result.data);
+                setFilteredUsers(result.data);
+            })
+        }
+        if (token){
+            getData();
+        }
+    }, [token])
 
     const editUser = (id) => {
         navigate(`/user/users/edit/${id}`);

@@ -16,15 +16,27 @@ const Employees = () => {
     const [popupvisibility, setPopupvisibility] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredEmployees, setFilteredEmployees] = useState([]);
+    const [token, setToken] = useState("");
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/employees/all`, { responseType: 'json' }).then(data => {
-            setEmployees(data.data);
-            setFilteredEmployees(data.data);
-        });
-    }, []);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/employees/all`, { 
+                responseType: 'json',
+                headers : {
+                    Authorization : token
+                }
+            }).then(data => {
+                setEmployees(data.data);
+                setFilteredEmployees(data.data);
+            });
+        }
+        if (token){
+            getData();
+        }
+    }, [token]);
 
     const editEmployee = (id) => {
         navigate(`/user/employees/edit/${id}`);

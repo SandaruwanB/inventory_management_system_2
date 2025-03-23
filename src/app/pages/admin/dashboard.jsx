@@ -14,29 +14,60 @@ const Dashboard = () => {
     const [employees, setEmployees] = useState([]);
     const [finalinvoices, setFinalinvoices] = useState([]);
     const [finalpayments, setFinalpaymanets] = useState([]);
+    const [token, setToken] = useState("");
 
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
-            setCustomers(result.data);
-        });
-        axios.get(`${apiConfig.url}/api/supliers/all`).then(result=>{
-            setSupliers(result.data);
-        });
-        axios.get(`${apiConfig.url}/api/inventory/all`).then(result=>{
-            setItems(result.data);
-        });
-        axios.get(`${apiConfig.url}/api/employees/all`).then(result=>{
-            setEmployees(result.data);
-        });
-        axios.get(`${apiConfig.url}/api/payments/all/desc`).then(result=>{
-            setFinalpaymanets(result.data);
-        });
-        axios.get(`${apiConfig.url}/api/invoicing/all/desc`).then(result=>{
-            setFinalinvoices(result.data);
-        })
-    },[]);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/customers/all`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result=>{
+                setCustomers(result.data);
+            });
+            axios.get(`${apiConfig.url}/api/supliers/all`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result=>{
+                setSupliers(result.data);
+            });
+            axios.get(`${apiConfig.url}/api/inventory/all`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result=>{
+                setItems(result.data);
+            });
+            axios.get(`${apiConfig.url}/api/employees/all`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result=>{
+                setEmployees(result.data);
+            });
+            axios.get(`${apiConfig.url}/api/payments/all/desc`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result=>{
+                setFinalpaymanets(result.data);
+            });
+            axios.get(`${apiConfig.url}/api/invoicing/all/desc`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result=>{
+                setFinalinvoices(result.data);
+            });
+        }
+        if (token){
+            getData();
+        }
+    },[token]);
 
 
   return (

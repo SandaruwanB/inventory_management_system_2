@@ -14,14 +14,26 @@ const Customers = () => {
     const [popupvisibility, setPoupvisibility] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredCustomers, setFilteredCustomers] = useState([]);
+    const [token, setToken] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/customers/all`).then(result => {
-            setCustomers(result.data);
-            setFilteredCustomers(result.data);
-        });
-    }, []);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/customers/all`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result => {
+                setCustomers(result.data);
+                setFilteredCustomers(result.data);
+            });
+        }
+        if (token){
+            getData();
+        }
+
+    }, [token]);
 
     const editCustomer = (id) => {
         navigate(`/user/customers/edit/${id}`);
