@@ -2,6 +2,7 @@ package com.inventory_management.controllers;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ public class UserController {
     }
     
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public List<User> getAll() {
         return service.getUsers();
     }
