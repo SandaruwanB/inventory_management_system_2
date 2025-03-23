@@ -57,7 +57,11 @@ const Inventory = () => {
 
     const deleteProduct = async (id) => {
         setPopupvisibility(false);
-        await axios.delete(`${apiConfig.url}/api/inventory/delete/${id}`).then((result) => {
+        await axios.delete(`${apiConfig.url}/api/inventory/delete/${id}`, {
+            headers : {
+                Authorization : token
+            }
+        }).then((result) => {
             if (result.status === 200) {
                 toast.info('Successfully Removed!', {
                     position: "top-right",

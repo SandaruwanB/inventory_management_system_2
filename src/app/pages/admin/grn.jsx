@@ -55,7 +55,11 @@ const Grn = () => {
     const deleteGrn = async (id) => {
         setPopupvisibility(false);
     
-        axios.delete(`${apiConfig.url}/api/grn/delete/${id}`).then(() => {
+        axios.delete(`${apiConfig.url}/api/grn/delete/${id}`, {
+            headers : {
+                Authorization : token
+            }
+        }).then(() => {
             toast.info('Successfully Removed!', {
                 position: "top-right",
                 autoClose: 5000,

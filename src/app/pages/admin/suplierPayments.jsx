@@ -54,7 +54,11 @@ const SuplierPayments = () => {
 
     const deletePayment = async (id) => {
         setPopupvisibility(false);
-        await axios.delete(`${apiConfig.url}/api/payments/delete/${id}`).then(result => {
+        await axios.delete(`${apiConfig.url}/api/payments/delete/${id}`, {
+            headers : {
+                Authorization : token
+            }
+        }).then(result => {
             if (result.status === 200) {
                 toast.info('Successfully Removed!', {
                     position: "top-right",

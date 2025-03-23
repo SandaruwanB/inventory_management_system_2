@@ -57,7 +57,11 @@ const Employees = () => {
 
     const deleteEmployee = async (id) => {
         setPopupvisibility(false);
-        await axios.delete(`${apiConfig.url}/api/employees/delete/${id}`).then(() => {
+        await axios.delete(`${apiConfig.url}/api/employees/delete/${id}`, {
+            headers : {
+                Authorization : token
+            }
+        }).then(() => {
             toast.info('Successfully Removed!', {
                 position: "top-right",
                 autoClose: 5000,

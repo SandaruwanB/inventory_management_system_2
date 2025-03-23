@@ -56,7 +56,11 @@ const Invoicing = () => {
     const deleteInvoice = async (id) => {
         setPopupvisibility(false);
         console.log(id);
-        await axios.delete(`${apiConfig.url}/api/invoicing/delete/${id}`).then(() => {
+        await axios.delete(`${apiConfig.url}/api/invoicing/delete/${id}`, {
+            headers : {
+                Authorization : token
+            }
+        }).then(() => {
             toast.info('Successfully Removed!', {
                 position: "top-right",
                 autoClose: 5000,

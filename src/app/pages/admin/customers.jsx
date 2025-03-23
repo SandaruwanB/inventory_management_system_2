@@ -55,7 +55,11 @@ const Customers = () => {
     const deleteCustomer = async (id) => {
         setPoupvisibility(false);
 
-        await axios.delete(`${apiConfig.url}/api/customers/delete/${id}`).then((result) => {
+        await axios.delete(`${apiConfig.url}/api/customers/delete/${id}`, {
+            headers : {
+                Authorization : token
+            }
+        }).then((result) => {
             if (result.status === 200) {
                 toast.info('Successfully Removed!', {
                     position: "top-right",

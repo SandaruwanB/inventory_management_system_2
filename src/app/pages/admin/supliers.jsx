@@ -54,7 +54,11 @@ const Supliers = () => {
     const deleteSuplier = async (id) => {
         setPopupvisibility(false);
 
-        await axios.delete(`${apiConfig.url}/api/supliers/delete/${id}`).then((result) => {
+        await axios.delete(`${apiConfig.url}/api/supliers/delete/${id}`, {
+            headers : {
+                Authorization : token
+            }
+        }).then((result) => {
             if (result.status === 200) {
                 toast.info('Successfully Removed!', {
                     position: "top-right",

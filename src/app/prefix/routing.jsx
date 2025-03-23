@@ -41,17 +41,21 @@ import EditSuplierPayment from '../pages/forms/payment/editSuplierPayment'
 import InventoryComponents from '../pages/admin/inventoryXomponents'
 import SalesReport from '../pages/admin/salesReport'
 import PurchasesReport from '../pages/admin/purchasesReport'
+import { AuthCheck, Middleware } from './authChecker'
 
 function Routing() {
   return (
     <BrowserRouter>
         <Routes>
+          <Route element={<AuthCheck />}>
             {/* Default roues */}
             <Route path="/" element={<Home />} />
             <Route path='/login' element={<Login />} />
             <Route path='*' element={<NotFound />} />
+          </Route>
 
             {/* auth routes */}
+          <Route element={<Middleware />} >
             <Route path='/user/dashboard' element={<Dashboard />} />
             <Route path='/user/employees' element={<Employees />} />
             <Route path='/user/customers' element={<Customers />} />
@@ -99,6 +103,7 @@ function Routing() {
 
             <Route path='/user/grn/add' element={<AddGrn />} />
             <Route path='/user/grn/edit/:id' element={<EditGrn />} />
+          </Route>
         </Routes>
     </BrowserRouter>
   )
