@@ -15,28 +15,39 @@ const PurchasesReport = () => {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [filteredPurchasing, setFilteredPurchasing] = useState([]);
+    const [token, setToken] = useState("");
 
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/orders/suplier`).then(result => {
-            setPurchasings(result.data);
-
-            const aggregatedData = result.data.reduce((acc, purchase) => {
-                const purchaseDate = purchase.date;
-                const totalAmount = purchase.ordermove.reduce((acc, line) => acc + line.itemcount * line.product.unitprice, 0);
-
-                const existingEntry = acc.find(entry => entry.date === purchaseDate);
-                if (existingEntry) {
-                    existingEntry.totalAmount += totalAmount;
-                } else {
-                    acc.push({ date: purchaseDate, totalAmount });
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/orders/suplier`, {
+                headers : {
+                    Authorization : token
                 }
+            }).then(result => {
+                setPurchasings(result.data);
 
-                return acc;
-            }, []);
+                const aggregatedData = result.data.reduce((acc, purchase) => {
+                    const purchaseDate = purchase.date;
+                    const totalAmount = purchase.ordermove.reduce((acc, line) => acc + line.itemcount * line.product.unitprice, 0);
 
-            setChartData(aggregatedData);
-        });
-    }, []);
+                    const existingEntry = acc.find(entry => entry.date === purchaseDate);
+                    if (existingEntry) {
+                        existingEntry.totalAmount += totalAmount;
+                    } else {
+                        acc.push({ date: purchaseDate, totalAmount });
+                    }
+
+                    return acc;
+                }, []);
+
+                setChartData(aggregatedData);
+            });
+        }
+        if (token){
+            getData();
+        }
+    }, [token]);
 
     useEffect(() => {
         if (startDate && endDate) {

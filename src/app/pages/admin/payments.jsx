@@ -14,15 +14,26 @@ const Payments = () => {
     const [popupvisibility, setPopupvisibility] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredPayments, setFilteredPayments] = useState([]);
+    const [token, setToken] = useState("");
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/payments/customer`).then(result => {
-            setPayments(result.data);
-            setFilteredPayments(result.data);
-        });
-    }, []);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/payments/customer`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result => {
+                setPayments(result.data);
+                setFilteredPayments(result.data);
+            });
+        }
+        if (token){
+            getData();
+        }
+    }, [token]);
 
     const editPayment = (id) => {
         navigate(`/user/customer/payments/edit/${id}`);

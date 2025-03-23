@@ -14,16 +14,27 @@ const Invoicing = () => {
     const [popupvisibility, setPopupvisibility] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredInvoices, setFilteredInvoices] = useState([]);
+    const [token, setToken] = useState("");
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/invoicing/all`).then(result => {
-            setInvoices(result.data);
-            setFilteredInvoices(result.data);
-            console.log(result.data);
-        })
-    }, []);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/invoicing/all`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result => {
+                setInvoices(result.data);
+                setFilteredInvoices(result.data);
+                console.log(result.data);
+            })
+        }
+        if (token){
+            getData();
+        }
+    }, [token]);
 
     const editInvoice = (id) => {
         navigate(`/user/invoicing/edit/${id}`);

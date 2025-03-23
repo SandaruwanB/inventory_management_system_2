@@ -11,13 +11,24 @@ import { apiConfig } from '../../../apiConfig';
     const [grns, setGrns] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredGrns, setFilteredGrns] = useState([]);
+    const [token, setToken] = useState("");
     
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/inventory/all`).then(result => {
-            setGrns(result.data);
-            setFilteredGrns(result.data); 
-        });
-    }, []);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/inventory/all`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result => {
+                setGrns(result.data);
+                setFilteredGrns(result.data); 
+            });
+        }
+        if (token){
+            getData();
+        }
+    }, [token]);
 
     const handleSearch = (e) => {
         const query = e.target.value.toLowerCase();

@@ -14,15 +14,26 @@ const Grn = () => {
     const [popupvisibility, setPopupvisibility] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredGrns, setFilteredGrns] = useState([]);
+    const [token, setToken] = useState("");
 
     const navigate = useNavigate();
     
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/grn/all`).then(result => {
-            setGrns(result.data);
-            setFilteredGrns(result.data);
-        });
-    }, []);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/grn/all`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result => {
+                setGrns(result.data);
+                setFilteredGrns(result.data);
+            });
+        }
+        if (token){
+            getData();
+        }
+    }, [token]);
     
     const editGrn = (id) => {
         navigate(`/user/grn/edit/${id}`);

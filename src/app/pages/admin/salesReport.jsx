@@ -15,28 +15,39 @@ const SalesReport = () => {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [filteredSales, setFilteredSales] = useState([]);
+    const [token, setToken] = useState("");
 
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/orders/customer`).then((result) => {
-            setSales(result.data);
-
-            const aggregatedData = result.data.reduce((acc, sale) => {
-                const saleDate = sale.date;
-                const totalAmount = sale.ordermove.reduce((acc, line) => acc + line.itemcount * line.product.unitprice, 0);
-
-                const existingEntry = acc.find(entry => entry.date === saleDate);
-                if (existingEntry) {
-                    existingEntry.totalAmount += totalAmount;
-                } else {
-                    acc.push({ date: saleDate, totalAmount });
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/orders/customer`, {
+                headers : {
+                    Authorization : token
                 }
+            }).then((result) => {
+                setSales(result.data);
 
-                return acc;
-            }, []);
+                const aggregatedData = result.data.reduce((acc, sale) => {
+                    const saleDate = sale.date;
+                    const totalAmount = sale.ordermove.reduce((acc, line) => acc + line.itemcount * line.product.unitprice, 0);
 
-            setChartData(aggregatedData);
-        });
-    }, []);
+                    const existingEntry = acc.find(entry => entry.date === saleDate);
+                    if (existingEntry) {
+                        existingEntry.totalAmount += totalAmount;
+                    } else {
+                        acc.push({ date: saleDate, totalAmount });
+                    }
+
+                    return acc;
+                }, []);
+
+                setChartData(aggregatedData);
+            });
+        }
+        if (token){
+            getData();
+        }
+    }, [token]);
 
     useEffect(() => {
         if (startDate && endDate) {
@@ -102,7 +113,7 @@ const SalesReport = () => {
                                             <tbody className="divide-y divide-gray-200">
                                                 {filteredSales.length > 0 ? (
                                                     filteredSales.map((value, index) => (
-                                                        <tr className={index % 2 === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
+                                                        <tr  key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
                                                             <td className="p-3 text-sm text-gray-700">{index + 1}</td>
                                                             <td className="p-3 text-sm text-gray-700">
                                                                 {value.customer.firstname + ' ' + value.customer.lastname}

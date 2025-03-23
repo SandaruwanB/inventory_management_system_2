@@ -100,7 +100,7 @@ const Dashboard = () => {
                                 {
                                     finalinvoices.map((value, index)=>(
                                         index < 4 ?
-                                        <tr className={ index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
+                                        <tr key={index} className={ index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
                                             <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                             <td className='p-3 text-sm text-gray-700'>{value.invoicenumber}</td>
                                             <td className='p-3 text-sm text-gray-700'>{value.customer.firstname + " " + value.customer.lastname}</td>
@@ -136,7 +136,7 @@ const Dashboard = () => {
                                     finalpayments.map((value,index)=>(
 
                                         index < 4 ? 
-                                        <tr className={ index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
+                                        <tr key={index} className={ index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
                                             <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                             <td className='p-3 text-sm text-gray-700'>{value.payslipcode}</td>
                                             <td className='p-3 text-sm text-gray-700'>{value.suplier ? value.suplier.firstname + " " + value.suplier.lastname : value.customer.firstname + " " + value.customer.lastname }</td>

@@ -15,15 +15,26 @@ const SuplierOrders = () => {
     const [popupvisibility, setPopupvisibility] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredOrders, setFilteredOrders] = useState([]);
+    const [token, setToken] = useState("");
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/orders/suplier`).then(result => {
-            setOrders(result.data);
-            setFilteredOrders(result.data);
-        });
-    }, []);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/orders/suplier`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result => {
+                setOrders(result.data);
+                setFilteredOrders(result.data);
+            });
+        }
+        if (token){
+            getData();
+        }
+    }, [token]);
 
     const editOrder = (id) => {
         navigate(`/user/suplier/orders/edit/${id}`);

@@ -25,25 +25,36 @@ const Settings = () => {
     const [comemail, setComemail] = useState("");
     const [comcontact, setComcontact] = useState("");
     const [comid, setComid] = useState("");
+    const [token, setToken] = useState("");
 
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/company/all`).then(result=>{
-            if(result.data.length > 0){
-                setComfound(true);
-                setCompanyname(result.data[0].companyname);
-                setComaddress1(result.data[0].addressline1);
-                setComaddress2(result.data[0].addressline2);
-                setComcity(result.data[0].city);
-                setComcountry(result.data[0].country);
-                setComweb(result.data[0].web);
-                setComemail(result.data[0].email);
-                setComcontact(result.data[0].contactnumber);
-                setComid(result.data[0].id)
-            }
-        });
-    },[]);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/company/all`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result=>{
+                if(result.data.length > 0){
+                    setComfound(true);
+                    setCompanyname(result.data[0].companyname);
+                    setComaddress1(result.data[0].addressline1);
+                    setComaddress2(result.data[0].addressline2);
+                    setComcity(result.data[0].city);
+                    setComcountry(result.data[0].country);
+                    setComweb(result.data[0].web);
+                    setComemail(result.data[0].email);
+                    setComcontact(result.data[0].contactnumber);
+                    setComid(result.data[0].id)
+                }
+            });
+        }
+        if (token){
+            getData();
+        }
+    },[token]);
 
     const addCompany = async ()=>{
         await axios.post(`${apiConfig.url}/api/company/add`, {

@@ -14,14 +14,25 @@ const Inventory = () => {
     const [popupvisibility, setPopupvisibility] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredInventory, setFilteredInventory] = useState([]);
+    const [token, setToken] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/inventory/all`).then(result => {
-            setInventory(result.data);
-            setFilteredInventory(result.data);
-        });
-    }, []);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/inventory/all`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result => {
+                setInventory(result.data);
+                setFilteredInventory(result.data);
+            });
+        }
+        if(token){
+            getData();
+        }
+    }, [token]);
 
     const addNew = () => {
         navigate("/user/inventory/add");

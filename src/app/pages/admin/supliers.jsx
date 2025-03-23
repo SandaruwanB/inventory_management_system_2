@@ -13,15 +13,26 @@ const Supliers = () => {
     const [popupvisibility, setPopupvisibility] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredSupliers, setFilteredSupliers] = useState([]);
+    const [token, setToken] = useState("");
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`${apiConfig.url}/api/supliers/all`).then(result => {
-            setSupliers(result.data);
-            setFilteredSupliers(result.data);
-        });
-    }, []);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/supliers/all`, {
+                headers : {
+                    Authorization : token
+                }
+            }).then(result => {
+                setSupliers(result.data);
+                setFilteredSupliers(result.data);
+            });
+        }
+        if (token){
+            getData();
+        }
+    }, [token]);
 
     const editSuplier = (id) => {
         navigate(`/user/supliers/edit/${id}`);
