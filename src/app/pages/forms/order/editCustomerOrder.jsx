@@ -44,7 +44,7 @@ const EditOrder = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/orders")}>Orders</span> / {order.ordername}</h1>
+                    <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/customer/orders")}>Orders</span> / {order.ordername}</h1>
                         <div className='mt-10 flex justify-between'>
                             <div>
                               <h1 className='font-semibold text-gray-700'>View order details</h1>
