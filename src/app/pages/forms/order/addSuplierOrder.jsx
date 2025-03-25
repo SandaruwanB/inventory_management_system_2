@@ -22,17 +22,32 @@ const AddOrder = () => {
     const [showmenu, setShowmenu] = useState(false);
     const [products, setProducts] = useState([]);
     const [customers, setCustomers] = useState([]);
+    const [token, setToken] = useState("");
 
     const navigate = useNavigate();
     
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
-            setCustomers(result.data);
-        });
-        axios.get(`${apiConfig.url}/api/inventory/all`).then(result=>{
-            setProducts(result.data);
-        });
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/customers/all`, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
+                setCustomers(result.data);
+            });
+            axios.get(`${apiConfig.url}/api/inventory/all`, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
+                setProducts(result.data);
+            });
+        }
         setOrdername("ORDER" + Math.floor((Math.random() * (99999 - 10000) + 10000 )));
+        if (token){
+            getData();
+        }
     },[]);
 
     const saveOrder = async ()=>{
@@ -70,6 +85,10 @@ const AddOrder = () => {
                     id : customer
                 },
                 ordermove : orderlines
+            },{
+                headers : {
+                  Authorization : token
+                }
             }).then(result=>{
                 if (result.status === 200){
                     toast.success('Successfully Created!', {
@@ -118,7 +137,11 @@ const AddOrder = () => {
             });
         }
         else{
-            await axios.get(`${apiConfig.url}/api/inventory/get/${product}`).then(result=>{
+            await axios.get(`${apiConfig.url}/api/inventory/get/${product}`, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
                 const array = {
                     "product" : {
                         "id" : product,

@@ -14,21 +14,32 @@ const EditProduct = () => {
     const [unitofmesure, setUnitofmesure] = useState("");
     const [outqty, setOutqty] = useState("");
     const [inqty, setInqty] = useState("");
+    const [token, setToken] = useState("");
 
     const navigate = useNavigate();
 
     const {id} = useParams();
 
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/inventory/get/${id}`).then(result=>{
-            setProductname(result.data.prodctname);
-            setOnhandqty(result.data.onhandqty);
-            setUnitprice(result.data.unitprice);
-            setUnitofmesure(result.data.unitofmesure);
-            setInqty(result.data.inqty);
-            setOutqty(result.data.outqty);
-        });
-    },[id])
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/inventory/get/${id}`, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
+                setProductname(result.data.prodctname);
+                setOnhandqty(result.data.onhandqty);
+                setUnitprice(result.data.unitprice);
+                setUnitofmesure(result.data.unitofmesure);
+                setInqty(result.data.inqty);
+                setOutqty(result.data.outqty);
+            });
+        }
+        if (token){
+            getData();
+        }
+    },[id, token])
 
     const updateProduct = async ()=>{
         if (productname === "" || onhandqty === "" || unitprice === "" || unitofmesure === ""){
@@ -49,6 +60,10 @@ const EditProduct = () => {
                 onhandqty : onhandqty,
                 unitprice : unitprice,
                 unitofmesure : unitofmesure,
+            }, {
+                headers : {
+                    Authorization : token
+                }
             }).then(result=>{
                 if (result.status === 200){
                     toast.success('Successfully Updated!', {

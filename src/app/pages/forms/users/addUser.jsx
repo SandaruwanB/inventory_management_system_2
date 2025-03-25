@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -17,8 +17,13 @@ const AddUser = () => {
     const [address, setAddress] = useState("");
     const [role, setRole] = useState("");
     const [password, setPasssword] = useState("");
+    const [token, setToken] = useState("");
     
     const navigate = useNavigate();
+
+    useEffect(()=>{
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+    },[]);
 
     const addUser = async ()=>{
         if (username === "" || firstname === "" || lastname === "" || email === "" || role === ""){
@@ -56,7 +61,11 @@ const AddUser = () => {
                 address : address,
                 role : role,
                 CreatedAt :  Date.now()
-            }).then((result)=>{
+            }, {
+                headers : {
+                  Authorization : token
+                }
+              }).then((result)=>{
                 if (result.status === 200){
                     toast.success('Succesfully Recorded.!', {
                     position: "top-right",

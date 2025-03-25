@@ -22,15 +22,26 @@ const PaymentsForm = () => {
     const [suplier, setSuplier] = useState("");
 
     const [customers, setCustomers] = useState([]);
+    const [token, setToken] = useState("");
 
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
-            setCustomers(result.data);
-        });
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/customers/all`, {
+                headers : {
+                Authorization : token
+                }
+            }).then(result=>{
+                setCustomers(result.data);
+            });
+        }
         setPayslipcode("PAY" + Math.floor((Math.random() * (99999 - 10000) + 10000 )));
-    },[]);
+        if (token){
+            getData();
+        }
+    },[token]);
 
     const addPayment = async ()=>{
         if (status === "" || date === "" || paymentmethod === "" || amount === ""){
@@ -100,7 +111,11 @@ const PaymentsForm = () => {
                     id : parseInt(suplier)
                 },
                 createdAt : Date.now()
-            }).then(result=>{
+            },{
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
                 if (result.status === 200){
                     toast.success('Successfully Created!', {
                         position: "top-right",

@@ -17,15 +17,26 @@ const AddInvoicing = () => {
     const [status, setStatus] = useState("");
     const [customer, setCustomer] = useState("");
     const [customers, setCustomers] = useState([]);
+    const [token, setToken] = useState("");
 
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
-            setCustomers(result.data);
-        });
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/customers/all`, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
+                setCustomers(result.data);
+            });
+        }
         setInvoicenumber("INV" + Math.floor((Math.random() * (99999 - 10000) + 10000 )));
-    },[]);
+        if (token){
+            getData();
+        }
+    },[token]);
 
 
     const addInvoice = async ()=>{
@@ -62,6 +73,10 @@ const AddInvoicing = () => {
                 status : status,
                 customer : {
                     id : customer
+                }
+            }, {
+                headers : {
+                    Authorization : token
                 }
             }).then(result=>{
                 if (result.status === 200){

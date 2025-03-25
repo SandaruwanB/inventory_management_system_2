@@ -18,23 +18,34 @@ const EditSuplier = () => {
     const [addressline2, setAddressline2] = useState("");
     const [city, setCity] = useState("");
     const [postalcode, setPostalcode] = useState("");
+    const [token, setToken] = useState("");
 
     const {id} = useParams();
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/supliers/get/${id}`).then(result=>{
-            setFirstname(result.data.firstname);
-            setLastname(result.data.lastname);
-            setEmail(result.data.email);
-            setContact(result.data.contact);
-            setCompanyname(result.data.companyname);
-            setAddressline1(result.data.addressline1);
-            setAddressline2(result.data.addressline2);
-            setCity(result.data.city);
-            setPostalcode(result.data.postalcode);
-        });
-    },[id]);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/supliers/get/${id}`, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
+                setFirstname(result.data.firstname);
+                setLastname(result.data.lastname);
+                setEmail(result.data.email);
+                setContact(result.data.contact);
+                setCompanyname(result.data.companyname);
+                setAddressline1(result.data.addressline1);
+                setAddressline2(result.data.addressline2);
+                setCity(result.data.city);
+                setPostalcode(result.data.postalcode);
+            });
+        }
+        if(token){
+            getData();
+        }
+    },[id, token]);
 
     const updateSuplier = async ()=>{
         if (firstname === "" || lastname === "" || email === "" || city === ""){
@@ -72,7 +83,11 @@ const EditSuplier = () => {
                 addressline2 : addressline2,
                 city : city,
                 postalcode : postalcode
-            }).then(result=>{
+            }, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
                 if (result.status === 200){
                     toast.success('Succesfully Updated.!', {
                         position: "top-right",

@@ -14,28 +14,43 @@ const EditOrder = () => {
     const [customer, setCustomer] = useState([]);
     const [company, setCompany] = useState([]);
     const [total, setTotal] = useState(0);
+    const [token, setToken] = useState("");
 
     const { id } = useParams();
 
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/orders/get/${id}`).then(result=>{
-            setOrder(result.data);
-            setOrdermove(result.data.ordermove);
-            setCustomer(result.data.customer);
-        });
-        axios.get(`${apiConfig.url}/api/company/all`).then(result=>{
-            setCompany(result.data[0]);
-        });
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/orders/get/${id}`,{
+                headers : {
+                Authorization : token
+                }
+            }).then(result=>{
+                setOrder(result.data);
+                setOrdermove(result.data.ordermove);
+                setCustomer(result.data.customer);
+            });
+            axios.get(`${apiConfig.url}/api/company/all`,{
+                headers : {
+                Authorization : token
+                }
+            }).then(result=>{
+                setCompany(result.data[0]);
+            });
 
-        let total = 0;
-        ordermove.map((value,index)=>{
-            total += value.itemcount * value.product.unitprice;
-            return 0;
-        });
-        setTotal(total);
-    },[id, ordermove])
+            let total = 0;
+            ordermove.map((value,index)=>{
+                total += value.itemcount * value.product.unitprice;
+                return 0;
+            });
+            setTotal(total);
+        }
+        if (token){
+            getData();
+        }
+    },[id, ordermove, token])
 
 
   return (

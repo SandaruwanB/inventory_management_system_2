@@ -17,21 +17,32 @@ const EditUser = () => {
     const [address, setAddress] = useState("");
     const [role, setRole] = useState("");
     const [password, setPasssword] = useState("");
+    const [token, setToken] = useState("");
 
     const {id} = useParams();
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/users/get/${id}`).then(result=>{
-            setUsername(result.data.username);
-            setEmail(result.data.email);
-            setFirstname(result.data.firstname);
-            setLastname(result.data.lastname);
-            setContact(result.data.phone);
-            setAddress(result.data.address);
-            setRole(result.data.role)
-        });
-    },[id]);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/users/get/${id}`, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
+                setUsername(result.data.username);
+                setEmail(result.data.email);
+                setFirstname(result.data.firstname);
+                setLastname(result.data.lastname);
+                setContact(result.data.phone);
+                setAddress(result.data.address);
+                setRole(result.data.role)
+            });
+        }
+        if (token){
+            getData();
+        }
+    },[id, token]);
 
     const updateUser = async ()=>{
         if (username === "" || firstname === "" || lastname === "" || email === "" || role === ""){
@@ -69,7 +80,11 @@ const EditUser = () => {
                 address : address,
                 role : role,
                 updatedAt : Date.now()
-            }).then(result=>{
+            }, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
                 if (result.status === 200){
                     toast.success('Succesfully Recorded.!', {
                     position: "top-right",

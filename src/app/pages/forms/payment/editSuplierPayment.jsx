@@ -29,34 +29,53 @@ const EditSuplierPayment = () => {
     const [payment, setPayment] = useState([]);
 
     const [supliers, setSupliers] = useState([]);
+    const [token, setToken] = useState("");
 
     const {id} = useParams();
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/supliers/all`).then(result=>{
-            setSupliers(result.data);
-        });
-        axios.get(`${apiConfig.url}/api/payments/get/${id}`).then(result=>{
-            setPayslipcode(result.data.payslipcode);
-            setStatus(result.data.status);
-            setNote(result.data.note ? result.data.note : "");
-            setDate(result.data.date);
-            setPaymentMethod(result.data.paymentmethod);
-            setAccountnumber(result.data.accountnumber);
-            setAccountholder(result.data.accountholder);
-            setBank(result.data.bank);
-            setAmount(result.data.amount);
-            setPaymenttype(result.data.paymenttype);
-            setCustomer(result.data.customer ? result.data.customer.id : 0);
-            setPayment(result.data);
-            setDocCustomer(result.data.customer);
-            setDocSuplier(result.data.suplier);
-        });
-        axios.get(`${apiConfig.url}/api/company/all`).then(result=>{
-            setCompany(result.data[0]);
-        })
-    },[id]);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/supliers/all`, {
+                headers : {
+                Authorization : token
+                }
+            }).then(result=>{
+                setSupliers(result.data);
+            });
+            axios.get(`${apiConfig.url}/api/payments/get/${id}`, {
+                headers : {
+                Authorization : token
+                }
+            }).then(result=>{
+                setPayslipcode(result.data.payslipcode);
+                setStatus(result.data.status);
+                setNote(result.data.note ? result.data.note : "");
+                setDate(result.data.date);
+                setPaymentMethod(result.data.paymentmethod);
+                setAccountnumber(result.data.accountnumber);
+                setAccountholder(result.data.accountholder);
+                setBank(result.data.bank);
+                setAmount(result.data.amount);
+                setPaymenttype(result.data.paymenttype);
+                setCustomer(result.data.customer ? result.data.customer.id : 0);
+                setPayment(result.data);
+                setDocCustomer(result.data.customer);
+                setDocSuplier(result.data.suplier);
+            });
+            axios.get(`${apiConfig.url}/api/company/all`, {
+                headers : {
+                Authorization : token
+                }
+            }).then(result=>{
+                setCompany(result.data[0]);
+            })
+        }
+        if (token){
+            getData();
+        }
+    },[id, token]);
 
     const updatePayment = async ()=>{
         if (status === "" || date === "" || paymentmethod === "" || amount === ""){
@@ -113,7 +132,11 @@ const EditSuplierPayment = () => {
                 suplier : {
                     id : parseInt(suplier)
                 },
-            }).then(result=>{
+            }, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
                 if (result.status === 200){
                     toast.success('Successfully Created!', {
                         position: "top-right",
@@ -134,7 +157,11 @@ const EditSuplierPayment = () => {
     }
 
     const cancelEntry = async ()=>{
-        await axios.put(`${apiConfig.url}/api/payments/entry/cancel/${id}`).then(result=>{
+        await axios.put(`${apiConfig.url}/api/payments/entry/cancel/${id}`,{}, {
+            headers : {
+              Authorization : token
+            }
+          }).then(result=>{
             if (result.status === 200){
                 toast.info('Entry canceled!', {
                     position: "top-right",

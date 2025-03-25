@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
@@ -13,8 +13,13 @@ const AddProduct = () => {
     const [onhandqty, setOnhandqty] = useState("");
     const [unitprice, setUnitprice] = useState("");
     const [unitofmesure, setUnitofmesure] = useState("");
+    const [token, setToken] = useState("");
 
     const navigate = useNavigate();
+
+    useEffect(()=>{
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+    },[]);
 
     const saveProduct = async ()=>{
         if (productname === "" || onhandqty === "" || unitprice === "" || unitofmesure === ""){
@@ -59,6 +64,10 @@ const AddProduct = () => {
                 onhandqty : onhandqty,
                 unitprice : unitprice,
                 unitofmesure : unitofmesure
+            },{
+                headers : {
+                    Authorization : token
+                }
             }).then(result=>{
                 if (result.status === 200){
                     toast.success('Successfully Created!', {

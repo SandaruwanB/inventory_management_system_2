@@ -22,31 +22,51 @@ const EditInvoicing = () => {
     const [docCustomer, setDoccustomer] = useState([]);
     const [company, setCompany] = useState([]);
     const [invoice, setInvoice] = useState([]);
+    const [token, setToken] = useState("");
 
     const {id} = useParams();
 
     const navigate = useNavigate();
 
     useState(()=>{
-        axios.get(`${apiConfig.url}/api/customers/all`).then(result=>{
-            setCustomers(result.data);
-        });
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
 
-        axios.get(`${apiConfig.url}/api/invoicing/get/${id}`).then(result=>{
-            setInvoicenumber(result.data.invoicenumber);
-            setNote(result.data.note);
-            setDate(result.data.date);
-            setAmount(result.data.amount);
-            setCustomer(result.data.customer.id);
-            setStatus(result.data.status);
-            setInvoice(result.data);
-            setDoccustomer(result.data.customer);
-        });
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/customers/all`, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
+                setCustomers(result.data);
+            });
 
-        axios.get(`${apiConfig.url}/api/company/all`).then(result=>{
-            setCompany(result.data[0]);
-        });
-    },[id])
+            axios.get(`${apiConfig.url}/api/invoicing/get/${id}`, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
+                setInvoicenumber(result.data.invoicenumber);
+                setNote(result.data.note);
+                setDate(result.data.date);
+                setAmount(result.data.amount);
+                setCustomer(result.data.customer.id);
+                setStatus(result.data.status);
+                setInvoice(result.data);
+                setDoccustomer(result.data.customer);
+            });
+
+            axios.get(`${apiConfig.url}/api/company/all`, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
+                setCompany(result.data[0]);
+            });
+        }
+        if (token){
+            getData();
+        }
+    },[id, token])
 
     const updateInvoice = async ()=>{
         if (date === "" || amount === "" || status === "" || customer === "" || customer === 0){
@@ -71,6 +91,10 @@ const EditInvoicing = () => {
                 customer : {
                     id : customer
                 }
+            },{
+                headers : {
+                    Authorization : token
+                }
             }).then(result=>{
                 if (result.status === 200){
                     toast.success('Successfully Created!', {
@@ -92,7 +116,11 @@ const EditInvoicing = () => {
     }
 
     const cancelEntry = async ()=>{
-        await axios.put(`${apiConfig.url}/api/invoicing/entry/cancel/${id}`).then(result=>{
+        await axios.put(`${apiConfig.url}/api/invoicing/entry/cancel/${id}`,{}, {
+            headers : {
+                Authorization : token
+            }
+        }).then(result=>{
             if (result.status === 200){
                 toast.info('Entry canceled!', {
                     position: "top-right",

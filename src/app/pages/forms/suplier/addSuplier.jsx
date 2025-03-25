@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -18,7 +18,12 @@ const AddSuplier = () => {
     const [addressline2, setAddressline2] = useState("");
     const [city, setCity] = useState("");
     const [postalcode, setPostalcode] = useState("");
+    const [token, setToken] = useState("");
     const navigate = useNavigate();
+
+    useEffect(()=>{
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+    },[]);
 
     const addSuplier = async ()=>{
         if (firstname === "" || lastname === "" || email === "" || city === ""){
@@ -56,7 +61,11 @@ const AddSuplier = () => {
                 addressline2 : addressline2,
                 city : city,
                 postalcode : postalcode
-            }).then(result=>{
+            }, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
                 if (result.status === 200){
                     toast.success('Succesfully Recorded.!', {
                         position: "top-right",

@@ -14,20 +14,35 @@ const EditGrn = () => {
     const [selected, setSelected] = useState([]);
     const [suplier, setSuplier] = useState([]);
     const [company, setCompany] = useState([]);
+    const [token, setToken] = useState("");
 
     const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get(`${apiConfig.url}/api/company/all`).then(result=>{
-            setCompany(result.data[0]);
-        });      
-        axios.get(`${apiConfig.url}/api/grn/get/${id}`).then(result=>{
-            setGrn(result.data);
-            setSelected(result.data.movements);
-            setSuplier(result.data.suplier);
-        });
-    },[id]);
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        const getData = ()=>{
+            axios.get(`${apiConfig.url}/api/company/all`, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
+                setCompany(result.data[0]);
+            });      
+            axios.get(`${apiConfig.url}/api/grn/get/${id}`, {
+                headers : {
+                  Authorization : token
+                }
+              }).then(result=>{
+                setGrn(result.data);
+                setSelected(result.data.movements);
+                setSuplier(result.data.suplier);
+            });
+        }
+        if (token){
+            getData();
+        }
+    },[id, token]);
 
 
 
