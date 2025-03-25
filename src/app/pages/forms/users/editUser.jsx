@@ -15,7 +15,6 @@ const EditUser = () => {
     const [lastname, setLastname] = useState("");
     const [contact, setContact] = useState("");
     const [address, setAddress] = useState("");
-    const [role, setRole] = useState("");
     const [password, setPasssword] = useState("");
     const [token, setToken] = useState("");
 
@@ -36,7 +35,6 @@ const EditUser = () => {
                 setLastname(result.data.lastname);
                 setContact(result.data.phone);
                 setAddress(result.data.address);
-                setRole(result.data.role)
             });
         }
         if (token){
@@ -45,7 +43,7 @@ const EditUser = () => {
     },[id, token]);
 
     const updateUser = async ()=>{
-        if (username === "" || firstname === "" || lastname === "" || email === "" || role === ""){
+        if (username === "" || firstname === "" || lastname === "" || email === ""){
             toast.error('You missed some required fields!', {
                 position: "top-right",
                 autoClose: 5000,
@@ -78,7 +76,7 @@ const EditUser = () => {
                 lastname : lastname,
                 phone : contact,
                 address : address,
-                role : role,
+                role : "ROLE_USER",
                 updatedAt : Date.now()
             }, {
                 headers : {
@@ -180,18 +178,6 @@ const EditUser = () => {
                                                 Password <span className='text-red-400 text-xs'>*</span>
                                             </label>
                                             <input name='password' id='password' onChange={(e)=>setPasssword(e.target.value)} value={password} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="******************"/>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap -mx-3 mb-6">
-                                        <div className="w-full px-3">
-                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='gender'>
-                                                Role <span className='text-red-400 text-xs'>*</span>
-                                            </label>
-                                            <select id='gender' name='gender' onChange={(e)=>setRole(e.target.value)} value={role} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                                                <option >None</option>
-                                                <option value="user">User</option>
-                                                <option value="admin" >Admin</option>
-                                            </select>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap w-full -mx-3 mb-6">

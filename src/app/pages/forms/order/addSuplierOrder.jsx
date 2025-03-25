@@ -48,7 +48,7 @@ const AddOrder = () => {
         if (token){
             getData();
         }
-    },[]);
+    },[token]);
 
     const saveOrder = async ()=>{
         if (date === "" || customer === 0){
