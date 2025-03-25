@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -21,10 +21,14 @@ const EmployeeForm = () => {
     const [postalcode, setPostalcode] = useState("");
     const [gender, setGender] = useState("");
     const [epf, setEpf] = useState("");
+    const [token, setToken] = useState("");
     const navigate = useNavigate();
 
+    useEffect(()=>{
+        setToken(`Bearer ${sessionStorage.getItem('session')}`);
+    },[]);
+
     const addEmployee = ()=>{
-        console.log(lastname);
         if (firstname === "" || lastname === "" || email === "" || jobtitle === "" || city === "" || epf === ""){
             toast.error('You missed some required fields!', {
                 position: "top-right",
@@ -62,6 +66,10 @@ const EmployeeForm = () => {
                 city : city,
                 postalcode : postalcode,
                 epfnumber : epf
+            },{
+                headers : {
+                    Authorization : token
+                }
             }).then(result=>{
                 if (result.status === 200 ){
                     toast.success('Successfully Created!', {

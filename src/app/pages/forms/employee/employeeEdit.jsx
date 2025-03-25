@@ -20,25 +20,36 @@ const EmployeeEdit = () => {
   const [postalcode, setPostalcode] = useState("");
   const [gender, setGender] = useState("");
   const [epf, setEpf] = useState("");
+  const [token, setToken] = useState("");
   const navigate = useNavigate();
 
   const {id} = useParams();
 
   useEffect(()=>{
-    axios.get(`${apiConfig.url}/api/employees/get/${id}`).then(result=>{
-        setFirstname(result.data.firstname); 
-        setLastname(result.data.lastname);
-        setEmail(result.data.email);
-        setJobtitle(result.data.jobtitle);
-        setContact(result.data.contact);
-        setAddressline1(result.data.addressline1);
-        setAddressline2(result.data.addressline2);
-        setCity(result.data.city);
-        setPostalcode(result.data.postalcode);
-        setGender(result.data.gender);
-        setEpf(result.data.epfnumber);
-      });
-  },[id]);
+    setToken(`Bearer ${sessionStorage.getItem('session')}`);
+    const getData = ()=>{
+        axios.get(`${apiConfig.url}/api/employees/get/${id}`, {
+            headers : {
+                Authorization : token
+            }
+        }).then(result=>{
+            setFirstname(result.data.firstname); 
+            setLastname(result.data.lastname);
+            setEmail(result.data.email);
+            setJobtitle(result.data.jobtitle);
+            setContact(result.data.contact);
+            setAddressline1(result.data.addressline1);
+            setAddressline2(result.data.addressline2);
+            setCity(result.data.city);
+            setPostalcode(result.data.postalcode);
+            setGender(result.data.gender);
+            setEpf(result.data.epfnumber);
+        });
+    }
+    if (token){
+        getData();
+    }
+  },[id, token]);
 
   const updateEmployee = ()=>{
       if (firstname === "" || lastname === "" || email === "" || jobtitle === "" || city === "" || epf === ""){
@@ -78,6 +89,10 @@ const EmployeeEdit = () => {
                 city : city,
                 postalcode : postalcode,
                 epfnumber : epf
+          },{
+            headers : {
+                Authorization : token
+            }
           }).then(result=>{
             if(result.status === 200){
                   toast.success('Successfully Updated!', {
