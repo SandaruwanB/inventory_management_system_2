@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
@@ -19,9 +19,13 @@ const CustomerForm = () => {
   const [city, setCity] = useState("");
   const [postalcode, setPostalcode] = useState("");
   const [companyname, setCompanyname] = useState("");
+  const [token, setToken] = useState("");
 
   const navigate = useNavigate();
 
+  useEffect(()=>{
+    setToken(`Bearer ${sessionStorage.getItem('session')}`);
+  }, [])
 
   const addCustomer = async ()=>{
     if (firstname === "" || lastname === "" || email === "" || city === ""){
@@ -60,6 +64,10 @@ const CustomerForm = () => {
         addressline2 : addressline2,
         city : city,
         postalcode : postalcode
+      }, {
+        headers : {
+            Authorization : token
+        }
       }).then(result=>{
         if (result.status === 200){
             toast.success('Successfully Created!', {
