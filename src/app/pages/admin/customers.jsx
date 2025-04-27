@@ -135,6 +135,7 @@ const Customers = () => {
                                     <tr>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left w-10'>No.</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Name</th>
+                                        <th className='p-3 text-sm font-semibold tracking-wide text-left'>NIC</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Email Address</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Contact</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Company Name</th>
@@ -150,6 +151,7 @@ const Customers = () => {
                                                     <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                         <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.firstname + " " + value.lastname}</td>
+                                                        <td className='p-3 text-sm text-gray-700'>{value.nic}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.email}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.contact}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.companyname}</td>
@@ -164,7 +166,7 @@ const Customers = () => {
                                             })
                                             :
                                             <tr className='bg-white'>
-                                                <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={7}>
+                                                <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={8}>
                                                     <p>No customers found.</p>
                                                 </td>
                                             </tr>

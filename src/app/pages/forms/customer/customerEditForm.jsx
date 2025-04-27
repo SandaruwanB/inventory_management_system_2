@@ -20,6 +20,8 @@ const CustomerEditForm = () => {
     const [postalcode, setPostalcode] = useState("");
     const [companyname, setCompanyname] = useState("");
     const [token, setToken] = useState("");
+    const [nic, setNic] = useState("");
+
     const {id} = useParams();
 
     const navigate = useNavigate();
@@ -42,6 +44,7 @@ const CustomerEditForm = () => {
                 setCity(result.data.city);
                 setPostalcode(result.data.postalcode);
                 setCompanyname(result.data.companyname);
+                setNic(result.data.nic);
             });
         }
         if (token){
@@ -50,7 +53,7 @@ const CustomerEditForm = () => {
     },[id, token]);
 
     const updateCustomer = async ()=>{
-        if (firstname === "" || lastname === "" || email === "" || city === ""){
+        if (firstname === "" || lastname === "" || email === "" || city === "" || nic === ""){
             toast.error('You missed some required fields!', {
               position: "top-right",
               autoClose: 5000,
@@ -85,7 +88,8 @@ const CustomerEditForm = () => {
                 addressline1 : addressline1,
                 addressline2 : addressline2,
                 city : city,
-                postalcode : postalcode
+                postalcode : postalcode,
+                nic : nic
             },{
                 headers : {
                     Authorization : token
@@ -137,6 +141,12 @@ const CustomerEditForm = () => {
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='nic' >
+                                                NIC <span className='text-red-400 text-xs'>*</span>
+                                            </label>
+                                            <input name='nic' id='nic' onChange={(e)=>setNic(e.target.value)} value={nic} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="email" placeholder="2131312123V" autoComplete='1'/>
+                                        </div>
+                                        <div className="w-full px-3 mt-5">
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='email' >
                                                 Email <span className='text-red-400 text-xs'>*</span>
                                             </label>
