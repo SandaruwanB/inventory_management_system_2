@@ -9,7 +9,7 @@ import { apiConfig } from '../../../apiConfig';
 
 
 const SuplierOrders = () => {
-    document.title = "Stockify | Suplier Orders";
+    document.title = "New Invent Technologies | Suplier Orders";
 
     const [orders, setOrders] = useState([]);
     const [popupvisibility, setPopupvisibility] = useState(false);

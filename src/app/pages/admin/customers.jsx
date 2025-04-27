@@ -8,7 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const Customers = () => {
-    document.title = "Stockify | Customers";
+    document.title = "New Invent Technologies | Customers";
 
     const [customers, setCustomers] = useState([]);
     const [popupvisibility, setPoupvisibility] = useState(false);

@@ -8,7 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 
 const Payments = () => {
-    document.title = "Stockify | Payments";
+    document.title = "New Invent Technologies | Payments";
 
     const [payments, setPayments] = useState([]);
     const [popupvisibility, setPopupvisibility] = useState(false);

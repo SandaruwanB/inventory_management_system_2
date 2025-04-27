@@ -9,7 +9,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import SalesReportComponent from '../../components/salesReport';
 
 const SalesReport = () => {
-    document.title = "Stokify | Sales Report";
+    document.title = "New Invent Technologies | Sales Report";
     const [sales, setSales] = useState([]);
     const [chartData, setChartData] = useState([]);
     const [startDate, setStartDate] = useState(null);

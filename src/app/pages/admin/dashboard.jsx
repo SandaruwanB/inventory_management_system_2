@@ -6,7 +6,7 @@ import { apiConfig } from '../../../apiConfig';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
-    document.title = "Stockify | Dashboard";
+    document.title = "New Invent Technologies | Dashboard";
 
     const [customers, setCustomers] = useState([]);
     const [supliers, setSupliers] = useState([]);

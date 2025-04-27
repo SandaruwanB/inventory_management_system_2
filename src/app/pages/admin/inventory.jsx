@@ -8,7 +8,7 @@ import { apiConfig } from '../../../apiConfig';
 import { useNavigate } from 'react-router-dom';
 
 const Inventory = () => {
-    document.title = "Stockify | Inventory";
+    document.title = "New Invent Technologies | Inventory";
 
     const [inventory, setInventory] = useState([]);
     const [popupvisibility, setPopupvisibility] = useState(false);

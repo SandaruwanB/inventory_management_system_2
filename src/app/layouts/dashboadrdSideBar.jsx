@@ -21,16 +21,6 @@ const DashboadrdSideBar = () => {
       path: "/user/dashboard",
     },
     {
-      title: "Employees",
-      icon: "mdi:users",
-      path: "/user/employees",
-    },
-    {
-      title: "Users",
-      icon: "mdi:users",
-      path: "/user/users",
-    },
-    {
       title: "Sales",
       icon: "icon-park-solid:sales-report",
       subcategories: [
@@ -115,6 +105,16 @@ const DashboadrdSideBar = () => {
       ],
     },
     {
+      title: "Employees",
+      icon: "mdi:users",
+      path: "/user/employees",
+    },
+    {
+      title: "Users",
+      icon: "mdi:users",
+      path: "/user/users",
+    },
+    {
       title: "Settings",
       icon: "material-symbols:settings",
       path: "/user/settings"
@@ -153,7 +153,7 @@ const DashboadrdSideBar = () => {
                 <div className="w-5 h-5 text-gray-500 transition duration-75">
                   <Icon icon="icon-park-outline:dashboard" width={25} />
                 </div>
-                <span className="ms-3 ml-8 mt-2 font-semibold">STOCKIFY</span>
+                <span className="ms-3 ml-8 mt-2 font-semibold">New Invent Technolgies</span>
               </button>
             </li>
 

@@ -22,6 +22,7 @@ const EmployeeForm = () => {
     const [gender, setGender] = useState("");
     const [epf, setEpf] = useState("");
     const [token, setToken] = useState("");
+    const [nic, setNic] = useState("");
     const navigate = useNavigate();
 
     useEffect(()=>{
@@ -29,7 +30,7 @@ const EmployeeForm = () => {
     },[]);
 
     const addEmployee = ()=>{
-        if (firstname === "" || lastname === "" || email === "" || jobtitle === "" || city === "" || epf === ""){
+        if (firstname === "" || lastname === "" || email === "" || jobtitle === "" || city === "" || epf === "" || nic === ""){
             toast.error('You missed some required fields!', {
                 position: "top-right",
                 autoClose: 5000,
@@ -65,7 +66,8 @@ const EmployeeForm = () => {
                 addressline2 : addressline2,
                 city : city,
                 postalcode : postalcode,
-                epfnumber : epf
+                epfnumber : epf,
+                nic : nic
             },{
                 headers : {
                     Authorization : token
@@ -83,7 +85,7 @@ const EmployeeForm = () => {
                         theme: "light",
                     });
                     setEmail("");setFirstname("");setLastname("");setGender("");setJobtitle("");setContact("");setAddressline1("");setAddressline2("");setCity("");
-                    setPostalcode("");setEpf("");
+                    setPostalcode("");setEpf("");setNic("");
                 } 
             })
         }
@@ -119,6 +121,12 @@ const EmployeeForm = () => {
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='nic' >
+                                                NIC <span className='text-red-400 text-xs'>*</span>
+                                            </label>
+                                            <input name='nic' id='nic' onChange={(e)=>setNic(e.target.value)} value={nic} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="email" placeholder="6732167317V" autoComplete='1'/>
+                                        </div>
+                                        <div className="w-full px-3 mt-3">
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='email' >
                                                 Email <span className='text-red-400 text-xs'>*</span>
                                             </label>

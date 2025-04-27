@@ -15,7 +15,7 @@ function Login() {
   const [passErrorMsg, setPassErrorMsg] = useState("");
   const navigate = useNavigate(); 
 
-  document.title = "Stockify | Sign in";
+  document.title = "New Invent Technolgies | Sign in";
 
   const forgetPassword = ()=>{
     console.log("forget password");
@@ -59,7 +59,7 @@ function Login() {
     <div className='p-3 h-screen w-full flex justify-center items-center bg-gradient-to-br from-green-950 to-blue-950'>
       <div className='p-5 border-2 bg-cyan-50 border-sky-200 rounded-xl'>
         <div className='text-center mt-10'>
-          <a href="/" className='uppercase text-4xl font-bold text-sky-950 hover-animated-text'>Stockify</a>
+          <a href="/" className='uppercase text-3xl font-bold text-sky-950 hover-animated-text'>New Invent Technolgies</a>
         </div>
         <div className='text-center mt-10'>
           <h1 className='font-semibold text-sky-800 md:text-3xl text-xl'>Sign In</h1>

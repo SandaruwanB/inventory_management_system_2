@@ -6,7 +6,7 @@ import { apiConfig } from '../../../apiConfig';
 
  
  const InventoryComponents = () => {
-    document.title = "Stockify | Inventory Details";
+    document.title = "New Invent Technologies | Inventory Details";
 
     const [grns, setGrns] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");

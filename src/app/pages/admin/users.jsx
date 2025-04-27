@@ -8,7 +8,7 @@ import axios from 'axios';
 import { apiConfig } from '../../../apiConfig';
 
 const Users = () => {
-    document.title = "Stockify | Users";
+    document.title = "New Invent Technologies | Users";
 
     const [users, setUsers] = useState([]);
     const [popupvisibility, setPopupvisibility] = useState(false);

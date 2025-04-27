@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Employees = () => {
-    document.title = "Stockify | Employees";
+    document.title = "New Invent Technologies | Employees";
 
     const [employees, setEmployees] = useState([]);
     const [popupvisibility, setPopupvisibility] = useState(false);
@@ -124,6 +124,7 @@ const Employees = () => {
                                     <tr>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left w-10'>No.</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Name</th>
+                                        <th className='p-3 text-sm font-semibold tracking-wide text-center'>NIC</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Job Position</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Email Address</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Contact</th>
@@ -139,6 +140,7 @@ const Employees = () => {
                                                     <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                         <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.firstname + " " + value.lastname}</td>
+                                                        <td className='p-3 text-sm text-gray-700'>{value.nic}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.jobtitle}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.email}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.contact}</td>
@@ -153,7 +155,7 @@ const Employees = () => {
                                             })
                                             :
                                             <tr className='bg-white'>
-                                                <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={7}>
+                                                <td className='text-center text-blue-400 hover:underline cursor-pointer text-sm p-3' colSpan={8}>
                                                     <p>No employees found.</p>
                                                 </td>
                                             </tr>

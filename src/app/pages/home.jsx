@@ -5,7 +5,7 @@ import HomeHeader from '../layouts/homeHeader';
 function Home() {
     const [loadingState, setLoadingState] = useState(true);
 
-    document.title = "Stockify | Home";
+    document.title = "New Invent Technolgies | Home";
 
     useEffect(()=>{        
         setTimeout(()=>{
@@ -35,11 +35,6 @@ function Home() {
                                     <div className='flex flex-col h-full justify-center'>
                                         <h1 className='text-gray-100 font-extrabold lg:leading-[62px] lg:text-left text-center tracking-wide text-[1.5rem] lg:text-[3.8rem] ft-lato'>Better Solution For Your Business</h1>
                                         <h3 className=' text-sky-200 font-normal lg:text-left text-center tracking-wide text-[.8rem lg:text-[1rem] mt-5'>Stockify streamlines sales and inventory management, ensuring efficiency and accuracy. Optimize your business with powerful tools to track, analyze, and grow your operations effortlessly.</h3>
-                                        <div className='text-center lg:text-left lg:mt-16 mt-10'>
-                                            <button className='bg-cyan-400 px-6 py-2 border-4 border-cyan-400 hover:bg-transparent hover:text-white text-blue-950 font-semibold rounded-[2px] animate-bounce transition-all ease-in-out delay-200'>
-                                                GET STARTED
-                                            </button>
-                                        </div>
                                     </div>                                    
                                 </div>
                             </div>

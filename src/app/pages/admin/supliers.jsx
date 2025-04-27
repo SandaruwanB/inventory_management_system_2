@@ -8,7 +8,7 @@ import { apiConfig } from '../../../apiConfig';
 import { useNavigate } from 'react-router-dom';
 
 const Supliers = () => {
-    document.title = "Stockify | Supliers";
+    document.title = "New Invent Technologies | Supliers";
     const [supliers, setSupliers] = useState([]);
     const [popupvisibility, setPopupvisibility] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
