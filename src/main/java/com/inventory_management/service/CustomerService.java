@@ -49,6 +49,7 @@ public class CustomerService {
         existing.setAddressline2(customer.getAddressline2());
         existing.setCity(customer.getCity());
         existing.setPostalcode(customer.getPostalcode());
+        existing.setNic(customer.getNic());
 
         return repo.save(existing);
 

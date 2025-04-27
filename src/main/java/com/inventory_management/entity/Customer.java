@@ -30,6 +30,7 @@ public class Customer {
     private String addressline2;
     private String city;
     private String postalcode;
+    private String nic;
 
     @JsonIgnore
     @OneToMany(mappedBy = "customer")
