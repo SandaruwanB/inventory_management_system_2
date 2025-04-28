@@ -7,7 +7,7 @@ import { apiConfig } from '../../../../apiConfig';
 import validator from 'validator';
 
 const EditSuplier = () => {
-    document.title = "Stockify | Supliers";
+    document.title = "New Invent Technologies | Supliers";
 
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");

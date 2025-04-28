@@ -9,7 +9,7 @@ import PaymentPDF from '../../../components/paymentPDF';
 
 
 const EditPayments = () => {
-    document.title = "Stockify | Customer Payments";
+    document.title = "New Invent Technologies | Customer Payments";
 
     const [payslipcode, setPayslipcode] = useState("");
     const [status, setStatus] = useState("");

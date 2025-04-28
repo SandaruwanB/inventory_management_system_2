@@ -7,7 +7,7 @@ import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
 
 const PaymentsForm = () => {
-    document.title = "Stockify | Customer Payments";
+    document.title = "New Invent Technologies | Customer Payments";
 
     const [payslipcode, setPayslipcode] = useState("");
     const [status, setStatus] = useState("");

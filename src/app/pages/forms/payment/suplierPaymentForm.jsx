@@ -8,7 +8,7 @@ import { apiConfig } from '../../../../apiConfig';
 
 
 const SuplierPaymentForm = () => {
-    document.title = "Stockify | Suplier Payments";
+    document.title = "New Invent Technologies | Suplier Payments";
 
     const [payslipcode, setPayslipcode] = useState("");
     const [status, setStatus] = useState("");

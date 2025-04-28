@@ -8,7 +8,7 @@ import { apiConfig } from '../../../../apiConfig';
 
 
 const EmployeeForm = () => {
-    document.title = "Stockify | Employees";
+    document.title = "New Invent Technologies | Employees";
 
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");

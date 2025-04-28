@@ -7,7 +7,7 @@ import OrderPDF from '../../../components/orderPDF';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 
 const EditSuplierOrder = () => {
-    document.title = "Stockify | Orders";
+    document.title = "New Invent Technologies | Orders";
 
     const [order, setOrder] = useState([]);
     const [ordermove, setOrdermove] = useState([]);

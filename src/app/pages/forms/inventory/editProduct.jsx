@@ -6,7 +6,7 @@ import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
 
 const EditProduct = () => {
-    document.title = "Stockify | Inventory";
+    document.title = "New Invent Technologies | Inventory";
 
     const [productname, setProductname] = useState("");
     const [onhandqty, setOnhandqty] = useState("");

@@ -8,7 +8,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import PaymentPDF from '../../../components/paymentPDF';
 
 const EditSuplierPayment = () => {
-    document.title = "Stockify | Suplier Payments";
+    document.title = "New Invent Technologies | Suplier Payments";
 
     const [payslipcode, setPayslipcode] = useState("");
     const [status, setStatus] = useState("");

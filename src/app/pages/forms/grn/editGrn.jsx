@@ -8,7 +8,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import GrnPDF from '../../../components/grnPDF';
 
 const EditGrn = () => {
-    document.title = "Stockify | GRN";
+    document.title = "New Invent Technologies | GRN";
 
     const [grn, setGrn] = useState([]);
     const [selected, setSelected] = useState([]);

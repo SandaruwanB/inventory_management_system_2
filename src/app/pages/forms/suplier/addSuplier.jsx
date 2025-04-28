@@ -7,7 +7,7 @@ import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
 
 const AddSuplier = () => {
-    document.title = "Stockify | Supliers";
+    document.title = "New Invent Technologies | Supliers";
     
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");

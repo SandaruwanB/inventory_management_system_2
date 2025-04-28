@@ -8,7 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import validator from "validator";
 
 const AddGrn = () => {
-  document.title = "Stockify | GRN";
+  document.title = "New Invent Technologies | GRN";
 
   const [grncode, setGrncode] = useState("");
   const [suplier, setSuplier] = useState(0);

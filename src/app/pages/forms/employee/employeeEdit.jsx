@@ -7,7 +7,7 @@ import { apiConfig } from '../../../../apiConfig';
 import validator from 'validator';
 
 const EmployeeEdit = () => {
-  document.title = "Stockify | Employees";
+  document.title = "New Invent Technologies | Employees";
 
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");

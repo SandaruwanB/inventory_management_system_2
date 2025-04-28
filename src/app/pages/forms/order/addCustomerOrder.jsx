@@ -8,7 +8,7 @@ import { apiConfig } from '../../../../apiConfig';
 import validator from 'validator';
 
 const AddCustomerOrder = () => {
-    document.title = "Stockify | Suplier Orders";
+    document.title = "New Invent Technologies | Suplier Orders";
 
     const [ordername, setOrdername] = useState("");
     const [note, setNote] = useState("");

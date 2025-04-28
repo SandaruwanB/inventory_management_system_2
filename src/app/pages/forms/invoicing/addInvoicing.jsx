@@ -8,7 +8,7 @@ import validator from 'validator';
 
 const AddInvoicing = () => {
 
-    document.title = "Stockify | Invoicing";
+    document.title = "New Invent Technologies | Invoicing";
 
     const [invoicenumber, setInvoicenumber] = useState("");
     const [note, setNote] = useState("");
