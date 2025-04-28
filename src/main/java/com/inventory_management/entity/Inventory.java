@@ -26,7 +26,11 @@ public class Inventory {
     private long outqty;
     private long inqty;
     private double unitprice;
+    private double cost;
     private String unitofmesure;
+    private String color;
+    private String gsm;
+    private String category;
 
     @JsonIgnore
     @OneToMany(mappedBy = "product")
