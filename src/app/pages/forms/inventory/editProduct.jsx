@@ -15,6 +15,10 @@ const EditProduct = () => {
     const [outqty, setOutqty] = useState("");
     const [inqty, setInqty] = useState("");
     const [token, setToken] = useState("");
+    const [cost, setCost] = useState("");
+    const [gsm, setGsm] = useState("");
+    const [color, setColor] = useState("");
+    const [category, setCategory] = useState("");
 
     const navigate = useNavigate();
 
@@ -34,6 +38,10 @@ const EditProduct = () => {
                 setUnitofmesure(result.data.unitofmesure);
                 setInqty(result.data.inqty);
                 setOutqty(result.data.outqty);
+                setCost(result.data.cost);
+                setGsm(result.data.gsm);
+                setCategory(result.data.category);
+                setColor(result.data.color);
             });
         }
         if (token){
@@ -42,7 +50,7 @@ const EditProduct = () => {
     },[id, token])
 
     const updateProduct = async ()=>{
-        if (productname === "" || onhandqty === "" || unitprice === "" || unitofmesure === ""){
+        if (productname === "" || onhandqty === "" || unitprice === "" || unitofmesure === "" || cost === ""){
             toast.error('All fields are required !', {
                 position: "top-right",
                 autoClose: 5000,
@@ -60,6 +68,10 @@ const EditProduct = () => {
                 onhandqty : onhandqty,
                 unitprice : unitprice,
                 unitofmesure : unitofmesure,
+                cost : cost,
+                category : category,
+                gsm : gsm,
+                color : color
             }, {
                 headers : {
                     Authorization : token
@@ -121,15 +133,47 @@ const EditProduct = () => {
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='outqty' >
-                                                Stock In quantity
+                                                Stock in quantity
                                             </label>
                                             <input name='outqty' id='outqty' value={inqty} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none" type="text" readOnly/>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='gsm'>
+                                                GSM
+                                            </label>
+                                            <input name='gsm' id='gsm' onChange={(e)=>setGsm(e.target.value)} value={gsm} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="60"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='category'>
+                                                Category
+                                            </label>
+                                            <input name='category' id='category' onChange={(e)=>setCategory(e.target.value)} value={category} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="A4"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='color'>
+                                                Color
+                                            </label>
+                                            <input name='color' id='color' onChange={(e)=>setColor(e.target.value)} value={color} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="White"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='unitprice'>
-                                                Unit Price
+                                                Actual price
+                                            </label>
+                                            <input name='unitprice' id='unitprice' onChange={(e)=>setCost(e.target.value)} value={cost} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="1500.00"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='unitprice'>
+                                                Selling price
                                             </label>
                                             <input name='unitprice' id='unitprice' onChange={(e)=>setUnitprice(e.target.value)} value={unitprice} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="1500.00"/>
                                         </div>
@@ -141,10 +185,6 @@ const EditProduct = () => {
                                             </label>
                                             <select id='uom' name='uom' onChange={(e)=>setUnitofmesure(e.target.value)} value={unitofmesure} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                                                 <option>None</option>
-                                                <option value="kilogram">Kilogram</option>
-                                                <option value="gram">Gram</option>
-                                                <option value="bundle" >Bundle</option>
-                                                <option value="units">Units</option>
                                                 <option value="packets">Packets</option>
                                             </select>
                                         </div>

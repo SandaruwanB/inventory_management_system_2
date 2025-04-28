@@ -14,6 +14,10 @@ const AddProduct = () => {
     const [unitprice, setUnitprice] = useState("");
     const [unitofmesure, setUnitofmesure] = useState("");
     const [token, setToken] = useState("");
+    const [cost, setCost] = useState("");
+    const [gsm, setGsm] = useState("");
+    const [color, setColor] = useState("");
+    const [category, setCategory] = useState("");
 
     const navigate = useNavigate();
 
@@ -22,8 +26,20 @@ const AddProduct = () => {
     },[]);
 
     const saveProduct = async ()=>{
-        if (productname === "" || onhandqty === "" || unitprice === "" || unitofmesure === ""){
+        if (productname === "" || onhandqty === "" || unitprice === "" || unitofmesure === "" || cost === ""){
             toast.error('All fields are required !', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+        else if (!validator.isFloat(cost) || !validator.isInt(cost)){
+            toast.error('Invalid unit cost !', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -63,7 +79,11 @@ const AddProduct = () => {
                 prodctname : productname,
                 onhandqty : onhandqty,
                 unitprice : unitprice,
-                unitofmesure : unitofmesure
+                unitofmesure : unitofmesure,
+                cost : cost,
+                gsm : gsm,
+                color : color,
+                category : category
             },{
                 headers : {
                     Authorization : token
@@ -117,8 +137,40 @@ const AddProduct = () => {
                                     </div>
                                     <div className="flex flex-wrap -mx-3 mb-6">
                                         <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='gsm'>
+                                                GSM
+                                            </label>
+                                            <input name='gsm' id='gsm' onChange={(e)=>setGsm(e.target.value)} value={gsm} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="60"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='category'>
+                                                Category
+                                            </label>
+                                            <input name='category' id='category' onChange={(e)=>setCategory(e.target.value)} value={category} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="A4"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='color'>
+                                                Color
+                                            </label>
+                                            <input name='color' id='color' onChange={(e)=>setColor(e.target.value)} value={color} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="White"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='cost'>
+                                                Actual price
+                                            </label>
+                                            <input name='cost' id='cost' onChange={(e)=>setCost(e.target.value)} value={cost} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="1300.00"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
                                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='unitprice'>
-                                                Unit Price
+                                                Selling price
                                             </label>
                                             <input name='unitprice' id='unitprice' onChange={(e)=>setUnitprice(e.target.value)} value={unitprice} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="1500.00"/>
                                         </div>

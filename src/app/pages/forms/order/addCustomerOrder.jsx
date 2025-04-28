@@ -73,6 +73,18 @@ const AddCustomerOrder = () => {
                 progress: undefined,
                 theme: "light",
             });
+        } 
+        else if (!isDateGreaterThanToday(date)){
+            toast.error('Invalid date!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
         else{
             await axios.post(`${apiConfig.url}/api/orders/add`, {
@@ -104,6 +116,16 @@ const AddCustomerOrder = () => {
                 }
             })
         }
+    }
+
+    const isDateGreaterThanToday = (inputDate) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+      
+        const selectedDate = new Date(inputDate);
+        selectedDate.setHours(0, 0, 0, 0);
+      
+        return selectedDate >= today;
     }
 
     const removeItem = (index)=>{
