@@ -5,6 +5,7 @@ import { apiConfig } from '../../../../apiConfig';
 import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar';
 import OrderPDF from '../../../components/orderPDF';
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import { ToastContainer, toast } from 'react-toastify';
 
 const EditOrder = () => {
     document.title = "New Invent Technologies | Orders";
@@ -52,6 +53,71 @@ const EditOrder = () => {
         }
     },[id, ordermove, token])
 
+    const createInvoice = async () => {
+        if (!customer.id || total === 0) {
+            toast.error('Cannot create invoice. Missing customer or order total!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return;
+        }
+
+        const invoiceNumber = "INV" + Math.floor((Math.random() * (99999 - 10000) + 10000));
+        
+        try {
+            const result = await axios.post(`${apiConfig.url}/api/invoicing/add`, {
+                invoicenumber: invoiceNumber,
+                note: `Invoice for order: ${order.ordername}`,
+                date: new Date().toISOString().split('T')[0], // Today's date
+                amount: total.toString(),
+                status: "draft",
+                customer: {
+                    id: customer.id
+                }
+            }, {
+                headers: {
+                    Authorization: token
+                }
+            });
+
+            if (result.status === 200) {
+                toast.success('Invoice created successfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+
+                // Navigate to edit invoice page
+                setTimeout(() => {
+                    navigate(`/user/invoicing/edit/${result.data.id}`);
+                }, 1000);
+            }
+        } catch (error) {
+            console.error("Error creating invoice:", error);
+            toast.error('Failed to create invoice!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+    };
+
     return (
         <>
             <DashboadrdSideBar />
@@ -64,6 +130,7 @@ const EditOrder = () => {
                                   <h1 className='font-semibold text-gray-700'>View order details</h1>
                                 </div>
                             <div className='mr-2'>
+                                <button onClick={()=>createInvoice()} className='mr-3 py-1 px-2 rounded mb-1 bg-green-600 text-white font-semibold text-sm hover:bg-green-800'>Create Invoice</button>
                                 <PDFDownloadLink document={<OrderPDF total={total} customer={customer} orderlines={ordermove} company={company} order={order} />} fileName='order'>
                                     {({loading})=>(loading ? "creating..." : <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>)}
                                 </PDFDownloadLink>
@@ -158,6 +225,7 @@ const EditOrder = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </>
     )
 }
