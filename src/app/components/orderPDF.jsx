@@ -7,28 +7,7 @@ const style = StyleSheet.create({
         fontFamily: 'Helvetica',
         backgroundColor: '#ffffff',
     },
-    header: {
-        width: '100%',
-        textAlign: 'center',
-        marginBottom: 30,
-        paddingBottom: 20,
-        borderBottom: '3px solid #2563eb',
-    },
-    headerTitle: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#1e40af',
-        textTransform: 'uppercase',
-        letterSpacing: 2,
-        marginBottom: 5,
-    },
-    headerSubtitle: {
-        fontSize: 12,
-        color: '#6b7280',
-        fontStyle: 'italic',
-    },
     companySection: {
-        backgroundColor: '#f8fafc',
         padding: 15,
         borderRadius: 8,
         border: '1px solid #e2e8f0',
@@ -73,14 +52,14 @@ const style = StyleSheet.create({
         lineHeight: 1.3,
     },
     orderBanner: {
-        backgroundColor: '#2563eb',
         padding: 12,
         textAlign: 'center',
         marginBottom: 25,
         borderRadius: 6,
+        border: '1px solid #2563eb',
     },
     orderBannerText: {
-        color: '#ffffff',
+        color: '#2563eb',
         fontSize: 14,
         fontWeight: 'bold',
         letterSpacing: 1,
@@ -90,7 +69,6 @@ const style = StyleSheet.create({
     },
     tableHeader: {
         flexDirection: 'row',
-        backgroundColor: '#f1f5f9',
         padding: 10,
         borderBottom: '2px solid #cbd5e1',
         borderTop: '1px solid #cbd5e1',
@@ -109,7 +87,7 @@ const style = StyleSheet.create({
         alignItems: 'center',
     },
     tableRowAlt: {
-        backgroundColor: '#f8fafc',
+        // Removed background color
     },
     tableCell: {
         fontSize: 10,
@@ -133,36 +111,17 @@ const style = StyleSheet.create({
         paddingTop: 15,
         borderTop: '2px solid #cbd5e1',
     },
-    totalRow: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        marginBottom: 8,
-    },
-    totalLabel: {
-        fontSize: 12,
-        color: '#374151',
-        width: 100,
-        textAlign: 'right',
-        marginRight: 20,
-    },
-    totalValue: {
-        fontSize: 12,
-        color: '#374151',
-        width: 80,
-        textAlign: 'right',
-    },
     grandTotalRow: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        backgroundColor: '#2563eb',
         padding: 10,
         borderRadius: 4,
-        marginTop: 10,
+        border: '2px solid #2563eb',
     },
     grandTotalLabel: {
         fontSize: 14,
         fontWeight: 'bold',
-        color: '#ffffff',
+        color: '#2563eb',
         width: 100,
         textAlign: 'right',
         marginRight: 20,
@@ -170,7 +129,7 @@ const style = StyleSheet.create({
     grandTotalValue: {
         fontSize: 14,
         fontWeight: 'bold',
-        color: '#ffffff',
+        color: '#2563eb',
         width: 80,
         textAlign: 'right',
     },
@@ -195,19 +154,17 @@ const OrderPDF = ({ customer, company, orderlines, order, total }) => {
         return parseFloat(amount).toFixed(2);
     };
 
-    const subtotal = total;
-    const tax = subtotal * 0.1; // 10% tax
-    const grandTotal = subtotal + tax;
+    const formatProductDescription = (product) => {
+        let description = product.prodctname;
+        if (product.category && product.color && product.gsm) {
+            description += ` - ${product.category} | ${product.color} | GSM-${product.gsm}`;
+        }
+        return description;
+    };
 
     return (
         <Document>
             <Page size={'A4'} style={style.page}>
-                {/* Header */}
-                <View style={style.header}>
-                    <Text style={style.headerTitle}>Order Receipt</Text>
-                    <Text style={style.headerSubtitle}>Professional Order Documentation</Text>
-                </View>
-
                 {/* Company Information */}
                 <View style={style.companySection}>
                     <Text style={style.companyName}>{company.companyname}</Text>
@@ -242,7 +199,6 @@ const OrderPDF = ({ customer, company, orderlines, order, total }) => {
 
                 {/* Items Table */}
                 <View style={style.table}>
-                    {/* Table Header */}
                     <View style={style.tableHeader}>
                         <Text style={[style.tableHeaderCell, style.col1]}>#</Text>
                         <Text style={[style.tableHeaderCell, style.col2, style.tableCellLeft]}>Product Description</Text>
@@ -250,12 +206,12 @@ const OrderPDF = ({ customer, company, orderlines, order, total }) => {
                         <Text style={[style.tableHeaderCell, style.col4]}>Quantity</Text>
                         <Text style={[style.tableHeaderCell, style.col5]}>Amount</Text>
                     </View>
-
-                    {/* Table Rows */}
                     {orderlines.map((value, index) => (
                         <View key={index} style={[style.tableRow, index % 2 === 1 && style.tableRowAlt]}>
                             <Text style={[style.tableCell, style.col1]}>{index + 1}</Text>
-                            <Text style={[style.tableCell, style.col2, style.tableCellLeft]}>{value.product.prodctname}</Text>
+                            <Text style={[style.tableCell, style.col2, style.tableCellLeft]}>
+                                {formatProductDescription(value.product)}
+                            </Text>
                             <Text style={[style.tableCell, style.col3]}>Rs. {formatCurrency(value.product.unitprice)}</Text>
                             <Text style={[style.tableCell, style.col4]}>{value.itemcount}</Text>
                             <Text style={[style.tableCell, style.col5, style.tableCellRight]}>Rs. {formatCurrency(value.itemcount * value.product.unitprice)}</Text>
@@ -263,19 +219,11 @@ const OrderPDF = ({ customer, company, orderlines, order, total }) => {
                     ))}
                 </View>
 
-                {/* Totals Section */}
+                {/* Total Section */}
                 <View style={style.totalSection}>
-                    <View style={style.totalRow}>
-                        <Text style={style.totalLabel}>Subtotal:</Text>
-                        <Text style={style.totalValue}>Rs. {formatCurrency(subtotal)}</Text>
-                    </View>
-                    <View style={style.totalRow}>
-                        <Text style={style.totalLabel}>Tax (10%):</Text>
-                        <Text style={style.totalValue}>Rs. {formatCurrency(tax)}</Text>
-                    </View>
                     <View style={style.grandTotalRow}>
-                        <Text style={style.grandTotalLabel}>TOTAL:</Text>
-                        <Text style={style.grandTotalValue}>Rs. {formatCurrency(grandTotal)}</Text>
+                        <Text style={style.grandTotalLabel}>TOTAL AMOUNT:</Text>
+                        <Text style={style.grandTotalValue}>Rs. {formatCurrency(total)}</Text>
                     </View>
                 </View>
 
