@@ -74,8 +74,8 @@ const AddCustomerOrder = () => {
                 theme: "light",
             });
         } 
-        else if (!isDateGreaterThanToday(date)){
-            toast.error('Invalid date!', {
+        else if (isDateLessThanToday(date)){
+            toast.error('Cannot create back dated orders!', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -118,14 +118,14 @@ const AddCustomerOrder = () => {
         }
     }
 
-    const isDateGreaterThanToday = (inputDate) => {
+    const isDateLessThanToday = (inputDate) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
       
         const selectedDate = new Date(inputDate);
         selectedDate.setHours(0, 0, 0, 0);
       
-        return selectedDate >= today;
+        return selectedDate < today;
     }
 
     const removeItem = (index)=>{

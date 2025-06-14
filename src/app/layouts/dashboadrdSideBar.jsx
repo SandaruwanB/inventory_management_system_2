@@ -3,7 +3,6 @@ import { Icon } from '@iconify/react'
 import { useNavigate } from 'react-router-dom';
 
 const DashboadrdSideBar = () => {
-  const [sidebarActive, setSidebarActive] = useState(true);
   const [activeSubcategories, setActiveSubcategories] = useState({});
   const navigate = useNavigate();
 
@@ -30,7 +29,7 @@ const DashboadrdSideBar = () => {
           icon : "mdi:users"
         },
         {
-          title: "Customer Orders",
+          title: "Orders",
           path: "/user/customer/orders",
           icon : "material-symbols:orders-rounded"
         },
@@ -40,7 +39,7 @@ const DashboadrdSideBar = () => {
           icon : "iconamoon:invoice-fill"
         },
         {
-          title: "Customer Payments",
+          title: "Payments",
           path: "/user/customer/payments",
           icon : "mdi:account-payment"
         },
@@ -56,7 +55,7 @@ const DashboadrdSideBar = () => {
           icon: "mdi:users",
         },
         {
-          title: "Suplier Orders",
+          title: "Orders",
           path: "/user/suplier/orders",
           icon : "material-symbols:orders-rounded"
         },
@@ -66,7 +65,7 @@ const DashboadrdSideBar = () => {
           icon : "clarity:note-solid"
         },
         {
-          title: "Suplier Payments",
+          title: "Payments",
           path: "/user/suplier/payments",
           icon : "mdi:account-payment"
         },
