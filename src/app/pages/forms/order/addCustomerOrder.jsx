@@ -123,9 +123,24 @@ const AddCustomerOrder = () => {
                         progress: undefined,
                         theme: "light",
                     });
-                    setNote("");setDate("");setCustomer(0);setOrderlines([]);
+                    
+                    setTimeout(() => {
+                        navigate(`/user/customer/orders/edit/${result.data.id}`);
+                    }, 500);
                 }
-            })
+            }).catch(error => {
+                console.error("Error creating order:", error);
+                toast.error('Failed to create order!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            });
         }
     }
 
