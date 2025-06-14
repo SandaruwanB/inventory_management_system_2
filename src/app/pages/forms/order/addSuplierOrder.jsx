@@ -156,7 +156,7 @@ const AddOrder = () => {
                 theme: "light",
             });
         }
-        else if (!validator.isInt(count) || !validator.isFloat(count)){
+        else if (!validator.isInt(count) && !validator.isFloat(count)){
             toast.error('Invalid count number!', {
                 position: "top-right",
                 autoClose: 5000,
@@ -174,6 +174,7 @@ const AddOrder = () => {
                   Authorization : token
                 }
               }).then(result=>{
+                console.log("Product data:", result.data);
                 const array = {
                     "product" : {
                         "id" : product,
@@ -182,6 +183,9 @@ const AddOrder = () => {
                         "availability" : result.data.onhandqty > 20 ? "available" : "low stock",
                         "onhandqty" : parseFloat(result.data.onhandqty) - parseFloat(count),
                         "inqty" : parseFloat(result.data.inqty) - parseFloat(count),
+                        "category" : result.data.category || "",
+                        "color" : result.data.color || "", 
+                        "gsm" : result.data.gsm || "",
                     },
                     "itemcount" : parseFloat(count),
                 };
@@ -190,7 +194,19 @@ const AddOrder = () => {
                 setShowmenu(false);
                 setCount("");
                 setProduct(0);
-            })
+            }).catch(error => {
+                console.error("Error fetching product:", error);
+                toast.error('Error fetching product details!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            });
         }
     }
 
@@ -267,7 +283,9 @@ const AddOrder = () => {
                                     {
                                         orderlines.map((value, index)=>(
                                             <tr key={index}>
-                                                <td className='p-1 text-sm font-semibold tracking-wide text-left pl-5'>{value.product.prodctname}</td>
+                                                <td className='p-1 text-sm font-semibold tracking-wide text-left pl-5'>
+                                                    {value.product.prodctname} - {value.product.category} | {value.product.color} | GSM-{value.product.gsm}
+                                                </td>
                                                 <td className='p-1 text-sm font-semibold tracking-wide text-left'>{value.itemcount}</td>
                                                 <td className='p-1 text-sm font-semibold tracking-wide text-center'>{value.product.availability === "available" ? <p className='text-green-600'>available</p> : <p className='text-red-600'>Low stock</p>}</td>
                                                 <td className='p-1 text-sm font-semibold tracking-wide text-end'>Rs.{value.product.unitprice}</td>
@@ -317,7 +335,7 @@ const AddOrder = () => {
                                         <option value={0}>None</option>
                                         {                                                  
                                             products.map((value, index)=>(
-                                                <option key={index} value={value.id}>{value.prodctname}</option>
+                                                <option key={index} value={value.id}>{value.prodctname} - {value.category} | {value.color} | GSM-{value.gsm}</option>
                                         ))                                              
                                         }
                                     </select>

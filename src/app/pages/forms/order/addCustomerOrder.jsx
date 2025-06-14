@@ -320,7 +320,7 @@ const AddCustomerOrder = () => {
                                     <option value={0}>None</option>
                                     {                                                  
                                         products.map((value, index)=>(
-                                            <option key={index} value={value.id}>{value.prodctname}</option>
+                                            <option key={index} value={value.id}>{value.prodctname} - {value.category} | {value.color} | GSM-{value.gsm}</option>
                                     ))                                              
                                     }
                                 </select>
