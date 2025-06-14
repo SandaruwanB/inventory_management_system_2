@@ -60,6 +60,7 @@ const EditSuplierPayment = () => {
                 setAmount(result.data.amount);
                 setPaymenttype(result.data.paymenttype);
                 setCustomer(result.data.customer ? result.data.customer.id : 0);
+                setSuplier(result.data.suplier ? result.data.suplier.id : 0);
                 setPayment(result.data);
                 setDocCustomer(result.data.customer);
                 setDocSuplier(result.data.suplier);

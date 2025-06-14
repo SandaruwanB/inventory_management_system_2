@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar';
 import axios from 'axios';
 import { apiConfig } from '../../../../apiConfig';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import GrnPDF from '../../../components/grnPDF';
 
@@ -15,6 +15,7 @@ const EditGrn = () => {
     const [suplier, setSuplier] = useState([]);
     const [company, setCompany] = useState([]);
     const [token, setToken] = useState("");
+    const [total, setTotal] = useState(0);
 
     const { id } = useParams();
     const navigate = useNavigate();
@@ -37,6 +38,13 @@ const EditGrn = () => {
                 setGrn(result.data);
                 setSelected(result.data.movements);
                 setSuplier(result.data.suplier);
+                
+                // Calculate total amount from GRN movements
+                let totalAmount = 0;
+                result.data.movements.forEach((movement) => {
+                    totalAmount += parseFloat(movement.quantity) * parseFloat(movement.product.unitprice || 0);
+                });
+                setTotal(totalAmount);
             });
         }
         if (token){
@@ -44,7 +52,79 @@ const EditGrn = () => {
         }
     },[id, token]);
 
+    const createPayment = async () => {
+        if (!suplier.id || total === 0) {
+            toast.error('Cannot create payment. Missing supplier or GRN total!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return;
+        }
 
+        const payslipcode = "PAY" + Math.floor((Math.random() * (99999 - 10000) + 10000));
+        
+        try {
+            const result = await axios.post(`${apiConfig.url}/api/payments/add`, {
+                payslipcode: payslipcode,
+                status: "posted",
+                note: `Payment for GRN: ${grn.grncode}`,
+                date: new Date().toISOString().split('T')[0], // Today's date
+                paymentmethod: "cash", // Default to cash, can be changed in edit
+                paymenttype: "suplier",
+                accountnumber: "",
+                accountholder: "",
+                bank: "",
+                amount: total.toString(),
+                customer: {
+                    id: 0
+                },
+                suplier: {
+                    id: parseInt(suplier.id)
+                },
+                createdAt: Date.now()
+            }, {
+                headers: {
+                    Authorization: token
+                }
+            });
+
+            if (result.status === 200) {
+                toast.success('Payment created successfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+
+                // Navigate to edit supplier payment page
+                setTimeout(() => {
+                    navigate(`/user/suplier/payments/edit/${result.data.id}`);
+                }, 1000);
+            }
+        } catch (error) {
+            console.error("Error creating payment:", error);
+            toast.error('Failed to create payment!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+    };
 
   return (
       <>
@@ -58,6 +138,7 @@ const EditGrn = () => {
                               <h1 className='font-semibold text-gray-700'>View GRN details</h1>
                           </div>
                           <div className='mr-2'>
+                              <button onClick={()=>createPayment()} className='mr-3 py-1 px-2 rounded mb-1 bg-green-600 text-white font-semibold text-sm hover:bg-green-800'>Create Payment</button>
                               <PDFDownloadLink document={<GrnPDF suplier={suplier} selected={selected} company={company} grn={grn} />} fileName='grn'>
                                   {({loading})=>(loading ? "creating..." : <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>)}
                               </PDFDownloadLink>
@@ -76,7 +157,7 @@ const EditGrn = () => {
                                       <div className="flex flex-wrap -mx-3 mb-6">
                                           <div className="w-full px-3">
                                               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='suplier'>
-                                                  Suplier <span className='text-red-400 text-xs'>*</span>
+                                                  Supplier <span className='text-red-400 text-xs'>*</span>
                                               </label>
                                               <select id='suplier' value={0} name='suplier' className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" readOnly>
                                                   <option>{grn.suplier ? grn.suplier.firstname + " " + grn.suplier.lastname + " " + grn.suplier.companyname + " " + grn.suplier.city : ""}</option>
@@ -114,19 +195,36 @@ const EditGrn = () => {
                                       <th className='p-1 text-sm font-semibold tracking-wide text-left pl-5'>Product</th>
                                       <th className='p-1 text-sm font-semibold tracking-wide text-left'>Count</th>
                                       <th className='p-1 text-sm font-semibold tracking-wide text-center'>Availability</th>
+                                      <th className='p-1 text-sm font-semibold tracking-wide text-end'>Unit Price</th>
+                                      <th className='p-1 text-sm font-semibold tracking-wide text-end'>Sub Total</th>
                                   </tr>
                               </thead>
                               <tbody>
                                   {
                                     selected.map((value, index)=>(
                                       <tr key={index}>
-                                          <td className='p-1 text-sm font-semibold tracking-wide text-left pl-5'>{value.product.prodctname}</td>
+                                          <td className='p-1 text-sm font-semibold tracking-wide text-left pl-5'>
+                                              {value.product.prodctname}
+                                              {value.product.category && value.product.color && value.product.gsm && 
+                                                  ` - ${value.product.category} | ${value.product.color} | GSM-${value.product.gsm}`
+                                              }
+                                          </td>
                                           <td className='p-1 text-sm font-semibold tracking-wide text-left'>{value.quantity}</td>
                                           <td className='p-1 text-sm font-semibold tracking-wide text-center'>{value.product.onhandqty > 10  ? <p className='text-green-600'>available</p> : <p className='text-red-600'>Low stock</p>}</td>
+                                          <td className='p-1 text-sm font-semibold tracking-wide text-end'>Rs.{parseFloat(value.product.unitprice || 0).toFixed(2)}</td>
+                                          <td className='p-1 text-sm font-semibold tracking-wide text-end'>Rs.{(parseFloat(value.quantity) * parseFloat(value.product.unitprice || 0)).toFixed(2)}</td>
                                       </tr>
                                     ))
                                   }
                               </tbody>
+                              {selected.length > 0 && (
+                                  <tfoot className='bg-gray-100 border-t-2 border-gray-400'>
+                                      <tr>
+                                          <td colSpan={4} className='p-3 text-lg font-bold text-gray-800 text-right'>Total Amount:</td>
+                                          <td className='p-3 text-lg font-bold text-gray-800 text-end'>Rs.{total.toFixed(2)}</td>
+                                      </tr>
+                                  </tfoot>
+                              )}
                           </table>
                           <div className='mt-10 w-100'>
                               <button onClick={()=>navigate('/user/grn')} className='ml-4 bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded'>Back</button>

@@ -5,6 +5,7 @@ import { apiConfig } from '../../../../apiConfig';
 import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar';
 import OrderPDF from '../../../components/orderPDF';
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import { ToastContainer, toast } from 'react-toastify';
 
 const EditSuplierOrder = () => {
     document.title = "New Invent Technologies | Orders";
@@ -20,37 +21,113 @@ const EditSuplierOrder = () => {
 
     const navigate = useNavigate();
 
-    useEffect(()=>{
+    useEffect(() => {
         setToken(`Bearer ${sessionStorage.getItem('session')}`);
-        const getData = ()=>{
-            axios.get(`${apiConfig.url}/api/orders/get/${id}`,{
-                headers : {
-                    Authorization : token
+        const getData = () => {
+            axios.get(`${apiConfig.url}/api/orders/get/${id}`, {
+                headers: {
+                    Authorization: token
                 }
-            }).then(result=>{
+            }).then(result => {
                 setOrder(result.data);
                 setOrdermove(result.data.ordermove);
                 setCustomer(result.data.suplier);
             });
-            axios.get(`${apiConfig.url}/api/company/all`,{
-                headers : {
-                    Authorization : token
+            axios.get(`${apiConfig.url}/api/company/all`, {
+                headers: {
+                    Authorization: token
                 }
-            }).then(result=>{
+            }).then(result => {
                 setCompany(result.data[0]);
             });
 
             let total = 0;
-            ordermove.map((value,index)=>{
+            ordermove.map((value, index) => {
                 total += value.itemcount * value.product.unitprice;
                 return 0;
             });
             setTotal(total);
         }
-        if (token){
+        if (token) {
             getData();
         }
-    },[id, ordermove, token])
+    }, [id, ordermove, token])
+
+    const createGRN = async () => {
+        if (!customer.id || ordermove.length === 0) {
+            toast.error('Cannot create GRN. Missing supplier or order items!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return;
+        }
+
+        const grncode = "GRN" + Math.floor(Math.random() * (99999 - 10000) + 10000);
+
+        // Transform order items to GRN movements
+        const movements = ordermove.map(item => ({
+            product: {
+                id: item.product.id,
+                prodctname: item.product.prodctname,
+                availability: item.product.onhandqty > 20 ? "available" : "low stock",
+                onhandqty: parseFloat(item.product.onhandqty) + parseFloat(item.itemcount),
+                inqty: parseFloat(item.product.inqty || 0) + parseFloat(item.itemcount),
+            },
+            quantity: item.itemcount.toString(),
+        }));
+
+        try {
+            const result = await axios.post(`${apiConfig.url}/api/grn/add`, {
+                grncode: grncode,
+                date: new Date().toISOString().split('T')[0], // Today's date
+                note: `GRN for purchase order: ${order.ordername}`,
+                suplier: {
+                    id: customer.id
+                },
+                movements: movements
+            }, {
+                headers: {
+                    Authorization: token
+                }
+            });
+
+            if (result.status === 200) {
+                toast.success('GRN created successfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+
+                // Navigate to edit GRN page
+                setTimeout(() => {
+                    navigate(`/user/grn/edit/${result.data.id}`);
+                }, 1000);
+            }
+        } catch (error) {
+            console.error("Error creating GRN:", error);
+            toast.error('Failed to create GRN!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+    };
 
     return (
         <>
@@ -58,14 +135,15 @@ const EditSuplierOrder = () => {
             <div className="p-4 sm:ml-64">
                 <div className="p-4">
                     <div className='w-full'>
-                        <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={()=>navigate("/user/suplier/orders")}>Orders</span> / {order.ordername}</h1>
-                            <div className='mt-10 flex justify-between'>
-                                <div>
-                                  <h1 className='font-semibold text-gray-700'>View order details</h1>
-                                </div>
+                        <h1 className=' mb-4 text-2xl text-gray-800 font-semibold'><span className='text-md text-blue-950 hover:underline cursor-pointer' onClick={() => navigate("/user/suplier/orders")}>Orders</span> / {order.ordername}</h1>
+                        <div className='mt-10 flex justify-between'>
+                            <div>
+                                <h1 className='font-semibold text-gray-700'>View order details</h1>
+                            </div>
                             <div className='mr-2'>
+                                <button onClick={() => createGRN()} className='mr-3 py-1 px-2 rounded mb-1 bg-blue-600 text-white font-semibold text-sm hover:bg-blue-800'>Create GRN</button>
                                 <PDFDownloadLink document={<OrderPDF total={total} customer={customer} orderlines={ordermove} company={company} order={order} />} fileName='order'>
-                                    {({loading})=>(loading ? "creating..." : <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>)}
+                                    {({ loading }) => (loading ? "creating..." : <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>)}
                                 </PDFDownloadLink>
                             </div>
                         </div>
@@ -76,7 +154,7 @@ const EditSuplierOrder = () => {
                                     <div className='w-full max-w-lg'>
                                         <div className="flex flex-wrap -mx-3 mb-6">
                                             <div className="w-full px-3">
-                                                <input name='ordername' id='ordername' value={order.ordername} className="appearance-none block w-full text-4xl text-gray-700 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="ORDER1213" readOnly/>
+                                                <input name='ordername' id='ordername' value={order.ordername} className="appearance-none block w-full text-4xl text-gray-700 py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="ORDER1213" readOnly />
                                             </div>
                                         </div>
                                         <div className="flex flex-wrap -mx-3 mb-6">
@@ -84,13 +162,13 @@ const EditSuplierOrder = () => {
                                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='date' >
                                                     date <span className='text-red-400 text-xs'>*</span>
                                                 </label>
-                                                <input name='date' id='date' value={order.date} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="date" placeholder="120" readOnly/>
+                                                <input name='date' id='date' value={order.date} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="date" placeholder="120" readOnly />
                                             </div>
                                         </div>
                                         <div className="flex flex-wrap -mx-3 mb-6">
                                             <div className="w-full px-3">
                                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='customer'>
-                                                    Customer <span className='text-red-400 text-xs'>*</span>
+                                                    Supplier <span className='text-red-400 text-xs'>*</span>
                                                 </label>
                                                 <select id='customer' value={0} name='customer' className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" readOnly>
                                                     <option value={0}>{order.suplier ? order.suplier.firstname + " " + order.suplier.lastname : ""}</option>
@@ -104,11 +182,11 @@ const EditSuplierOrder = () => {
                                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='note' >
                                                     Note
                                                 </label>
-                                                <textarea rows={5} value={order.note} name='note' id='note' className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"  type="text" placeholder="note" readOnly>{order.note}</textarea>
+                                                <textarea rows={5} value={order.note} name='note' id='note' className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="note" readOnly>{order.note}</textarea>
                                             </div>
                                         </div>
                                     </div>
-                                </div>                       
+                                </div>
                             </div>
                         </div>
                         <h1 className='font-semibold text-gray-700 mt-5'>Order lines</h1>
@@ -126,11 +204,11 @@ const EditSuplierOrder = () => {
                                 </thead>
                                 <tbody>
                                     {
-                                        ordermove.map((value, index)=>(
+                                        ordermove.map((value, index) => (
                                             <tr key={index}>
                                                 <td className='p-1 text-sm font-semibold tracking-wide text-left pl-5'>
                                                     {value.product.prodctname}
-                                                    {value.product.category && value.product.color && value.product.gsm && 
+                                                    {value.product.category && value.product.color && value.product.gsm &&
                                                         ` - ${value.product.category} | ${value.product.color} | GSM-${value.product.gsm}`
                                                     }
                                                 </td>
@@ -152,12 +230,13 @@ const EditSuplierOrder = () => {
                                 )}
                             </table>
                             <div className='mt-10 w-100'>
-                                <button onClick={()=>navigate('/user/suplier/orders')} className='ml-4 bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded'>Back</button>
+                                <button onClick={() => navigate('/user/suplier/orders')} className='ml-4 bg-gray-700 hover:bg-gray-900 px-4 py-2 text-white rounded'>Back</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </>
     )
 }
