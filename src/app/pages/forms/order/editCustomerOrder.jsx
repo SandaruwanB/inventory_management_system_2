@@ -128,7 +128,12 @@ const EditOrder = () => {
                                     {
                                         ordermove.map((value, index)=>(
                                             <tr key={index}>
-                                                <td className='p-1 text-sm font-semibold tracking-wide text-left pl-5'>{value.product.prodctname}</td>
+                                                <td className='p-1 text-sm font-semibold tracking-wide text-left pl-5'>
+                                                    {value.product.prodctname}
+                                                    {value.product.category && value.product.color && value.product.gsm && 
+                                                        ` - ${value.product.category} | ${value.product.color} | GSM-${value.product.gsm}`
+                                                    }
+                                                </td>
                                                 <td className='p-1 text-sm font-semibold tracking-wide text-left'>{value.itemcount}</td>
                                                 <td className='p-1 text-sm font-semibold tracking-wide text-center'>{value.product.onhandqty > 10 ? <p className='text-green-600'>available</p> : <p className='text-red-600'>Low stock</p>}</td>
                                                 <td className='p-1 text-sm font-semibold tracking-wide text-end'>Rs.{value.product.unitprice}</td>
