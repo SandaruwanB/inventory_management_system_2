@@ -57,6 +57,7 @@ const PurchasesReport = () => {
             });
             setFilteredPurchasing(filtered);
         } else {
+            console.log(purchasing);
             setFilteredPurchasing(purchasing);
         }
     }, [startDate, endDate, purchasing]);
@@ -115,7 +116,9 @@ const PurchasesReport = () => {
                                                     filteredPurchasing.map((value, index) => (
                                                         <tr className={index % 2 === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                             <td className="p-3 text-sm text-gray-700">{index + 1}</td>
-                                                            <td className="p-3 text-sm text-gray-700">{value.customer.firstname + ' ' + value.customer.lastname}</td>
+                                                            <td className="p-3 text-sm text-gray-700">
+                                                                {value.suplier.firstname + ' ' + value.suplier.lastname}
+                                                            </td>
                                                             <td className="p-3 text-sm text-gray-700">{value.date}</td>
                                                             <td className="p-3 text-sm text-gray-700 text-right">
                                                                 {value.ordermove.map((line, lineIndex) => (
