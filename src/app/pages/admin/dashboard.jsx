@@ -15,8 +15,17 @@ const Dashboard = () => {
     const [finalinvoices, setFinalinvoices] = useState([]);
     const [finalpayments, setFinalpaymanets] = useState([]);
     const [token, setToken] = useState("");
+    const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentDateTime(new Date());
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
 
     useEffect(()=>{
         setToken(`Bearer ${sessionStorage.getItem('session')}`);
@@ -76,7 +85,26 @@ const Dashboard = () => {
         <div className="p-4 sm:ml-64">
             <div className="p-4">
                 <div className='w-full'>
-                    <h1 className='mb-8 text-3xl text-gray-800 font-semibold'>Dashboard</h1>
+                    <div className='flex justify-between items-center'>
+                        <h1 className='mb-8 text-3xl text-gray-800 font-semibold'>Dashboard</h1>
+                        <div className='flex flex-col items-end text-right'>
+                            <div className='text-lg text-gray-700 font-medium'>
+                                {currentDateTime.toLocaleDateString('en-US', { 
+                                    weekday: 'long', 
+                                    year: 'numeric', 
+                                    month: 'long', 
+                                    day: 'numeric' 
+                                })}
+                            </div>
+                            <div className='text-sm text-gray-500 font-mono'>
+                                {currentDateTime.toLocaleTimeString('en-US', { 
+                                    hour: '2-digit', 
+                                    minute: '2-digit', 
+                                    second: '2-digit' 
+                                })}
+                            </div>
+                        </div>
+                    </div>                    
                     <div className='w-full grid lg:grid-cols-4 grid-cols-1 gap-5'>
                         <DashItem name={"Customers"} count={customers.length}/>
                         <DashItem name={"Supliers"} count={supliers.length}/>
