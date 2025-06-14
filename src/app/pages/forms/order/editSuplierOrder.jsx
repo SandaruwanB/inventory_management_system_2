@@ -30,7 +30,7 @@ const EditSuplierOrder = () => {
             }).then(result=>{
                 setOrder(result.data);
                 setOrdermove(result.data.ordermove);
-                setCustomer(result.data.customer);
+                setCustomer(result.data.suplier);
             });
             axios.get(`${apiConfig.url}/api/company/all`,{
                 headers : {
@@ -93,7 +93,7 @@ const EditSuplierOrder = () => {
                                                     Customer <span className='text-red-400 text-xs'>*</span>
                                                 </label>
                                                 <select id='customer' value={0} name='customer' className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" readOnly>
-                                                    <option value={0}>{order.customer ? order.customer.firstname + " " + order.customer.lastname : ""}</option>
+                                                    <option value={0}>{order.suplier ? order.suplier.firstname + " " + order.suplier.lastname : ""}</option>
                                                 </select>
                                             </div>
                                         </div>

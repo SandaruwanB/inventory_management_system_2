@@ -21,7 +21,7 @@ const AddOrder = () => {
     
     const [showmenu, setShowmenu] = useState(false);
     const [products, setProducts] = useState([]);
-    const [customers, setCustomers] = useState([]);
+    const [supliers, setSupliers] = useState([]);
     const [token, setToken] = useState("");
 
     const navigate = useNavigate();
@@ -39,12 +39,12 @@ const AddOrder = () => {
     useEffect(()=>{
         setToken(`Bearer ${sessionStorage.getItem('session')}`);
         const getData = ()=>{
-            axios.get(`${apiConfig.url}/api/customers/all`, {
+            axios.get(`${apiConfig.url}/api/supliers/all`, {
                 headers : {
                   Authorization : token
                 }
               }).then(result=>{
-                setCustomers(result.data);
+                setSupliers(result.data);
             });
             axios.get(`${apiConfig.url}/api/inventory/all`, {
                 headers : {
@@ -103,7 +103,7 @@ const AddOrder = () => {
                 note : note,
                 date : date,
                 type : "suplier",
-                customer : {
+                suplier : {
                     id : customer
                 },
                 ordermove : orderlines
@@ -253,12 +253,12 @@ const AddOrder = () => {
                                         <div className="flex flex-wrap -mx-3 mb-6">
                                             <div className="w-full px-3">
                                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='customer'>
-                                                    Customer <span className='text-red-400 text-xs'>*</span>
+                                                    Supplier <span className='text-red-400 text-xs'>*</span>
                                                 </label>
                                                 <select id='customer' onChange={(e)=>setCustomer(e.target.value)} value={customer} name='customer' className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                                                     <option value={0}>None</option>
                                                     {
-                                                        customers.map((value,index)=>(
+                                                        supliers.map((value,index)=>(
                                                             <option key={index} value={value.id}>{value.firstname + " " + value.lastname + " " + value.city}</option>
                                                         ))
                                                     }

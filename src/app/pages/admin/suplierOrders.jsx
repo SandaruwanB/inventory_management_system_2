@@ -84,7 +84,7 @@ const SuplierOrders = () => {
         } else {
             setFilteredOrders(orders.filter(order =>
                 order.ordername.toLowerCase().includes(query)
-                || `${order.customer.firstname} ${order.customer.lastname}`.toLowerCase().includes(query)
+                || `${order.suplier.firstname} ${order.suplier.lastname}`.toLowerCase().includes(query)
                 || order.date.toLowerCase().includes(query)
             ));
         }
@@ -134,7 +134,7 @@ const SuplierOrders = () => {
                                                     <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                         <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.ordername}</td>
-                                                        <td className='p-3 text-sm text-gray-700'>{value.customer.firstname + " " + value.customer.lastname}</td>
+                                                        <td className='p-3 text-sm text-gray-700'>{value.suplier.firstname + " " + value.suplier.lastname}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.ordermove ? (value.ordermove).length : 0}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.date}</td>
                                                         <td className='p-3 text-sm text-gray-700'>
