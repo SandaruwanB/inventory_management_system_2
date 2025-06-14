@@ -17,6 +17,7 @@ const AddCustomerOrder = () => {
     const [product, setProduct] = useState(0);
     const [count, setCount] = useState("");
     const [orderlines, setOrderlines] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0);
     
     const [showmenu, setShowmenu] = useState(false);
     const [products, setProducts] = useState([]);
@@ -24,7 +25,17 @@ const AddCustomerOrder = () => {
     const [token, setToken] = useState("");
 
     const navigate = useNavigate();
-    
+
+    useEffect(() => {
+        const calculateTotal = () => {
+            const total = orderlines.reduce((sum, item) => {
+                return sum + (parseFloat(item.product.unitprice) * parseFloat(item.itemcount));
+            }, 0);
+            setTotalAmount(total);
+        };
+        calculateTotal();
+    }, [orderlines]);
+
     useEffect(()=>{
         setToken(`Bearer ${sessionStorage.getItem('session')}`);
         const getData = ()=>{
@@ -163,15 +174,18 @@ const AddCustomerOrder = () => {
                     Authorization : token
                 }
             }).then(result=>{
+                console.log(result.data);
                 const array = {
                     "product" : {
                         "id" : product,
                         "prodctname" : result.data.prodctname,
+                        "unitprice" : parseFloat(result.data.unitprice),
                         "availability" : result.data.onhandqty > 20 ? "available" : "low stock",
                         "onhandqty" : parseFloat(result.data.onhandqty) - parseFloat(count),
                         "inqty" : parseFloat(result.data.inqty) - parseFloat(count),
                     },
-                    "itemcount" : count,
+                    "itemcount" : parseFloat(count),
+                    "unitprice" : parseFloat(result.data.unitprice)
                 };
 
                 setOrderlines((previous)=>[...previous, array]);
@@ -247,6 +261,8 @@ const AddCustomerOrder = () => {
                                     <th className='p-1 text-sm font-semibold tracking-wide text-left pl-5'>Product</th>
                                     <th className='p-1 text-sm font-semibold tracking-wide text-left'>Count</th>
                                     <th className='p-1 text-sm font-semibold tracking-wide text-center'>Availability</th>
+                                    <th className='p-1 text-sm font-semibold tracking-wide text-end'>Unit price</th>
+                                    <th className='p-1 text-sm font-semibold tracking-wide text-end'>Sub total</th>
                                     <th className='p-1 text-sm font-semibold tracking-wide'></th>
                                 </tr>
                             </thead>
@@ -257,6 +273,8 @@ const AddCustomerOrder = () => {
                                             <td className='p-1 text-sm font-semibold tracking-wide text-left pl-5'>{value.product.prodctname}</td>
                                             <td className='p-1 text-sm font-semibold tracking-wide text-left'>{value.itemcount}</td>
                                             <td className='p-1 text-sm font-semibold tracking-wide text-center'>{value.product.availability === "available" ? <p className='text-green-600'>available</p> : <p className='text-red-600'>Low stock</p>}</td>
+                                            <td className='p-1 text-sm font-semibold tracking-wide text-end'>Rs.{value.product.unitprice}</td>
+                                            <td className='p-1 text-sm font-semibold tracking-wide text-end'>Rs.{parseFloat(value.product.unitprice * value.itemcount).toFixed(2)}</td>
                                             <td>
                                                 <button className='ml-4 hover:text-red-500' onClick={()=>removeItem(index)}><Icon icon="material-symbols-light:delete"  width={28}/></button>
                                             </td>
@@ -264,6 +282,15 @@ const AddCustomerOrder = () => {
                                     ))
                                 }
                             </tbody>
+                            {orderlines.length > 0 && (
+                                <tfoot className='bg-gray-100 border-t-2 border-gray-400'>
+                                    <tr>
+                                        <td colSpan={4} className='p-3 text-lg font-bold text-gray-800 text-right'>Total Amount:</td>
+                                        <td className='p-3 text-lg font-bold text-gray-800 text-end'>Rs.{totalAmount.toFixed(2)}</td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            )}
                         </table>
                         <div className='text-center w-full'>
                             <div className='text-center w-full text-blue-800 hover:underline cursor-pointer text-md p-3' colSpan={4}>

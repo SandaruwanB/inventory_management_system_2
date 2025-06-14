@@ -68,6 +68,7 @@ import { apiConfig } from '../../../apiConfig';
                                     <tr>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left w-10'>No.</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Product</th>
+                                        <th className='p-3 text-sm font-semibold tracking-wide text-left'>Category</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>On hand Qty</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Out Qty</th>
                                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>In Qty</th>
@@ -81,6 +82,7 @@ import { apiConfig } from '../../../apiConfig';
                                                     <tr className={(index % 2) === 0 ? 'bg-white' : 'bg-gray-100'} key={index}>
                                                         <td className='p-3 text-sm text-gray-700'>{index + 1}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.prodctname}</td>
+                                                        <td className='p-3 text-sm text-gray-700'>{value.category}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.onhandqty}</td>
                                                         <td className='p-3 text-sm text-gray-700'>{value.outqty}</td>   
                                                         <td className='p-3 text-sm text-gray-700'>{ value.inqty }</td>                                                     
