@@ -182,10 +182,6 @@ const AddProduct = () => {
                                             </label>
                                             <select id='uom' name='uom' onChange={(e)=>setUnitofmesure(e.target.value)} value={unitofmesure} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                                                 <option>None</option>
-                                                <option value="kilogram">Kilogram</option>
-                                                <option value="gram">Gram</option>
-                                                <option value="bundle" >Bundle</option>
-                                                <option value="units">Units</option>
                                                 <option value="packets">Packets</option>
                                             </select>
                                         </div>
