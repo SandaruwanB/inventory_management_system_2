@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inventory_management.entity.AuthRequest;
+import com.inventory_management.entity.AuthResponse;
 import com.inventory_management.entity.User;
+import com.inventory_management.entity.UserResponse;
 import com.inventory_management.service.JwtService;
 import com.inventory_management.service.UserInfoService;
 
@@ -39,12 +41,15 @@ public class AuthController {
     }
 
     @PostMapping("/token")
-    public String getAuthToken(@RequestBody AuthRequest authRequest) {
+    public AuthResponse getAuthToken(@RequestBody AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
         );
         if (authentication.isAuthenticated()){
-            return jwtService.generateToken(authRequest.getUsername());
+            String token = jwtService.generateToken(authRequest.getUsername());
+            User user = service.getUserByUsername(authRequest.getUsername());
+            UserResponse userResponse = new UserResponse(user);
+            return new AuthResponse(token, userResponse);
         } else {
             throw new UsernameNotFoundException("Invalid user details");
         }

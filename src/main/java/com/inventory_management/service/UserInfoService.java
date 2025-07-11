@@ -36,4 +36,9 @@ public class UserInfoService implements UserDetailsService {
         repository.save(user);
         return "User added successfully";
     }
+
+    public User getUserByUsername(String username) {
+        Optional<User> user = repository.findByEmail(username);
+        return user.orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+    }
 }
