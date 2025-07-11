@@ -1,10 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Icon } from '@iconify/react'
 import { useNavigate } from 'react-router-dom';
 
 const DashboadrdSideBar = () => {
   const [activeSubcategories, setActiveSubcategories] = useState({});
+  const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Get user data from session storage
+    const userData = sessionStorage.getItem('user');
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        setUserRole(user.role);
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
+  }, []);
 
   const toggleSubcategories = (index) => {
     setActiveSubcategories((prevState) => ({
@@ -26,22 +40,22 @@ const DashboadrdSideBar = () => {
         {
           title: "Customers",
           path: "/user/customers",
-          icon : "mdi:users"
+          icon: "mdi:users"
         },
         {
           title: "Orders",
           path: "/user/customer/orders",
-          icon : "material-symbols:orders-rounded"
+          icon: "material-symbols:orders-rounded"
         },
         {
           title: "Invoices",
           path: "/user/invoicing",
-          icon : "iconamoon:invoice-fill"
+          icon: "iconamoon:invoice-fill"
         },
         {
           title: "Payments",
           path: "/user/customer/payments",
-          icon : "mdi:account-payment"
+          icon: "mdi:account-payment"
         },
       ],
     },
@@ -57,17 +71,17 @@ const DashboadrdSideBar = () => {
         {
           title: "Orders",
           path: "/user/suplier/orders",
-          icon : "material-symbols:orders-rounded"
+          icon: "material-symbols:orders-rounded"
         },
         {
           title: "GRN",
           path: "/user/grn",
-          icon : "clarity:note-solid"
+          icon: "clarity:note-solid"
         },
         {
           title: "Payments",
           path: "/user/suplier/payments",
-          icon : "mdi:account-payment"
+          icon: "mdi:account-payment"
         },
       ],
     },
@@ -78,12 +92,12 @@ const DashboadrdSideBar = () => {
         {
           title: "Products",
           path: "/user/inventory",
-          icon : "dashicons:products"
+          icon: "dashicons:products"
         },
         {
           title: "Inventory",
           path: "/user/inventory/details",
-          icon : "ic:baseline-inventory"
+          icon: "ic:baseline-inventory"
         },
       ],
     },
@@ -94,12 +108,12 @@ const DashboadrdSideBar = () => {
         {
           title: "Sales Report",
           path: "/user/reports/sales",
-          icon : "game-icons:sell-card"
+          icon: "game-icons:sell-card"
         },
         {
           title: "Purchase Report",
           path: "/user/reports/purchases",
-          icon : "f7:purchased-circle-fill"
+          icon: "f7:purchased-circle-fill"
         }
       ],
     },
@@ -108,20 +122,31 @@ const DashboadrdSideBar = () => {
       icon: "mdi:users",
       path: "/user/employees",
     },
-    {
+    // Conditionally include Users nav item only for admin users
+    ...(userRole === "ROLE_ADMIN" ? [{
       title: "Users",
       icon: "mdi:users",
       path: "/user/users",
-    },
+    }] : []),
     {
       title: "Settings",
       icon: "material-symbols:settings",
       path: "/user/settings"
     },
+    {
+      title: "Logout",
+      icon: "material-symbols:logout",
+      action: "logout"
+    },
   ];
 
-  const replace = (url)=>{
+  const replace = (url) => {
     navigate(url);
+  }
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate('/');
   }
 
   return (
@@ -163,7 +188,9 @@ const DashboadrdSideBar = () => {
                     onClick={() =>
                       item.subcategories
                         ? toggleSubcategories(index)
-                        : replace(item.path)
+                        : item.action === "logout"
+                          ? handleLogout()
+                          : replace(item.path)
                     }
                     className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-700 hover:backdrop-brightness-125 group w-full"
                   >

@@ -16,6 +16,7 @@ const EditUser = () => {
     const [contact, setContact] = useState("");
     const [address, setAddress] = useState("");
     const [password, setPasssword] = useState("");
+    const [role, setRole] = useState("ROLE_USER");
     const [token, setToken] = useState("");
 
     const {id} = useParams();
@@ -35,6 +36,7 @@ const EditUser = () => {
                 setLastname(result.data.lastname);
                 setContact(result.data.phone);
                 setAddress(result.data.address);
+                setRole(result.data.role || "ROLE_USER");
             });
         }
         if (token){
@@ -76,7 +78,7 @@ const EditUser = () => {
                 lastname : lastname,
                 phone : contact,
                 address : address,
-                role : "ROLE_USER",
+                role : role,
                 updatedAt : Date.now()
             }, {
                 headers : {
@@ -180,6 +182,17 @@ const EditUser = () => {
                                             <input name='password' id='password' onChange={(e)=>setPasssword(e.target.value)} value={password} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="******************"/>
                                         </div>
                                     </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='role'>
+                                                User Role <span className='text-red-400 text-xs'>*</span>
+                                            </label>
+                                            <select name='role' id='role' onChange={(e)=>setRole(e.target.value)} value={role} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                <option value="ROLE_USER">User</option>
+                                                <option value="ROLE_ADMIN">Admin</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div className="flex flex-wrap w-full -mx-3 mb-6">
                                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                             <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>updateUser()}>Update</button>
@@ -187,13 +200,13 @@ const EditUser = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>                       
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <ToastContainer />      
+        <ToastContainer />
     </>
   )
 }

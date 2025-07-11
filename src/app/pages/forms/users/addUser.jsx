@@ -16,6 +16,7 @@ const AddUser = () => {
     const [contact, setContact] = useState("");
     const [address, setAddress] = useState("");
     const [password, setPasssword] = useState("");
+    const [role, setRole] = useState("ROLE_USER"); // Default to ROLE_USER
     const [token, setToken] = useState("");
     
     const navigate = useNavigate();
@@ -58,7 +59,7 @@ const AddUser = () => {
                 lastname : lastname,
                 phone : contact,
                 address : address,
-                role : "ROLE_USER",
+                role : role,
                 CreatedAt :  Date.now()
             }, {
                 headers : {
@@ -76,7 +77,7 @@ const AddUser = () => {
                     progress: undefined,
                     theme: "light",
                     });
-                    setUsername("");setEmail("");setPasssword("");setFirstname("");setLastname("");setContact("");setAddress("");
+                    setUsername("");setEmail("");setPasssword("");setFirstname("");setLastname("");setContact("");setAddress("");setRole("ROLE_USER");
                 }
             }).catch(err=>{
                 toast.error('This user already exists!', {
@@ -161,6 +162,17 @@ const AddUser = () => {
                                                 Password <span className='text-red-400 text-xs'>*</span>
                                             </label>
                                             <input name='password' id='password' onChange={(e)=>setPasssword(e.target.value)} value={password} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="****************"/>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap -mx-3 mb-6">
+                                        <div className="w-full px-3">
+                                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='role'>
+                                                User Role <span className='text-red-400 text-xs'>*</span>
+                                            </label>
+                                            <select name='role' id='role' onChange={(e)=>setRole(e.target.value)} value={role} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                <option value="ROLE_USER">User</option>
+                                                <option value="ROLE_ADMIN">Admin</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap w-full -mx-3 mb-6">

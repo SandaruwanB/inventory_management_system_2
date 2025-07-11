@@ -14,22 +14,46 @@ const Users = () => {
     const [popupvisibility, setPopupvisibility] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
     const [token, setToken] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
         setToken(`Bearer ${sessionStorage.getItem('session')}`);
-        const getData = ()=>{
+
+        const userData = sessionStorage.getItem('user');
+        if (userData) {
+            try {
+                const user = JSON.parse(userData);
+                setCurrentUser(user);
+            } catch (error) {
+                console.error('Error parsing user data:', error);
+            }
+        }
+
+        const getData = () => {
             axios.get(`${apiConfig.url}/api/users/all`, {
-                headers : {
-                    Authorization : token
+                headers: {
+                    Authorization: token
                 }
             }).then(result => {
-                setUsers(result.data);
-                setFilteredUsers(result.data);
+                const userData = sessionStorage.getItem('user');
+                let filteredData = result.data;
+
+                if (userData) {
+                    try {
+                        const currentUser = JSON.parse(userData);
+                        filteredData = result.data.filter(user => user.id !== currentUser.id);
+                    } catch (error) {
+                        console.error('Error parsing user data:', error);
+                    }
+                }
+
+                setUsers(filteredData);
+                setFilteredUsers(filteredData);
             })
         }
-        if (token){
+        if (token) {
             getData();
         }
     }, [token])
@@ -54,8 +78,8 @@ const Users = () => {
     const deleteUser = async (id) => {
         setPopupvisibility(false);
         await axios.delete(`${apiConfig.url}/api/users/delete/${id}`, {
-            headers : {
-                Authorization : token
+            headers: {
+                Authorization: token
             }
         }).then(() => {
             toast.info('Successfully Removed!', {
