@@ -29,7 +29,14 @@ const SalesReport = () => {
 
                 const aggregatedData = result.data.reduce((acc, sale) => {
                     const saleDate = sale.date;
-                    const totalAmount = sale.ordermove.reduce((acc, line) => acc + line.itemcount * line.product.unitprice, 0);
+                    const totalAmount = sale.ordermove && sale.ordermove.length > 0 
+                        ? sale.ordermove.reduce((acc, line) => {
+                            const lineTotal = line.itemcount && line.product && line.product.unitprice 
+                                ? line.itemcount * line.product.unitprice 
+                                : 0;
+                            return acc + lineTotal;
+                        }, 0)
+                        : 0;
 
                     const existingEntry = acc.find(entry => entry.date === saleDate);
                     if (existingEntry) {
@@ -116,15 +123,25 @@ const SalesReport = () => {
                                                         <tr  key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
                                                             <td className="p-3 text-sm text-gray-700">{index + 1}</td>
                                                             <td className="p-3 text-sm text-gray-700">
-                                                                {value.customer.firstname + ' ' + value.customer.lastname}
+                                                                {value.customer && value.customer.firstname && value.customer.lastname
+                                                                    ? `${value.customer.firstname} ${value.customer.lastname}`
+                                                                    : 'N/A'
+                                                                }
                                                             </td>
                                                             <td className="p-3 text-sm text-gray-700">{value.date}</td>
                                                             <td className="p-3 text-sm text-gray-700 text-right">
-                                                                {value.ordermove.map((line, lineIndex) => (
-                                                                    <div key={lineIndex}>
-                                                                        Rs.{line.itemcount * line.product.unitprice}
-                                                                    </div>
-                                                                ))}
+                                                                {value.ordermove && value.ordermove.length > 0 ? (
+                                                                    value.ordermove.map((line, lineIndex) => (
+                                                                        <div key={lineIndex}>
+                                                                            Rs.{line.itemcount && line.product && line.product.unitprice 
+                                                                                ? (line.itemcount * line.product.unitprice).toFixed(2)
+                                                                                : '0.00'
+                                                                            }
+                                                                        </div>
+                                                                    ))
+                                                                ) : (
+                                                                    <div>Rs.0.00</div>
+                                                                )}
                                                             </td>
                                                         </tr>
                                                     ))

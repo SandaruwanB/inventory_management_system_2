@@ -85,24 +85,37 @@ const SalesReportComponent = ({ lines, start_date, end_date, type, partner }) =>
 
                     {
                         lines.map((value,index)=>(
-                            <>
+                            <React.Fragment key={index}>
                                 <View style={[ style.absolute, {left : 2,top : index === 0 ? 20 : (index + 1) * 17}]}>
                                     <Text style={[style.smallFont, {marginTop : 3}]}>{index + 1}</Text>
                                 </View>
                                 <View style={[ style.absolute, {left : '15%',top : index === 0 ? 20 : (index + 1) * 17}]}>
-                                    <Text style={[style.smallFont, {marginTop : 3}]}>{value.suplier.firstname + " " + value.suplier.lastname}</Text>
+                                    <Text style={[style.smallFont, {marginTop : 3}]}>
+                                        {value.customer && value.customer.firstname && value.customer.lastname 
+                                            ? `${value.customer.firstname} ${value.customer.lastname}` 
+                                            : value.suplier && value.suplier.firstname && value.suplier.lastname 
+                                            ? `${value.suplier.firstname} ${value.suplier.lastname}` 
+                                            : 'N/A'
+                                        }
+                                    </Text>
                                 </View>
                                 <View style={[ style.absolute, {left : '60%',top : index === 0 ? 20 : (index + 1) * 17}]}>
-                                    <Text style={[style.smallFont, {marginTop : 3}]}>{value.date}</Text>
+                                    <Text style={[style.smallFont, {marginTop : 3}]}>{value.date || 'N/A'}</Text>
                                 </View>
                                 <View style={[ style.absolute, {left : '85%',top : index === 0 ? 20 : (index + 1) * 17}]}>
-                                    {value.ordermove.map((line, lineIndex) => (
-                                        <Text key={lineIndex} style={[style.smallFont, {marginTop : 3}]}>
-                                            Rs.{line.itemcount * line.product.unitprice}
-                                        </Text>
-                                    ))}
+                                    {value.ordermove && value.ordermove.length > 0 ? 
+                                        value.ordermove.map((line, lineIndex) => (
+                                            <Text key={lineIndex} style={[style.smallFont, {marginTop : 3}]}>
+                                                Rs.{line.itemcount && line.product && line.product.unitprice 
+                                                    ? (line.itemcount * line.product.unitprice).toFixed(2)
+                                                    : '0.00'
+                                                }
+                                            </Text>
+                                        ))
+                                        : <Text style={[style.smallFont, {marginTop : 3}]}>Rs.0.00</Text>
+                                    }
                                 </View>
-                            </>
+                            </React.Fragment>
                         ))
                     }
                 </View>
