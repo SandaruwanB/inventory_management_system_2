@@ -2,6 +2,7 @@ package com.inventory_management.service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.inventory_management.entity.User;
@@ -13,8 +14,14 @@ public class UserService {
     @Autowired
     private UserRepository repo;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     public User saveUser(User user){
+        if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         return repo.save(user);
     }
 
@@ -43,8 +50,8 @@ public class UserService {
         existig.setRole(user.getRole());
         existig.setUpdatedAt(user.getUpdatedAt());
 
-        if (user.getPassword() != ""){
-            existig.setPassword(user.getPassword());
+        if (user.getPassword() != null && !user.getPassword().trim().isEmpty()){
+            existig.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
         return repo.save(existig);

@@ -33,7 +33,7 @@ public class UserSeeder implements CommandLineRunner {
             admin.setFirstname("admin");
             admin.setLastname("admin");
             admin.setPassword(password);
-            admin.setRole("ROLE_USER");
+            admin.setRole("ROLE_ADMIN");
         
             userRepository.save(admin);
             System.out.println("Default user created");
