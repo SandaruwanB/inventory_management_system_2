@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const Dashboard = () => {
     document.title = "New Invent Technologies | Dashboard";
 
+    const [userName, setUserName] = useState("");
     const [customers, setCustomers] = useState([]);
     const [supliers, setSupliers] = useState([]);
     const [items, setItems] = useState([]);
@@ -29,6 +30,7 @@ const Dashboard = () => {
 
     useEffect(()=>{
         setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        setUserName(JSON.parse(sessionStorage.getItem('user')).firstname + " " + JSON.parse(sessionStorage.getItem('user')).lastname);
         const getData = ()=>{
             axios.get(`${apiConfig.url}/api/customers/all`, {
                 headers : {
@@ -88,6 +90,9 @@ const Dashboard = () => {
                     <div className='flex justify-between items-center'>
                         <h1 className='mb-8 text-3xl text-gray-800 font-semibold'>Dashboard</h1>
                         <div className='flex flex-col items-end text-right'>
+                            <div className='text-sm text-gray-700 font-medium'>
+                                {userName}
+                            </div>
                             <div className='text-lg text-gray-700 font-medium'>
                                 {currentDateTime.toLocaleDateString('en-US', { 
                                     weekday: 'long', 
@@ -105,7 +110,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>                    
-                    <div className='w-full grid lg:grid-cols-4 grid-cols-1 gap-5'>
+                    <div className='w-full grid lg:grid-cols-4 grid-cols-1 gap-5 mt-5'>
                         <DashItem name={"Customers"} count={customers.length}/>
                         <DashItem name={"Supliers"} count={supliers.length}/>
                         <DashItem name={"Products"} count={items.length}/>
