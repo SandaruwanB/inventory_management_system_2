@@ -45,7 +45,9 @@ function Login() {
         'username' : email,
         'password' : password
       }).then(result=>{
-        sessionStorage.setItem('session', result.data);
+        console.log(result.data);
+        sessionStorage.setItem('session', result.data.token);
+        sessionStorage.setItem('user', JSON.stringify(result.data.user));
         navigate('/user/dashboard');
       }).catch((err)=>{
         setPasword("");
