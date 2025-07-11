@@ -25,12 +25,25 @@ const Settings = () => {
     const [comemail, setComemail] = useState("");
     const [comcontact, setComcontact] = useState("");
     const [comid, setComid] = useState("");
+    const [userRole, setUserRole] = useState(null);
     const [token, setToken] = useState("");
 
     const navigate = useNavigate();
 
     useEffect(()=>{
         setToken(`Bearer ${sessionStorage.getItem('session')}`);
+        
+        // Get user role from session storage
+        const userData = sessionStorage.getItem('user');
+        if (userData) {
+            try {
+                const user = JSON.parse(userData);
+                setUserRole(user.role);
+            } catch (error) {
+                console.error('Error parsing user data:', error);
+            }
+        }
+
         const getData = ()=>{
             axios.get(`${apiConfig.url}/api/company/all`, {
                 headers : {
@@ -234,80 +247,85 @@ const Settings = () => {
                                 </div>
                             </div>
                         </div>
-                        <h1 className='font-semibold text-gray-700 mt-10'>Company details</h1>
-                        <div className='w-full bg-gray-400 h-[2px]'></div>
-                        <div className='w-full mt-10'>
-                            <div className="w-full">
-                                <div className='grid md:grid-cols-2 grid-cols-1 gap-2'>
-                                    <div className='w-full max-w-lg'>
-                                        <div className="flex flex-wrap -mx-3 mb-6">
-                                            <div className="w-full px-3">
-                                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='companyname' >
-                                                    Company Name
-                                                </label>
-                                                <input name='companyname' id='companyname' onChange={(e)=>setCompanyname(e.target.value)} value={companyname} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="mycompany (Pvt) Ltd." autoComplete='1'/>
+                        {/* Show company details only for admin users */}
+                        {userRole === "ROLE_ADMIN" && (
+                            <>
+                                <h1 className='font-semibold text-gray-700 mt-10'>Company details</h1>
+                                <div className='w-full bg-gray-400 h-[2px]'></div>
+                                <div className='w-full mt-10'>
+                                    <div className="w-full">
+                                        <div className='grid md:grid-cols-2 grid-cols-1 gap-2'>
+                                            <div className='w-full max-w-lg'>
+                                                <div className="flex flex-wrap -mx-3 mb-6">
+                                                    <div className="w-full px-3">
+                                                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='companyname' >
+                                                            Company Name
+                                                        </label>
+                                                        <input name='companyname' id='companyname' onChange={(e)=>setCompanyname(e.target.value)} value={companyname} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="mycompany (Pvt) Ltd." autoComplete='1'/>
+                                                    </div>
+                                                    <div className="w-full px-3">
+                                                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='adr1' >
+                                                            address line 1
+                                                        </label>
+                                                        <input name='adr1' id='adr1' onChange={(e)=>setComaddress1(e.target.value)} value={comaddress1} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="kandy" autoComplete='1'/>
+                                                    </div>
+                                                    <div className="w-full px-3">
+                                                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='adr2' >
+                                                            address line 2
+                                                        </label>
+                                                        <input name='adr2' id='adr2' onChange={(e)=>setComaddress2(e.target.value)} value={comaddress2} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="kandy" autoComplete='1'/>
+                                                    </div>
+                                                    <div className="w-full px-3">
+                                                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='city' >
+                                                            city
+                                                        </label>
+                                                        <input name='city' id='city' onChange={(e)=>setComcity(e.target.value)} value={comcity} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="kandy" autoComplete='1'/>
+                                                    </div>
+                                                    <div className="w-full px-3">
+                                                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='country' >
+                                                            country
+                                                        </label>
+                                                        <input name='country' id='country' onChange={(e)=>setComcountry(e.target.value)} value={comcountry} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="sri lanka" autoComplete='1'/>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className="w-full px-3">
-                                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='adr1' >
-                                                    address line 1
-                                                </label>
-                                                <input name='adr1' id='adr1' onChange={(e)=>setComaddress1(e.target.value)} value={comaddress1} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="kandy" autoComplete='1'/>
-                                            </div>
-                                            <div className="w-full px-3">
-                                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='adr2' >
-                                                    address line 2
-                                                </label>
-                                                <input name='adr2' id='adr2' onChange={(e)=>setComaddress2(e.target.value)} value={comaddress2} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="kandy" autoComplete='1'/>
-                                            </div>
-                                            <div className="w-full px-3">
-                                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='city' >
-                                                    city
-                                                </label>
-                                                <input name='city' id='city' onChange={(e)=>setComcity(e.target.value)} value={comcity} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="kandy" autoComplete='1'/>
-                                            </div>
-                                            <div className="w-full px-3">
-                                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='country' >
-                                                    country
-                                                </label>
-                                                <input name='country' id='country' onChange={(e)=>setComcountry(e.target.value)} value={comcountry} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="sri lanka" autoComplete='1'/>
+                                            <div className='w-full max-w-lg'>
+                                                <div className="flex flex-wrap -mx-3 mb-6">
+                                                    <div className="w-full px-3">
+                                                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='web' >
+                                                            website
+                                                        </label>
+                                                        <input name='web' id='web' onChange={(e)=>setComweb(e.target.value)} value={comweb} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="www.mycompany.com" autoComplete='1'/>
+                                                    </div>
+                                                    <div className="w-full px-3">
+                                                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='comemail' >
+                                                            email
+                                                        </label>
+                                                        <input name='comemail' id='comemail' onChange={(e)=>setComemail(e.target.value)} value={comemail} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="example@gmail.com" autoComplete='1'/>
+                                                    </div>
+                                                    <div className="w-full px-3">
+                                                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='comcontact' >
+                                                            contact number
+                                                        </label>
+                                                        <input name='comcontact' id='comcontact' onChange={(e)=>setComcontact(e.target.value)} value={comcontact} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="+942653615" autoComplete='1'/>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div className="flex flex-wrap w-full -mx-3 mb-6">
+                                                    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                                        {
+                                                            comfound ? <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>updateCompany()}>Update</button> :                                                   
+                                                            <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>addCompany()}>Save</button>
+                                                        }
+                                                        
+                                                    </div>
+                                                </div>                                        
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className='w-full max-w-lg'>
-                                        <div className="flex flex-wrap -mx-3 mb-6">
-                                            <div className="w-full px-3">
-                                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='web' >
-                                                    website
-                                                </label>
-                                                <input name='web' id='web' onChange={(e)=>setComweb(e.target.value)} value={comweb} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="www.mycompany.com" autoComplete='1'/>
-                                            </div>
-                                            <div className="w-full px-3">
-                                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='comemail' >
-                                                    email
-                                                </label>
-                                                <input name='comemail' id='comemail' onChange={(e)=>setComemail(e.target.value)} value={comemail} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="example@gmail.com" autoComplete='1'/>
-                                            </div>
-                                            <div className="w-full px-3">
-                                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor='comcontact' >
-                                                    contact number
-                                                </label>
-                                                <input name='comcontact' id='comcontact' onChange={(e)=>setComcontact(e.target.value)} value={comcontact} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="+942653615" autoComplete='1'/>
-                                            </div>
-                                            
-                                        </div>
-                                        <div className="flex flex-wrap w-full -mx-3 mb-6">
-                                            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                                {
-                                                    comfound ? <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>updateCompany()}>Update</button> :                                                   
-                                                    <button className='bg-blue-700 hover:bg-blue-900 px-4 py-2 text-white rounded' onClick={()=>addCompany()}>Save</button>
-                                                }
-                                                
-                                            </div>
-                                        </div>                                        
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </>
+                        )}
                         <h1 className='font-semibold text-gray-700 mt-10'>High security area</h1>
                         <div className='w-full bg-gray-400 h-[2px]'></div>
                         <div className='w-full mt-10'>
