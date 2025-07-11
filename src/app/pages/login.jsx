@@ -45,7 +45,6 @@ function Login() {
         'username' : email,
         'password' : password
       }).then(result=>{
-        console.log(result.data);
         sessionStorage.setItem('session', result.data.token);
         sessionStorage.setItem('user', JSON.stringify(result.data.user));
         navigate('/user/dashboard');
