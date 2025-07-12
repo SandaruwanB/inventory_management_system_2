@@ -23,17 +23,40 @@ public class OrderService {
     public Order saveOrder(Order order){
         List<OrderMove> orderMoves = order.getOrdermove();
 
-        for (OrderMove move : orderMoves){
-            Inventory product = inventoryRepo.findById(move.getProduct().getId()).orElse(null);
+        if (order.getCustomer() != null) {
+            for (OrderMove move : orderMoves){
+                Inventory product = inventoryRepo.findById(move.getProduct().getId()).orElse(null);
+                
+                if (product != null) {
+                    double onhand = product.getOnhandqty() - move.getItemcount();
+                    int onhandqty = (int) onhand;
 
-            double onhand = product.getOnhandqty() - move.getItemcount();
-            int onhandqty = (int) onhand;
+                    double outqtydouble = product.getOutqty() + move.getItemcount();
+                    int outqty = (int) outqtydouble;
 
-            double outqtydouble = product.getOutqty() + move.getItemcount();
-            int outqty = (int) outqtydouble;
+                    product.setOnhandqty(Math.max(0, onhandqty));
+                    product.setOutqty(outqty);
+                    
+                    inventoryRepo.save(product);
+                }
+            }
+        } else if (order.getSuplier() != null) {
+            for (OrderMove move : orderMoves){
+                Inventory product = inventoryRepo.findById(move.getProduct().getId()).orElse(null);
+                
+                if (product != null) {
+                    double onhand = product.getOnhandqty() + move.getItemcount();
+                    int onhandqty = (int) onhand;
 
-            product.setOnhandqty(onhandqty);
-            product.setOutqty(outqty);
+                    double inqtydouble = product.getInqty() + move.getItemcount();
+                    int inqty = (int) inqtydouble;
+
+                    product.setOnhandqty(onhandqty);
+                    product.setInqty(inqty);
+                    
+                    inventoryRepo.save(product);
+                }
+            }
         }
 
         return repo.save(order);
@@ -49,24 +72,49 @@ public class OrderService {
 
     public String deleteOrder(int id){
         Order order = repo.findById(id).orElse(null);
-        List<OrderMove> orderMoves = order.getOrdermove();
+        
+        if (order != null) {
+            List<OrderMove> orderMoves = order.getOrdermove();
 
-        for (OrderMove move : orderMoves){
-            Inventory product = inventoryRepo.findById(move.getProduct().getId()).orElse(null);
+            if (order.getCustomer() != null) {
+                for (OrderMove move : orderMoves){
+                    Inventory product = inventoryRepo.findById(move.getProduct().getId()).orElse(null);
+                    
+                    if (product != null) {
+                        double onhandqtyfloat = product.getOnhandqty() + move.getItemcount();
+                        int onhandqty = (int) onhandqtyfloat; 
 
-            double onhandqtyfloat = product.getOnhandqty() + move.getItemcount();
-            int onhandqty = (int) onhandqtyfloat; 
+                        double outqtyfloat = product.getOutqty() - move.getItemcount();
+                        int outqty = (int) outqtyfloat;
 
-            double outqtyfloat = product.getOutqty() - move.getItemcount();
-            int outqty = (int) outqtyfloat;
+                        product.setOnhandqty(onhandqty);
+                        product.setOutqty(Math.max(0, outqty));
 
-            product.setOnhandqty(onhandqty);
-            product.setOutqty(outqty);
+                        inventoryRepo.save(product);
+                    }
+                }
+            } else if (order.getSuplier() != null) {
+                for (OrderMove move : orderMoves){
+                    Inventory product = inventoryRepo.findById(move.getProduct().getId()).orElse(null);
+                    
+                    if (product != null) {
+                        double onhandqtyfloat = product.getOnhandqty() - move.getItemcount();
+                        int onhandqty = (int) onhandqtyfloat; 
 
-            inventoryRepo.save(product);
+                        double inqtyfloat = product.getInqty() - move.getItemcount();
+                        int inqty = (int) inqtyfloat;
+
+                        product.setOnhandqty(Math.max(0, onhandqty));
+                        product.setInqty(Math.max(0, inqty));
+
+                        inventoryRepo.save(product);
+                    }
+                }
+            }
+
+            repo.deleteById(id);
         }
-
-        repo.deleteById(id);
+        
         return "success";
     }
 

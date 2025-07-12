@@ -50,10 +50,10 @@ public class GrnService {
         for (StockMove move: stockMoves ){
             Inventory product = inventoryRepo.findById(move.getProduct().getId()).orElse(null);
 
-            float onhandqtyfloat = product.getOnhandqty() - move.getQuantity();
+            float onhandqtyfloat = product.getOnhandqty() + move.getQuantity();
             long onhandqty = (long) onhandqtyfloat;
 
-            float inqtyfloat = product.getInqty() - move.getQuantity();
+            float inqtyfloat = product.getInqty() + move.getQuantity();
             long inqty = (long) inqtyfloat;
 
             product.setOnhandqty(onhandqty);
