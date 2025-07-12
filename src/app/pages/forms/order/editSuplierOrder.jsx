@@ -5,7 +5,7 @@ import { apiConfig } from '../../../../apiConfig';
 import DashboadrdSideBar from '../../../layouts/dashboadrdSideBar';
 import OrderPDF from '../../../components/orderPDF';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 const EditSuplierOrder = () => {
     document.title = "New Invent Technologies | Orders";
@@ -15,119 +15,53 @@ const EditSuplierOrder = () => {
     const [customer, setCustomer] = useState([]);
     const [company, setCompany] = useState([]);
     const [total, setTotal] = useState(0);
-    const [token, setToken] = useState("");
 
     const { id } = useParams();
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        setToken(`Bearer ${sessionStorage.getItem('session')}`);
-        const getData = () => {
-            axios.get(`${apiConfig.url}/api/orders/get/${id}`, {
-                headers: {
-                    Authorization: token
+        const token = `Bearer ${sessionStorage.getItem('session')}`;
+        
+        if (token && token !== 'Bearer null') {
+            const getData = async () => {
+                try {
+                    // Get order data
+                    const orderResponse = await axios.get(`${apiConfig.url}/api/orders/get/${id}`, {
+                        headers: {
+                            Authorization: token
+                        }
+                    });
+                    
+                    setOrder(orderResponse.data);
+                    setOrdermove(orderResponse.data.ordermove);
+                    setCustomer(orderResponse.data.suplier);
+                    
+                    // Calculate total from the fresh data
+                    let total = 0;
+                    if (orderResponse.data.ordermove) {
+                        orderResponse.data.ordermove.forEach((value) => {
+                            total += value.itemcount * value.product.unitprice;
+                        });
+                    }
+                    setTotal(total);
+                    
+                    // Get company data
+                    const companyResponse = await axios.get(`${apiConfig.url}/api/company/all`, {
+                        headers: {
+                            Authorization: token
+                        }
+                    });
+                    setCompany(companyResponse.data[0]);
+                    
+                } catch (error) {
+                    console.error('Error fetching data:', error);
                 }
-            }).then(result => {
-                setOrder(result.data);
-                setOrdermove(result.data.ordermove);
-                setCustomer(result.data.suplier);
-            });
-            axios.get(`${apiConfig.url}/api/company/all`, {
-                headers: {
-                    Authorization: token
-                }
-            }).then(result => {
-                setCompany(result.data[0]);
-            });
-
-            let total = 0;
-            ordermove.map((value, index) => {
-                total += value.itemcount * value.product.unitprice;
-                return 0;
-            });
-            setTotal(total);
-        }
-        if (token) {
+            };
+            
             getData();
         }
-    }, [id, ordermove, token])
-
-    const createGRN = async () => {
-        if (!customer.id || ordermove.length === 0) {
-            toast.error('Cannot create GRN. Missing supplier or order items!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-            return;
-        }
-
-        const grncode = "GRN" + Math.floor(Math.random() * (99999 - 10000) + 10000);
-
-        // Transform order items to GRN movements
-        const movements = ordermove.map(item => ({
-            product: {
-                id: item.product.id,
-                prodctname: item.product.prodctname,
-                availability: item.product.onhandqty > 20 ? "available" : "low stock",
-                onhandqty: parseFloat(item.product.onhandqty) + parseFloat(item.itemcount),
-                inqty: parseFloat(item.product.inqty || 0) + parseFloat(item.itemcount),
-            },
-            quantity: item.itemcount.toString(),
-        }));
-
-        try {
-            const result = await axios.post(`${apiConfig.url}/api/grn/add`, {
-                grncode: grncode,
-                date: new Date().toISOString().split('T')[0], // Today's date
-                note: `GRN for purchase order: ${order.ordername}`,
-                suplier: {
-                    id: customer.id
-                },
-                movements: movements
-            }, {
-                headers: {
-                    Authorization: token
-                }
-            });
-
-            if (result.status === 200) {
-                toast.success('GRN created successfully!', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
-
-                // Navigate to edit GRN page
-                setTimeout(() => {
-                    navigate(`/user/grn/edit/${result.data.id}`);
-                }, 1000);
-            }
-        } catch (error) {
-            console.error("Error creating GRN:", error);
-            toast.error('Failed to create GRN!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        }
-    };
+    }, [id])
 
     return (
         <>
@@ -141,7 +75,6 @@ const EditSuplierOrder = () => {
                                 <h1 className='font-semibold text-gray-700'>View order details</h1>
                             </div>
                             <div className='mr-2'>
-                                <button onClick={() => createGRN()} className='mr-3 py-1 px-2 rounded mb-1 bg-blue-600 text-white font-semibold text-sm hover:bg-blue-800'>Create GRN</button>
                                 <PDFDownloadLink document={<OrderPDF total={total} customer={customer} orderlines={ordermove} company={company} order={order} />} fileName='order'>
                                     {({ loading }) => (loading ? "creating..." : <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>)}
                                 </PDFDownloadLink>
