@@ -15,43 +15,50 @@ const EditOrder = () => {
     const [customer, setCustomer] = useState([]);
     const [company, setCompany] = useState([]);
     const [total, setTotal] = useState(0);
-    const [token, setToken] = useState("");
 
     const { id } = useParams();
 
     const navigate = useNavigate();
 
-    useEffect(()=>{
-        setToken(`Bearer ${sessionStorage.getItem('session')}`);
-        const getData = ()=>{
-            axios.get(`${apiConfig.url}/api/orders/get/${id}`,{
-                headers : {
-                Authorization : token
+    useEffect(() => {
+        const token = `Bearer ${sessionStorage.getItem('session')}`;
+        
+        if (token && token !== 'Bearer null') {
+            const getData = async () => {
+                try {
+                    const orderResponse = await axios.get(`${apiConfig.url}/api/orders/get/${id}`, {
+                        headers: {
+                            Authorization: token
+                        }
+                    });
+                    
+                    setOrder(orderResponse.data);
+                    setOrdermove(orderResponse.data.ordermove);
+                    setCustomer(orderResponse.data.customer);
+                    
+                    let total = 0;
+                    if (orderResponse.data.ordermove) {
+                        orderResponse.data.ordermove.forEach((value) => {
+                            total += value.itemcount * value.product.unitprice;
+                        });
+                    }
+                    setTotal(total);
+                    
+                    const companyResponse = await axios.get(`${apiConfig.url}/api/company/all`, {
+                        headers: {
+                            Authorization: token
+                        }
+                    });
+                    setCompany(companyResponse.data[0]);
+                    
+                } catch (error) {
+                    console.error('Error fetching data:', error);
                 }
-            }).then(result=>{
-                setOrder(result.data);
-                setOrdermove(result.data.ordermove);
-                setCustomer(result.data.customer);
-            });
-            axios.get(`${apiConfig.url}/api/company/all`,{
-                headers : {
-                Authorization : token
-                }
-            }).then(result=>{
-                setCompany(result.data[0]);
-            });
-
-            let total = 0;
-            ordermove.map((value,index)=>{
-                total += value.itemcount * value.product.unitprice;
-                return 0;
-            });
-            setTotal(total);
-        }
-        if (token){
+            };
+            
             getData();
         }
-    },[id, ordermove, token])
+    }, [id])
 
     const createInvoice = async () => {
         if (!customer.id || total === 0) {
@@ -68,13 +75,14 @@ const EditOrder = () => {
             return;
         }
 
+        const token = `Bearer ${sessionStorage.getItem('session')}`;
         const invoiceNumber = "INV" + Math.floor((Math.random() * (99999 - 10000) + 10000));
         
         try {
             const result = await axios.post(`${apiConfig.url}/api/invoicing/add`, {
                 invoicenumber: invoiceNumber,
                 note: `Invoice for order: ${order.ordername}`,
-                date: new Date().toISOString().split('T')[0], // Today's date
+                date: new Date().toISOString().split('T')[0],
                 amount: total.toString(),
                 status: "draft",
                 customer: {
@@ -98,7 +106,6 @@ const EditOrder = () => {
                     theme: "light",
                 });
 
-                // Navigate to edit invoice page
                 setTimeout(() => {
                     navigate(`/user/invoicing/edit/${result.data.id}`);
                 }, 1000);
