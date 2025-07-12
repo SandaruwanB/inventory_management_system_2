@@ -149,7 +149,7 @@ const style = StyleSheet.create({
     },
 });
 
-const OrderPDF = ({ customer, company, orderlines, order, total }) => {
+const OrderPDF = ({ customer, company, orderlines, order, total, type }) => {
     const formatCurrency = (amount) => {
         return parseFloat(amount).toFixed(2);
     };
@@ -202,7 +202,7 @@ const OrderPDF = ({ customer, company, orderlines, order, total }) => {
                     <View style={style.tableHeader}>
                         <Text style={[style.tableHeaderCell, style.col1]}>#</Text>
                         <Text style={[style.tableHeaderCell, style.col2, style.tableCellLeft]}>Product Description</Text>
-                        <Text style={[style.tableHeaderCell, style.col3]}>Unit Price</Text>
+                        <Text style={[style.tableHeaderCell, style.col3]}>{type === "suplier" ? "Unit Cost" : "Unit Price"}</Text>
                         <Text style={[style.tableHeaderCell, style.col4]}>Quantity</Text>
                         <Text style={[style.tableHeaderCell, style.col5]}>Amount</Text>
                     </View>
@@ -212,9 +212,9 @@ const OrderPDF = ({ customer, company, orderlines, order, total }) => {
                             <Text style={[style.tableCell, style.col2, style.tableCellLeft]}>
                                 {formatProductDescription(value.product)}
                             </Text>
-                            <Text style={[style.tableCell, style.col3]}>Rs. {formatCurrency(value.product.unitprice)}</Text>
+                            <Text style={[style.tableCell, style.col3]}>Rs. {formatCurrency(type === "suplier" ? (value.product.cost || value.product.unitprice) : value.product.unitprice)}</Text>
                             <Text style={[style.tableCell, style.col4]}>{value.itemcount}</Text>
-                            <Text style={[style.tableCell, style.col5, style.tableCellRight]}>Rs. {formatCurrency(value.itemcount * value.product.unitprice)}</Text>
+                            <Text style={[style.tableCell, style.col5, style.tableCellRight]}>Rs. {formatCurrency(value.itemcount * (type === "suplier" ? (value.product.cost || value.product.unitprice) : value.product.unitprice))}</Text>
                         </View>
                     ))}
                 </View>

@@ -26,7 +26,6 @@ const EditSuplierOrder = () => {
         if (token && token !== 'Bearer null') {
             const getData = async () => {
                 try {
-                    // Get order data
                     const orderResponse = await axios.get(`${apiConfig.url}/api/orders/get/${id}`, {
                         headers: {
                             Authorization: token
@@ -36,17 +35,16 @@ const EditSuplierOrder = () => {
                     setOrder(orderResponse.data);
                     setOrdermove(orderResponse.data.ordermove);
                     setCustomer(orderResponse.data.suplier);
-                    
-                    // Calculate total from the fresh data
+
                     let total = 0;
                     if (orderResponse.data.ordermove) {
                         orderResponse.data.ordermove.forEach((value) => {
-                            total += value.itemcount * value.product.unitprice;
+                            const cost = value.product.cost || value.product.unitprice;
+                            total += value.itemcount * cost;
                         });
                     }
                     setTotal(total);
                     
-                    // Get company data
                     const companyResponse = await axios.get(`${apiConfig.url}/api/company/all`, {
                         headers: {
                             Authorization: token
@@ -75,7 +73,7 @@ const EditSuplierOrder = () => {
                                 <h1 className='font-semibold text-gray-700'>View order details</h1>
                             </div>
                             <div className='mr-2'>
-                                <PDFDownloadLink document={<OrderPDF total={total} customer={customer} orderlines={ordermove} company={company} order={order} />} fileName='order'>
+                                <PDFDownloadLink document={<OrderPDF total={total} customer={customer} orderlines={ordermove} company={company} order={order} type={"suplier"} />} fileName='order'>
                                     {({ loading }) => (loading ? "creating..." : <button className='mr-3 py-1 px-2 rounded mb-1 bg-gray-600 text-white font-semibold text-sm hover:bg-gray-950'>Download PDF</button>)}
                                 </PDFDownloadLink>
                             </div>
@@ -131,7 +129,7 @@ const EditSuplierOrder = () => {
                                         <th className='p-1 text-sm font-semibold tracking-wide text-left pl-5'>Product</th>
                                         <th className='p-1 text-sm font-semibold tracking-wide text-left'>Count</th>
                                         <th className='p-1 text-sm font-semibold tracking-wide text-center'>Availability</th>
-                                        <th className='p-1 text-sm font-semibold tracking-wide text-end'>Unit price</th>
+                                        <th className='p-1 text-sm font-semibold tracking-wide text-end'>Unit Cost</th>
                                         <th className='p-1 text-sm font-semibold tracking-wide text-end'>Sub total</th>
                                     </tr>
                                 </thead>
@@ -147,8 +145,8 @@ const EditSuplierOrder = () => {
                                                 </td>
                                                 <td className='p-1 text-sm font-semibold tracking-wide text-left'>{value.itemcount}</td>
                                                 <td className='p-1 text-sm font-semibold tracking-wide text-center'>{value.product.onhandqty > 10 ? <p className='text-green-600'>available</p> : <p className='text-red-600'>Low stock</p>}</td>
-                                                <td className='p-1 text-sm font-semibold tracking-wide text-end'>Rs.{value.product.unitprice}</td>
-                                                <td className='p-1 text-sm font-semibold tracking-wide text-end'>Rs.{parseFloat(value.product.unitprice * value.itemcount).toFixed(2)}</td>
+                                                <td className='p-1 text-sm font-semibold tracking-wide text-end'>Rs.{value.product.cost || value.product.unitprice}</td>
+                                                <td className='p-1 text-sm font-semibold tracking-wide text-end'>Rs.{parseFloat((value.product.cost || value.product.unitprice) * value.itemcount).toFixed(2)}</td>
                                             </tr>
                                         ))
                                     }

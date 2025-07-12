@@ -193,7 +193,7 @@ const AddOrder = () => {
                     "product" : {
                         "id" : product,
                         "prodctname" : result.data.prodctname,
-                        "unitprice" : parseFloat(result.data.unitprice),
+                        "unitprice" : parseFloat(result.data.cost || result.data.unitprice),
                         "availability" : result.data.onhandqty > 20 ? "available" : "low stock",
                         "onhandqty" : parseFloat(result.data.onhandqty) - parseFloat(count),
                         "inqty" : parseFloat(result.data.inqty) - parseFloat(count),
@@ -288,7 +288,7 @@ const AddOrder = () => {
                                         <th className='p-1 text-sm font-semibold tracking-wide text-left pl-5'>Product</th>
                                         <th className='p-1 text-sm font-semibold tracking-wide text-left'>Count</th>
                                         <th className='p-1 text-sm font-semibold tracking-wide text-center'>Availability</th>
-                                        <th className='p-1 text-sm font-semibold tracking-wide text-end'>Unit price</th>
+                                        <th className='p-1 text-sm font-semibold tracking-wide text-end'>Unit Cost</th>
                                         <th className='p-1 text-sm font-semibold tracking-wide text-end'>Sub total</th>
                                         <th className='p-1 text-sm font-semibold tracking-wide'></th>
                                     </tr>
